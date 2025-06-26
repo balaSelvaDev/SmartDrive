@@ -1,0 +1,62 @@
+package mca.finalyearproject.smartDrive.SmartDrive.ServiceImpl;
+
+import mca.finalyearproject.smartDrive.SmartDrive.DTO.BrandDTO;
+import mca.finalyearproject.smartDrive.SmartDrive.Entity.BrandEntity;
+import mca.finalyearproject.smartDrive.SmartDrive.Repository.BrandRepository;
+import mca.finalyearproject.smartDrive.SmartDrive.Service.BrandService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class BrandServiceImpl implements BrandService {
+
+    @Autowired
+    private BrandRepository brandRepository;
+
+
+    public BrandDTO createBrand(BrandDTO dto) {
+        BrandEntity brand = dtoToEntity(dto);
+        BrandEntity saved = brandRepository.save(brand);
+        return entityToDto(saved);
+    }
+
+
+    public BrandDTO updateBrand(BrandDTO dto) {
+        BrandEntity brand = dtoToEntity(dto);
+        BrandEntity updated = brandRepository.save(brand);
+        return entityToDto(updated);
+    }
+
+
+    public void deleteBrand(Integer brandId) {
+        brandRepository.deleteById(brandId);
+    }
+
+
+    public List<BrandDTO> getAllBrands() {
+        return brandRepository.findAll().stream()
+                .map(this::entityToDto)
+                .collect(Collectors.toList());
+    }
+
+    // ============ Mapping Methods ============
+
+    private BrandEntity dtoToEntity(BrandDTO dto) {
+        BrandEntity brand = new BrandEntity();
+        brand.setBrandId(dto.getBrandId());
+        brand.setBrandName(dto.getBrandName());
+        brand.setIsActive(dto.getIsActive());
+        return brand;
+    }
+
+    private BrandDTO entityToDto(BrandEntity brand) {
+        BrandDTO dto = new BrandDTO();
+        dto.setBrandId(brand.getBrandId());
+        dto.setBrandName(brand.getBrandName());
+        dto.setIsActive(brand.getIsActive());
+        return dto;
+    }
+}
