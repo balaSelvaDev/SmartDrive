@@ -57,6 +57,8 @@ public class BrandServiceImpl implements BrandService {
         dto.setBrandId(brand.getBrandId());
         dto.setBrandName(brand.getBrandName());
         dto.setIsActive(brand.getIsActive());
+        dto.setCreatedDateTime(brand.getCreatedDateTime());
+        dto.setLastUpdatedDateTime(brand.getLastUpdatedDateTime());
         return dto;
     }
 }
