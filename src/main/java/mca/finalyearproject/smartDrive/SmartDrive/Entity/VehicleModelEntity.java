@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "vehicle_model")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class VehicleModelEntity {
 
     @Id
@@ -17,10 +16,18 @@ public class VehicleModelEntity {
 
     private String modelName;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "brand_id")
     @JsonBackReference
     private BrandEntity brand;
+
+    public Integer getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Integer isActive) {
+        this.isActive = isActive;
+    }
 
     private Integer isActive;
 

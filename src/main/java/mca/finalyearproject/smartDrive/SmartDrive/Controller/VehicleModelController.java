@@ -1,6 +1,7 @@
 package mca.finalyearproject.smartDrive.SmartDrive.Controller;
 
 import lombok.RequiredArgsConstructor;
+import mca.finalyearproject.smartDrive.SmartDrive.DTO.VehicleModelResponseDTO;
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.VehicleModelEntity;
 import mca.finalyearproject.smartDrive.SmartDrive.ServiceImpl.VehicleModelServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +20,14 @@ public class VehicleModelController {
     private VehicleModelServiceImpl vehicleModelService;
 
     @GetMapping
-    public List<VehicleModelEntity> getAllModels() {
+    public List<VehicleModelResponseDTO> getAllModels() {
         return vehicleModelService.getAllVehicleModels();
     }
 
     @GetMapping("/{id}")
-    public VehicleModelEntity getModelById(@PathVariable Integer id) {
+    public VehicleModelResponseDTO getModelById(@PathVariable Integer id) {
         return vehicleModelService.getVehicleModelById(id);
     }
 
 }
+
