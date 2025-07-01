@@ -1,10 +1,12 @@
 package mca.finalyearproject.smartDrive.SmartDrive.Entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "brand_list")
@@ -28,6 +30,18 @@ public class BrandEntity {
     @Column(name = "last_updated_date_time", insertable = false)
     @UpdateTimestamp
     private LocalDateTime lastUpdatedDateTime;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "brand")
+    @JsonManagedReference
+    private List<VehicleModelEntity> vehicleModel;
+
+    public List<VehicleModelEntity> getVehicleModel() {
+        return vehicleModel;
+    }
+
+    public void setVehicleModel(List<VehicleModelEntity> vehicleModel) {
+        this.vehicleModel = vehicleModel;
+    }
 
     public Integer getBrandId() {
         return brandId;

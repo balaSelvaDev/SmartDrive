@@ -1,5 +1,6 @@
 package mca.finalyearproject.smartDrive.SmartDrive.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -16,11 +17,12 @@ public class VehicleModelEntity {
 
     private String modelName;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "brand_id")
+    @JsonBackReference
     private BrandEntity brand;
 
-    private Boolean isActive;
+    private Integer isActive;
 
     private LocalDateTime createdDateTime;
 
@@ -50,11 +52,11 @@ public class VehicleModelEntity {
         this.brand = brand;
     }
 
-    public Boolean getActive() {
+    public Integer getActive() {
         return isActive;
     }
 
-    public void setActive(Boolean active) {
+    public void setActive(Integer active) {
         isActive = active;
     }
 

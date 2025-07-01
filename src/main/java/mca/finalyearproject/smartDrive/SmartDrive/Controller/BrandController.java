@@ -1,18 +1,20 @@
 package mca.finalyearproject.smartDrive.SmartDrive.Controller;
 
 import mca.finalyearproject.smartDrive.SmartDrive.DTO.BrandDTO;
+import mca.finalyearproject.smartDrive.SmartDrive.Entity.BrandEntity;
 import mca.finalyearproject.smartDrive.SmartDrive.Service.BrandService;
+import mca.finalyearproject.smartDrive.SmartDrive.ServiceImpl.BrandServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/brands")
+@RequestMapping("/api/brands1")
 public class BrandController {
 
     @Autowired
-    private BrandService brandService;
+    private BrandServiceImpl brandService;
 
     @PostMapping
     public BrandDTO createBrand(@RequestBody BrandDTO brandDTO) {

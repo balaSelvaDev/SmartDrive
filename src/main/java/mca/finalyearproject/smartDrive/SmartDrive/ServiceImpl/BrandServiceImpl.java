@@ -1,9 +1,10 @@
 package mca.finalyearproject.smartDrive.SmartDrive.ServiceImpl;
 
 import mca.finalyearproject.smartDrive.SmartDrive.DTO.BrandDTO;
+import mca.finalyearproject.smartDrive.SmartDrive.DTO.VehicleModelDTO;
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.BrandEntity;
+import mca.finalyearproject.smartDrive.SmartDrive.Entity.VehicleModelEntity;
 import mca.finalyearproject.smartDrive.SmartDrive.Repository.BrandRepository;
-import mca.finalyearproject.smartDrive.SmartDrive.Service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +12,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class BrandServiceImpl implements BrandService {
+public class BrandServiceImpl
+        //implements BrandService
+{
 
     @Autowired
     private BrandRepository brandRepository;
@@ -37,7 +40,8 @@ public class BrandServiceImpl implements BrandService {
 
 
     public List<BrandDTO> getAllBrands() {
-        return brandRepository.findAll().stream()
+        return brandRepository.findAll()
+                .stream()
                 .map(this::entityToDto)
                 .collect(Collectors.toList());
     }
@@ -57,8 +61,24 @@ public class BrandServiceImpl implements BrandService {
         dto.setBrandId(brand.getBrandId());
         dto.setBrandName(brand.getBrandName());
         dto.setIsActive(brand.getIsActive());
-        dto.setCreatedDateTime(brand.getCreatedDateTime());
-        dto.setLastUpdatedDateTime(brand.getLastUpdatedDateTime());
+//        dto.setCreatedDateTime(brand.getCreatedDateTime());
+//        dto.setLastUpdatedDateTime(brand.getLastUpdatedDateTime());
+
+
+        List<VehicleModelDTO> collect = brand.getVehicleModel()
+                                            .stream()
+                                            .map(this::vehicleModelEntityToDto)
+                                            .collect(Collectors.toList());
+
+        dto.setVehicleModelDTO(collect);
         return dto;
+    }
+
+    private VehicleModelDTO vehicleModelEntityToDto(VehicleModelEntity entities) {
+        VehicleModelDTO vehicleModelDTO = new VehicleModelDTO();
+        vehicleModelDTO.setModelId(entities.getModelId());
+        vehicleModelDTO.setModelName(entities.getModelName());
+        vehicleModelDTO.setIsActive(entities.getActive());
+        return vehicleModelDTO;
     }
 }

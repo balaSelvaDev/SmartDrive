@@ -14,7 +14,6 @@ public class VehicleModelServiceImpl {
     @Autowired
     private VehicleModelRepository vehicleModelRepository;
 
-
     public List<VehicleModelEntity> getAllVehicleModels() {
         return vehicleModelRepository.findAll();
     }
