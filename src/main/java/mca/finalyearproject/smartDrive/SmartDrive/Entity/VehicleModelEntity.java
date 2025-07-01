@@ -1,10 +1,13 @@
 package mca.finalyearproject.smartDrive.SmartDrive.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "vehicle_model")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class VehicleModelEntity {
 
     @Id
@@ -13,7 +16,7 @@ public class VehicleModelEntity {
 
     private String modelName;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "brand_id")
     private BrandEntity brand;
 
