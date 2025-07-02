@@ -21,6 +21,17 @@ public class VehicleModelEntity {
     @JsonBackReference
     private BrandEntity brand;
 
+    @Override
+    public String toString() {
+        return "VehicleModelEntity{" +
+                "modelId=" + modelId +
+                ", modelName='" + modelName + '\'' +
+                ", isActive=" + isActive +
+                ", createdDateTime=" + createdDateTime +
+                ", lastUpdatedDateTime=" + lastUpdatedDateTime +
+                '}';
+    }
+
     public Integer getIsActive() {
         return isActive;
     }

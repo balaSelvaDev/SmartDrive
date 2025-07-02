@@ -18,7 +18,7 @@ public class VehicleModelServiceImpl {
     private VehicleModelRepository vehicleModelRepository;
 
     public List<VehicleModelResponseDTO> getAllVehicleModels() {
-        return vehicleModelRepository.findAll().stream().map(this::entityToDTO).collect(Collectors.toList());
+        return vehicleModelRepository.findAll().stream().map(VehicleModelServiceImpl::entityToDTO).collect(Collectors.toList());
     }
 
 
@@ -26,7 +26,7 @@ public class VehicleModelServiceImpl {
         return entityToDTO(vehicleModelRepository.findById(modelId).get());
     }
 
-    public VehicleModelResponseDTO entityToDTO(VehicleModelEntity entity) {
+    public static VehicleModelResponseDTO entityToDTO(VehicleModelEntity entity) {
 
         VehicleModelResponseDTO vehicleModelResponseDTO = new VehicleModelResponseDTO();
 

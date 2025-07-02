@@ -20,7 +20,7 @@ public class VehicleModelController {
     private VehicleModelServiceImpl vehicleModelService;
 
     @GetMapping
-    public List<VehicleModelResponseDTO> getAllModels() {
+    public List<VehicleModelResponseDTO> c() {
         return vehicleModelService.getAllVehicleModels();
     }
 

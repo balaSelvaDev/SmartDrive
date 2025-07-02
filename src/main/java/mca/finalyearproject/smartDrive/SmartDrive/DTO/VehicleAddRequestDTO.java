@@ -1,107 +1,44 @@
-package mca.finalyearproject.smartDrive.SmartDrive.Entity;
+package mca.finalyearproject.smartDrive.SmartDrive.DTO;
 
 import mca.finalyearproject.smartDrive.SmartDrive.Enum.FuelType;
 import mca.finalyearproject.smartDrive.SmartDrive.Enum.OwnerType;
-import mca.finalyearproject.smartDrive.SmartDrive.Enum.VehicleStatus;
 import mca.finalyearproject.smartDrive.SmartDrive.Enum.VehicleType;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "vehicle")
-public class VehicleEntity {
+public class VehicleAddRequestDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer vehicleId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "model_id", nullable = false)
-    private VehicleModelEntity model;
-
-    @Column(length = 1000)
+    private Integer modelId;
     private String description;
-
-    @Column(name = "registration_no", unique = true, nullable = false)
     private String registrationNo;
-
-    @Column(name = "price_per_km", nullable = false)
     private Double pricePerKm;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "fuel_type", nullable = false)
     private FuelType fuelType;
-
     private Integer fuelCapacity;
-
     private Double mileagePerLitre;
-
     private Integer seatingCapacity;
-
     private String color;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "vehicle_type")
     private VehicleType vehicleType;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "owner_type")
     private OwnerType ownerType;
-
     private Integer yearOfManufacture;
-
     private Integer engineCc;
-
     private String torque;
-
     private Integer horsepower;
-
     private Boolean isInsured;
-
     private LocalDateTime insuranceExpiryDate;
-
     private LocalDateTime lastUpdatedInsuranceDate;
-
     private Boolean hasAirbags;
-
     private Boolean hasAbs;
-
     private Boolean hasSunroof;
-
     private Boolean hasGps;
-
     private Boolean hasMusicSystem;
-
     private Boolean hasReverseCamera;
 
-    @Enumerated(EnumType.STRING)
-    private VehicleStatus vehicleStatus;
-
-    private Boolean available;
-
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
-
-    public Integer getVehicleId() {
-        return vehicleId;
+    public Integer getModelId() {
+        return modelId;
     }
 
-    public void setVehicleId(Integer vehicleId) {
-        this.vehicleId = vehicleId;
-    }
-
-    public VehicleModelEntity getModel() {
-        return model;
-    }
-
-    public void setModel(VehicleModelEntity model) {
-        this.model = model;
+    public void setModelId(Integer modelId) {
+        this.modelId = modelId;
     }
 
     public String getDescription() {
@@ -286,37 +223,5 @@ public class VehicleEntity {
 
     public void setHasReverseCamera(Boolean hasReverseCamera) {
         this.hasReverseCamera = hasReverseCamera;
-    }
-
-    public VehicleStatus getVehicleStatus() {
-        return vehicleStatus;
-    }
-
-    public void setVehicleStatus(VehicleStatus vehicleStatus) {
-        this.vehicleStatus = vehicleStatus;
-    }
-
-    public Boolean getAvailable() {
-        return available;
-    }
-
-    public void setAvailable(Boolean available) {
-        this.available = available;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
     }
 }
