@@ -2,6 +2,8 @@ package mca.finalyearproject.smartDrive.SmartDrive.Entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -42,8 +44,10 @@ public class VehicleModelEntity {
 
     private Integer isActive;
 
+    @CreationTimestamp
     private LocalDateTime createdDateTime;
 
+    @UpdateTimestamp
     private LocalDateTime lastUpdatedDateTime;
 
     public Integer getModelId() {
@@ -68,14 +72,6 @@ public class VehicleModelEntity {
 
     public void setBrand(BrandEntity brand) {
         this.brand = brand;
-    }
-
-    public Integer getActive() {
-        return isActive;
-    }
-
-    public void setActive(Integer active) {
-        isActive = active;
     }
 
     public LocalDateTime getCreatedDateTime() {
