@@ -8,6 +8,7 @@ import mca.finalyearproject.smartDrive.SmartDrive.Repository.BrandRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,6 +47,12 @@ public class BrandServiceImpl
                 .collect(Collectors.toList());
     }
 
+    public BrandDTO getParticularBrand(Integer brandId) {
+        return entityToDto(brandRepository.findById(brandId).get());
+    }
+
+
+
     // ============ Mapping Methods ============
 
     private BrandEntity dtoToEntity(BrandDTO dto) {
@@ -63,14 +70,15 @@ public class BrandServiceImpl
         dto.setIsActive(brand.getIsActive());
 //        dto.setCreatedDateTime(brand.getCreatedDateTime());
 //        dto.setLastUpdatedDateTime(brand.getLastUpdatedDateTime());
-
-
-        List<VehicleModelDTO> collect = brand.getVehicleModel()
-                                            .stream()
-                                            .map(this::vehicleModelEntityToDto)
-                                            .collect(Collectors.toList());
-
-        dto.setVehicleModelDTO(collect);
+        dto.setVehicleModelDTO(new ArrayList<>());
+        List<VehicleModelEntity> vehicleModelDTOList = brand.getVehicleModel();
+        if(vehicleModelDTOList != null) {
+            List<VehicleModelDTO> collect = brand.getVehicleModel()
+                    .stream()
+                    .map(this::vehicleModelEntityToDto)
+                    .collect(Collectors.toList());
+            dto.setVehicleModelDTO(collect);
+        }
         return dto;
     }
 

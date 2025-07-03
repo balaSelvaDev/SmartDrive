@@ -1,8 +1,6 @@
 package mca.finalyearproject.smartDrive.SmartDrive.Controller;
 
 import mca.finalyearproject.smartDrive.SmartDrive.DTO.BrandDTO;
-import mca.finalyearproject.smartDrive.SmartDrive.Entity.BrandEntity;
-import mca.finalyearproject.smartDrive.SmartDrive.Service.BrandService;
 import mca.finalyearproject.smartDrive.SmartDrive.ServiceImpl.BrandServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -10,11 +8,21 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/brands1")
+@RequestMapping("/api/brands")
 public class BrandController {
 
     @Autowired
     private BrandServiceImpl brandService;
+
+    @GetMapping
+    public List<BrandDTO> getAllBrands() {
+        return brandService.getAllBrands();
+    }
+
+    @GetMapping("/{brandId}")
+    public BrandDTO getParticularBrand(@PathVariable("brandId") Integer brandId) {
+        return brandService.getParticularBrand(brandId);
+    }
 
     @PostMapping
     public BrandDTO createBrand(@RequestBody BrandDTO brandDTO) {
@@ -31,8 +39,4 @@ public class BrandController {
         brandService.deleteBrand(id);
     }
 
-    @GetMapping
-    public List<BrandDTO> getAllBrands() {
-        return brandService.getAllBrands();
-    }
 }
