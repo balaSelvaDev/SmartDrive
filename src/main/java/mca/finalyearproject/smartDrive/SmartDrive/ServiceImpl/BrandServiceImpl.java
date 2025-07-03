@@ -86,7 +86,7 @@ public class BrandServiceImpl
         VehicleModelDTO vehicleModelDTO = new VehicleModelDTO();
         vehicleModelDTO.setModelId(entities.getModelId());
         vehicleModelDTO.setModelName(entities.getModelName());
-        vehicleModelDTO.setIsActive(entities.getActive());
+        vehicleModelDTO.setIsActive(entities.getIsActive());
         return vehicleModelDTO;
     }
 }
