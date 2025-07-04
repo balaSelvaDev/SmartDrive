@@ -1,6 +1,6 @@
 package mca.finalyearproject.smartDrive.SmartDrive.Util;
 
-import lombok.extern.apachecommons.CommonsLog;
+
 import org.springframework.stereotype.Component;
 
 import java.util.Random;

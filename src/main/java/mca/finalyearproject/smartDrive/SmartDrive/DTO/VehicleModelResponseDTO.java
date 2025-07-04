@@ -1,6 +1,5 @@
 package mca.finalyearproject.smartDrive.SmartDrive.DTO;
 
-import java.util.List;
 
 public class VehicleModelResponseDTO {
 

@@ -3,7 +3,6 @@ package mca.finalyearproject.smartDrive.SmartDrive.Controller;
 import mca.finalyearproject.smartDrive.SmartDrive.DTO.VehicleModeAddRequestDTO;
 import mca.finalyearproject.smartDrive.SmartDrive.DTO.VehicleModeUpdateRequestDTO;
 import mca.finalyearproject.smartDrive.SmartDrive.DTO.VehicleModelResponseDTO;
-import mca.finalyearproject.smartDrive.SmartDrive.Entity.VehicleModelEntity;
 import mca.finalyearproject.smartDrive.SmartDrive.ServiceImpl.VehicleModelServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

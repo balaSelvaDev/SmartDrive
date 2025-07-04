@@ -1,7 +1,6 @@
 package mca.finalyearproject.smartDrive.SmartDrive.Controller;
 
 import mca.finalyearproject.smartDrive.SmartDrive.DTO.VehicleAddRequestDTO;
-import mca.finalyearproject.smartDrive.SmartDrive.DTO.VehicleModelResponseDTO;
 import mca.finalyearproject.smartDrive.SmartDrive.DTO.VehicleResponseDTO;
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.VehicleEntity;
 import mca.finalyearproject.smartDrive.SmartDrive.ServiceImpl.VehicleServiceImpl;

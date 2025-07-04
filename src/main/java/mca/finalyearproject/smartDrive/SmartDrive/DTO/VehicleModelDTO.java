@@ -1,9 +1,5 @@
 package mca.finalyearproject.smartDrive.SmartDrive.DTO;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 
 public class VehicleModelDTO {
     private Integer modelId;
