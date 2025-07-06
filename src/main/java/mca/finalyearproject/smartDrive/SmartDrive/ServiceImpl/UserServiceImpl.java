@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.MessagingException;
 import java.time.LocalDateTime;
 
 @Service
@@ -26,6 +27,7 @@ public class UserServiceImpl {
 
     @Autowired
     RegistrationVerificationRepository verificationRepository;
+
 
     @Autowired
     RegistrationVerificationRepository registrationVerificationRepository;
@@ -66,7 +68,11 @@ public class UserServiceImpl {
         verificationDTO.setUserId(save.getUserId());
         verificationDTO.setEmailId(dto.getEmail());
 
-        emailService.sendVerificationCode(dto.getEmail(), verificationCode);
+        try {
+            emailService.sendVerificationEmail(dto.getEmail(), verificationCode);
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
         return verificationDTO;
 
     }
