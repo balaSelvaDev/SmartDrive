@@ -18,6 +18,9 @@ public class VehicleEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer vehicleId;
 
+    @Column(name = "vehicle_name",  nullable = false)
+    private String vehicleName;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "model_id", nullable = false)
     private VehicleModelEntity model;
@@ -318,5 +321,13 @@ public class VehicleEntity {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getVehicleName() {
+        return vehicleName;
+    }
+
+    public void setVehicleName(String vehicleName) {
+        this.vehicleName = vehicleName;
     }
 }

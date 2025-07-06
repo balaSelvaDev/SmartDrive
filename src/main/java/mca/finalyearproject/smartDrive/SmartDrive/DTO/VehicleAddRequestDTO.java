@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 public class VehicleAddRequestDTO {
 
+    private String vehicleName;
     private Integer modelId;
     private String description;
     private String registrationNo;
@@ -223,5 +224,13 @@ public class VehicleAddRequestDTO {
 
     public void setHasReverseCamera(Boolean hasReverseCamera) {
         this.hasReverseCamera = hasReverseCamera;
+    }
+
+    public String getVehicleName() {
+        return vehicleName;
+    }
+
+    public void setVehicleName(String vehicleName) {
+        this.vehicleName = vehicleName;
     }
 }

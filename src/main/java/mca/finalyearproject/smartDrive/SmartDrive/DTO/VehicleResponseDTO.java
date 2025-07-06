@@ -11,6 +11,7 @@ public class VehicleResponseDTO {
 
     private Integer vehicleId;
     private VehicleModelResponseDTO vehicleModelResponseDTO;
+    private String vehicleName;
     private String description;
     private String registrationNo;
     private Double pricePerKm;
@@ -251,5 +252,13 @@ public class VehicleResponseDTO {
 
     public void setAvailable(Boolean available) {
         this.available = available;
+    }
+
+    public String getVehicleName() {
+        return vehicleName;
+    }
+
+    public void setVehicleName(String vehicleName) {
+        this.vehicleName = vehicleName;
     }
 }
