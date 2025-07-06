@@ -7,12 +7,19 @@ import mca.finalyearproject.smartDrive.SmartDrive.Repository.UserKycDetailsRepos
 import mca.finalyearproject.smartDrive.SmartDrive.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.List;
 
 @Service
 public class UserKycDetailsService {
 
     @Autowired
     private UserKycDetailsRepository kycRepository;
+
+    @Autowired
+    private CloudinaryService cloudinaryService;
 
     @Autowired
     private UserRepository userRepository;
@@ -46,7 +53,12 @@ public class UserKycDetailsService {
         UserListEntity user = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
         entity.setUser(user);
-        kycRepository.save(entity);
+        UserKycDetailsEntity save = kycRepository.save(entity);
+//        try {
+//            List<String> urls = cloudinaryService.uploadImages(dto.getUserId(), save.getKycId(), files, dto.getTypes());
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 
 }

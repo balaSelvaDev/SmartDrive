@@ -3,11 +3,11 @@ package mca.finalyearproject.smartDrive.SmartDrive.Controller;
 import mca.finalyearproject.smartDrive.SmartDrive.DTO.UserKycDetailsAddDTO;
 import mca.finalyearproject.smartDrive.SmartDrive.ServiceImpl.UserKycDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 
 @RestController
 @RequestMapping("/api/kyc")
@@ -16,8 +16,12 @@ public class UserKycDetailsController {
     @Autowired
     private UserKycDetailsService kycService;
 
-    @PostMapping("/add")
-    public ResponseEntity<String> addKyc(@RequestBody UserKycDetailsAddDTO dto) {
+//    @PostMapping(value = "/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/add")
+    public ResponseEntity<String> addKyc(
+            @RequestBody UserKycDetailsAddDTO dto
+//            , @RequestParam("files") MultipartFile[] files
+    ) {
         kycService.saveKycDetails(dto);
         return ResponseEntity.ok("KYC Details saved successfully.");
     }

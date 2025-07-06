@@ -1,6 +1,7 @@
 package mca.finalyearproject.smartDrive.SmartDrive.DTO;
 
 import mca.finalyearproject.smartDrive.SmartDrive.Enum.IdProofType;
+import org.springframework.web.bind.annotation.RequestParam;
 
 public class UserKycDetailsAddDTO {
 
@@ -17,6 +18,28 @@ public class UserKycDetailsAddDTO {
     private String state;
     private String pincode;
     private String country = "India";
+
+    private String fatherName;
+    private String motherName;
+
+    private String nomineeName;
+    private String nomineeRelation;
+    private String nomineePhone;
+
+    private String occupation;
+    private String companyName;
+
+    private String alternatePhoneNumber;
+
+//    private String types;
+
+//    public String getTypes() {
+//        return types;
+//    }
+//
+//    public void setTypes(String types) {
+//        this.types = types;
+//    }
 
     public Integer getUserId() {
         return userId;
@@ -162,16 +185,6 @@ public class UserKycDetailsAddDTO {
         this.alternatePhoneNumber = alternatePhoneNumber;
     }
 
-    private String fatherName;
-    private String motherName;
 
-    private String nomineeName;
-    private String nomineeRelation;
-    private String nomineePhone;
-
-    private String occupation;
-    private String companyName;
-
-    private String alternatePhoneNumber;
 
 }
