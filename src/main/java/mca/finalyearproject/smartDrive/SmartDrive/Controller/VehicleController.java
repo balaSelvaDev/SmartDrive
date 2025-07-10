@@ -1,10 +1,13 @@
 package mca.finalyearproject.smartDrive.SmartDrive.Controller;
 
+import mca.finalyearproject.smartDrive.SmartDrive.DTO.BrandDTO;
 import mca.finalyearproject.smartDrive.SmartDrive.DTO.VehicleAddRequestDTO;
 import mca.finalyearproject.smartDrive.SmartDrive.DTO.VehicleResponseDTO;
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.VehicleEntity;
 import mca.finalyearproject.smartDrive.SmartDrive.ServiceImpl.VehicleServiceImpl;
+import mca.finalyearproject.smartDrive.SmartDrive.Util.PaginationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,8 +20,9 @@ public class VehicleController {
     private VehicleServiceImpl vehicleService;
 
     @GetMapping
-    public List<VehicleResponseDTO> getAllVehicle() {
-        return vehicleService.getAllVehicle();
+    public ResponseEntity<PaginationResponse<VehicleResponseDTO>> getAllVehicle(@RequestParam(defaultValue = "0") int page,
+                                                                                               @RequestParam(defaultValue = "5") int size) {
+        return ResponseEntity.ok(vehicleService.getAllVehicle(page, size));
     }
 
     @GetMapping("/{id}")

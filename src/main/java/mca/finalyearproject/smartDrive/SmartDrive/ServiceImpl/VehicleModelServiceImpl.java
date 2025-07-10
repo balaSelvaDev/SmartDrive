@@ -1,14 +1,15 @@
 package mca.finalyearproject.smartDrive.SmartDrive.ServiceImpl;
 
-import mca.finalyearproject.smartDrive.SmartDrive.DTO.BrandOnlyDTO;
-import mca.finalyearproject.smartDrive.SmartDrive.DTO.VehicleModeAddRequestDTO;
-import mca.finalyearproject.smartDrive.SmartDrive.DTO.VehicleModeUpdateRequestDTO;
-import mca.finalyearproject.smartDrive.SmartDrive.DTO.VehicleModelResponseDTO;
+import mca.finalyearproject.smartDrive.SmartDrive.DTO.*;
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.BrandEntity;
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.VehicleModelEntity;
 import mca.finalyearproject.smartDrive.SmartDrive.Repository.BrandRepository;
 import mca.finalyearproject.smartDrive.SmartDrive.Repository.VehicleModelRepository;
+import mca.finalyearproject.smartDrive.SmartDrive.Util.PaginationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,8 +24,19 @@ public class VehicleModelServiceImpl {
     @Autowired
     private BrandRepository brandRepository;
 
-    public List<VehicleModelResponseDTO> getAllVehicleModels() {
-        return vehicleModelRepository.findAll().stream().map(VehicleModelServiceImpl::entityToDTO).collect(Collectors.toList());
+    public PaginationResponse<VehicleModelResponseDTO> getAllVehicleModels(int page, int size) {
+        Pageable paging = PageRequest.of(page, size);
+        Page<VehicleModelEntity> vehicleModelList = vehicleModelRepository.findAll(paging);
+        List<VehicleModelResponseDTO> vehicleModelDtoList = vehicleModelList.stream()
+                .map(VehicleModelServiceImpl::entityToDTO)
+                .collect(Collectors.toList());
+        PaginationResponse<VehicleModelResponseDTO> response = new PaginationResponse<>(
+                vehicleModelDtoList,
+                vehicleModelList.getNumber(),
+                vehicleModelList.getTotalPages(),
+                vehicleModelList.getTotalElements()
+        );
+        return response;
     }
 
     public VehicleModelResponseDTO getVehicleModelById(Integer modelId) {

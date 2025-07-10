@@ -2,10 +2,13 @@ package mca.finalyearproject.smartDrive.SmartDrive.Controller;
 
 import mca.finalyearproject.smartDrive.SmartDrive.DTO.BrandDTO;
 import mca.finalyearproject.smartDrive.SmartDrive.ServiceImpl.BrandServiceImpl;
+import mca.finalyearproject.smartDrive.SmartDrive.Util.PaginationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/brands")
@@ -15,8 +18,9 @@ public class BrandController {
     private BrandServiceImpl brandService;
 
     @GetMapping
-    public List<BrandDTO> getAllBrands() {
-        return brandService.getAllBrands();
+    public ResponseEntity<PaginationResponse<BrandDTO>> getAllBrands(@RequestParam(defaultValue = "0") int page,
+                                                                     @RequestParam(defaultValue = "5") int size) {
+        return ResponseEntity.ok(brandService.getAllBrands(page, size));
     }
 
     @GetMapping("/{brandId}")

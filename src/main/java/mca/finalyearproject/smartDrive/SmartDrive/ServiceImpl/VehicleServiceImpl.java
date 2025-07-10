@@ -1,14 +1,20 @@
 package mca.finalyearproject.smartDrive.SmartDrive.ServiceImpl;
 
+import mca.finalyearproject.smartDrive.SmartDrive.DTO.BrandDTO;
 import mca.finalyearproject.smartDrive.SmartDrive.DTO.VehicleAddRequestDTO;
 import mca.finalyearproject.smartDrive.SmartDrive.DTO.VehicleModelResponseDTO;
 import mca.finalyearproject.smartDrive.SmartDrive.DTO.VehicleResponseDTO;
+import mca.finalyearproject.smartDrive.SmartDrive.Entity.BrandEntity;
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.VehicleEntity;
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.VehicleModelEntity;
 import mca.finalyearproject.smartDrive.SmartDrive.Enum.VehicleStatus;
 import mca.finalyearproject.smartDrive.SmartDrive.Repository.VehicleModelRepository;
 import mca.finalyearproject.smartDrive.SmartDrive.Repository.VehicleRepository;
+import mca.finalyearproject.smartDrive.SmartDrive.Util.PaginationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,12 +29,19 @@ public class VehicleServiceImpl {
     @Autowired
     private VehicleModelRepository vehicleModelRepository;
 
-    public List<VehicleResponseDTO> getAllVehicle() {
-        List<VehicleResponseDTO> collect = vehicleRepository.findAll()
-                                                    .stream()
-                                                    .map(this::entityToDTO)
-                                                    .collect(Collectors.toList());
-        return collect;
+    public PaginationResponse<VehicleResponseDTO> getAllVehicle(int page, int size) {
+        Pageable paging = PageRequest.of(page, size);
+        Page<VehicleEntity> vehicleList = vehicleRepository.findAll(paging);
+        List<VehicleResponseDTO> vehicleDtoList = vehicleList.stream()
+                .map(this::entityToDTO)
+                .collect(Collectors.toList());
+        PaginationResponse<VehicleResponseDTO> response = new PaginationResponse<>(
+                vehicleDtoList,
+                vehicleList.getNumber(),
+                vehicleList.getTotalPages(),
+                vehicleList.getTotalElements()
+        );
+        return response;
     }
 
     public VehicleResponseDTO getVehicleById(Integer vehicleId) {

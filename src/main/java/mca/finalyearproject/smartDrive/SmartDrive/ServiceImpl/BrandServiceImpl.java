@@ -5,11 +5,20 @@ import mca.finalyearproject.smartDrive.SmartDrive.DTO.VehicleModelDTO;
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.BrandEntity;
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.VehicleModelEntity;
 import mca.finalyearproject.smartDrive.SmartDrive.Repository.BrandRepository;
+import mca.finalyearproject.smartDrive.SmartDrive.Util.PaginationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,11 +49,19 @@ public class BrandServiceImpl
     }
 
 
-    public List<BrandDTO> getAllBrands() {
-        return brandRepository.findAll()
-                .stream()
+    public PaginationResponse<BrandDTO> getAllBrands(int page, int size) {
+        Pageable paging = PageRequest.of(page, size);
+        Page<BrandEntity> brandList = brandRepository.findAll(paging);
+        List<BrandDTO> brandDtoList = brandList.stream()
                 .map(this::entityToDto)
                 .collect(Collectors.toList());
+        PaginationResponse<BrandDTO> response = new PaginationResponse<>(
+                brandDtoList,
+                brandList.getNumber(),
+                brandList.getTotalPages(),
+                brandList.getTotalElements()
+        );
+        return response;
     }
 
     public BrandDTO getParticularBrand(Integer brandId) {
