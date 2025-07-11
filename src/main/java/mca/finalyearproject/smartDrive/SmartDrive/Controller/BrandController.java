@@ -1,6 +1,7 @@
 package mca.finalyearproject.smartDrive.SmartDrive.Controller;
 
 import mca.finalyearproject.smartDrive.SmartDrive.DTO.BrandDTO;
+import mca.finalyearproject.smartDrive.SmartDrive.DTO.BrandIdNameRequestDTO;
 import mca.finalyearproject.smartDrive.SmartDrive.ServiceImpl.BrandServiceImpl;
 import mca.finalyearproject.smartDrive.SmartDrive.Util.PaginationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,12 @@ public class BrandController {
     @DeleteMapping("/{id}")
     public void deleteBrand(@PathVariable("id") Integer id) {
         brandService.deleteBrand(id);
+    }
+
+    @GetMapping("/brand-name")
+    public List<BrandIdNameRequestDTO> getBrandName(@RequestParam(required = false) String search,
+                                                    @RequestParam(defaultValue = "5") int limit) {
+        return brandService.getBrandName(search, limit);
     }
 
 }

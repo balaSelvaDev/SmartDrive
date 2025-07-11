@@ -1,6 +1,7 @@
 package mca.finalyearproject.smartDrive.SmartDrive.ServiceImpl;
 
 import mca.finalyearproject.smartDrive.SmartDrive.DTO.BrandDTO;
+import mca.finalyearproject.smartDrive.SmartDrive.DTO.BrandIdNameRequestDTO;
 import mca.finalyearproject.smartDrive.SmartDrive.DTO.VehicleModelDTO;
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.BrandEntity;
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.VehicleModelEntity;
@@ -68,6 +69,20 @@ public class BrandServiceImpl
         return entityToDto(brandRepository.findById(brandId).get());
     }
 
+    public List<BrandIdNameRequestDTO> getBrandName(String query, int limit) {
+        if (query == null || query.trim().isEmpty()) {
+            return brandRepository.findAll()
+                    .stream().map(this::entitytToBrandIdNameRequestDTO)
+                    .limit(limit)
+                    .collect(Collectors.toList());
+        }
+        return brandRepository.findByBrandNameContainingIgnoreCase(query)
+                .stream()
+                .limit(limit)
+                .map(this::entitytToBrandIdNameRequestDTO)
+                .collect(Collectors.toList());
+    }
+
 
 
     // ============ Mapping Methods ============
@@ -105,5 +120,12 @@ public class BrandServiceImpl
         vehicleModelDTO.setModelName(entities.getModelName());
         vehicleModelDTO.setIsActive(entities.getIsActive());
         return vehicleModelDTO;
+    }
+
+    private BrandIdNameRequestDTO entitytToBrandIdNameRequestDTO(BrandEntity entity) {
+        BrandIdNameRequestDTO dto = new BrandIdNameRequestDTO();
+        dto.setBrandId(entity.getBrandId());
+        dto.setBrandName(entity.getBrandName());
+        return dto;
     }
 }
