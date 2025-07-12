@@ -3,3 +3,5 @@ src/main/resources/application.properties
 **/cloudinary.properties
 
 **/demo.properties
+
+**/mail.properties

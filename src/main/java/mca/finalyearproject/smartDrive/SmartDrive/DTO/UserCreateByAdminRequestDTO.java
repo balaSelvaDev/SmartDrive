@@ -1,105 +1,68 @@
-package mca.finalyearproject.smartDrive.SmartDrive.Entity;
+package mca.finalyearproject.smartDrive.SmartDrive.DTO;
 
 import mca.finalyearproject.smartDrive.SmartDrive.Enum.IdProofType;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
+public class UserCreateByAdminRequestDTO {
 
-@Entity
-@Table(name = "user_kyc_details")
-public class UserKycDetailsEntity {
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String phoneNumber;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer kycId;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private UserListEntity user;
-
-    @Column(name = "driving_license_number", nullable = false, length = 50)
     private String drivingLicenseNumber;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "id_proof_type", nullable = false)
-    private IdProofType idProofType;
-
-    @Column(name = "id_proof_number", nullable = false, length = 50)
+    private IdProofType idProofType; // Using the enum
     private String idProofNumber;
 
-    @Column(name = "address_line_1", nullable = false, length = 255)
     private String addressLine1;
-
-    @Column(name = "address_line_2", length = 255)
     private String addressLine2;
-
-    @Column(nullable = false, length = 100)
     private String city;
-
-    @Column(nullable = false, length = 100)
     private String state;
-
-    @Column(nullable = false, length = 10)
     private String pincode;
-
-    @Column(length = 100)
     private String country = "India";
 
-    @Column(name = "father_name", nullable = false, length = 100)
     private String fatherName;
-
-    @Column(name = "mother_name", length = 100)
     private String motherName;
 
-    @Column(name = "nominee_name", length = 100)
     private String nomineeName;
-
-    @Column(name = "nominee_relation", length = 50)
     private String nomineeRelation;
-
-    @Column(name = "nominee_phone", length = 15)
     private String nomineePhone;
 
-    @Column(length = 100)
     private String occupation;
-
-    @Column(name = "company_name", length = 100)
     private String companyName;
 
-    @Column(name = "alternate_phone_number", length = 15)
     private String alternatePhoneNumber;
 
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
+    public String getFirstName() {
+        return firstName;
     }
 
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public Integer getKycId() {
-        return kycId;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setKycId(Integer kycId) {
-        this.kycId = kycId;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public UserListEntity getUser() {
-        return user;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUser(UserListEntity user) {
-        this.user = user;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getDrivingLicenseNumber() {
@@ -236,21 +199,5 @@ public class UserKycDetailsEntity {
 
     public void setAlternatePhoneNumber(String alternatePhoneNumber) {
         this.alternatePhoneNumber = alternatePhoneNumber;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
     }
 }

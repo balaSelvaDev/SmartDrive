@@ -3,10 +3,12 @@ package mca.finalyearproject.smartDrive.SmartDrive.ServiceImpl;
 import mca.finalyearproject.smartDrive.SmartDrive.DTO.*;
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.LoginCredentialEntity;
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.RegistrationVerificationEntity;
+import mca.finalyearproject.smartDrive.SmartDrive.Entity.UserKycDetailsEntity;
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.UserListEntity;
 import mca.finalyearproject.smartDrive.SmartDrive.Enum.VerificationStatus;
 import mca.finalyearproject.smartDrive.SmartDrive.Repository.LoginCredentialRepository;
 import mca.finalyearproject.smartDrive.SmartDrive.Repository.RegistrationVerificationRepository;
+import mca.finalyearproject.smartDrive.SmartDrive.Repository.UserKycDetailsRepository;
 import mca.finalyearproject.smartDrive.SmartDrive.Repository.UserRepository;
 import mca.finalyearproject.smartDrive.SmartDrive.Util.UtilityClass;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +30,6 @@ public class UserServiceImpl {
     @Autowired
     RegistrationVerificationRepository verificationRepository;
 
-
     @Autowired
     RegistrationVerificationRepository registrationVerificationRepository;
 
@@ -38,8 +39,11 @@ public class UserServiceImpl {
     @Autowired
     UtilityClass utilityClass;
 
+    @Autowired
+    private UserKycDetailsRepository kycRepository;
+
     @Transactional
-    public RegistrationVerificationDTO createUser(UserCreateRequestDTO dto) {
+    public RegistrationVerificationDTO createUserByUser(UserCreateRequestDTO dto) {
 
         UserListEntity entity = new UserListEntity();
         entity.setFirstName(dto.getFirstName());
@@ -108,7 +112,6 @@ public class UserServiceImpl {
         return codeResponseDTO;
     }
 
-
     @Transactional
     public void generatePassword(GeneratePasswordRequestDTO requestDTO) {
 
@@ -126,6 +129,48 @@ public class UserServiceImpl {
             System.out.println("---<3>");
             verificationRepository.deleteByIdAndUuid(requestDTO.getUserId(), requestDTO.getUuid());
         }
+
+    }
+
+    @Transactional
+    public UserKycDetailsEntity createUserByAdmin(UserCreateByAdminRequestDTO dto) {
+
+        UserListEntity entity = new UserListEntity();
+        entity.setFirstName(dto.getFirstName());
+        entity.setLastName(dto.getLastName());
+        entity.setEmail(dto.getEmail());
+        entity.setPhoneNumber(dto.getPhoneNumber());
+        entity.setIsActive(1);
+
+        UserListEntity userListEntity = userRepository.save(entity);
+
+        UserKycDetailsEntity kycDetailsEntity = new UserKycDetailsEntity();
+        kycDetailsEntity.setUser(userListEntity);
+        kycDetailsEntity.setDrivingLicenseNumber(dto.getDrivingLicenseNumber());
+        kycDetailsEntity.setIdProofType(dto.getIdProofType());
+        kycDetailsEntity.setIdProofNumber(dto.getIdProofNumber());
+
+        kycDetailsEntity.setAddressLine1(dto.getAddressLine1());
+        kycDetailsEntity.setAddressLine2(dto.getAddressLine2());
+        kycDetailsEntity.setCity(dto.getCity());
+        kycDetailsEntity.setState(dto.getState());
+        kycDetailsEntity.setPincode(dto.getPincode());
+        kycDetailsEntity.setCountry(dto.getCountry());
+
+        kycDetailsEntity.setFatherName(dto.getFatherName());
+        kycDetailsEntity.setMotherName(dto.getMotherName());
+
+        kycDetailsEntity.setNomineeName(dto.getNomineeName());
+        kycDetailsEntity.setNomineeRelation(dto.getNomineeRelation());
+        kycDetailsEntity.setNomineePhone(dto.getNomineePhone());
+
+        kycDetailsEntity.setOccupation(dto.getOccupation());
+        kycDetailsEntity.setCompanyName(dto.getCompanyName());
+        kycDetailsEntity.setAlternatePhoneNumber(dto.getAlternatePhoneNumber());
+        UserKycDetailsEntity sav1e = kycRepository.save(kycDetailsEntity);
+
+        System.out.println("User created...");
+        return sav1e;
 
     }
 }

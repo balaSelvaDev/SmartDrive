@@ -39,7 +39,17 @@ public class UserListEntity {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    // --- Getters & Setters ---
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+    private UserKycDetailsEntity user;
+
+    public UserKycDetailsEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserKycDetailsEntity user) {
+        this.user = user;
+    }
+// --- Getters & Setters ---
 
     public Integer getUserId() {
         return userId;
