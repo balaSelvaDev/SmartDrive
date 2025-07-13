@@ -200,4 +200,31 @@ public class UserCreateByAdminRequestDTO {
     public void setAlternatePhoneNumber(String alternatePhoneNumber) {
         this.alternatePhoneNumber = alternatePhoneNumber;
     }
+
+    @Override
+    public String toString() {
+        return "UserCreateByAdminRequestDTO{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", drivingLicenseNumber='" + drivingLicenseNumber + '\'' +
+                ", idProofType=" + idProofType +
+                ", idProofNumber='" + idProofNumber + '\'' +
+                ", addressLine1='" + addressLine1 + '\'' +
+                ", addressLine2='" + addressLine2 + '\'' +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", pincode='" + pincode + '\'' +
+                ", country='" + country + '\'' +
+                ", fatherName='" + fatherName + '\'' +
+                ", motherName='" + motherName + '\'' +
+                ", nomineeName='" + nomineeName + '\'' +
+                ", nomineeRelation='" + nomineeRelation + '\'' +
+                ", nomineePhone='" + nomineePhone + '\'' +
+                ", occupation='" + occupation + '\'' +
+                ", companyName='" + companyName + '\'' +
+                ", alternatePhoneNumber='" + alternatePhoneNumber + '\'' +
+                '}';
+    }
 }

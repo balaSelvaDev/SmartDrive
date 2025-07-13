@@ -1,22 +1,23 @@
 package mca.finalyearproject.smartDrive.SmartDrive.ServiceImpl;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import mca.finalyearproject.smartDrive.SmartDrive.DTO.*;
-import mca.finalyearproject.smartDrive.SmartDrive.Entity.LoginCredentialEntity;
-import mca.finalyearproject.smartDrive.SmartDrive.Entity.RegistrationVerificationEntity;
-import mca.finalyearproject.smartDrive.SmartDrive.Entity.UserKycDetailsEntity;
-import mca.finalyearproject.smartDrive.SmartDrive.Entity.UserListEntity;
+import mca.finalyearproject.smartDrive.SmartDrive.Entity.*;
 import mca.finalyearproject.smartDrive.SmartDrive.Enum.VerificationStatus;
-import mca.finalyearproject.smartDrive.SmartDrive.Repository.LoginCredentialRepository;
-import mca.finalyearproject.smartDrive.SmartDrive.Repository.RegistrationVerificationRepository;
-import mca.finalyearproject.smartDrive.SmartDrive.Repository.UserKycDetailsRepository;
-import mca.finalyearproject.smartDrive.SmartDrive.Repository.UserRepository;
+import mca.finalyearproject.smartDrive.SmartDrive.Repository.*;
 import mca.finalyearproject.smartDrive.SmartDrive.Util.UtilityClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserServiceImpl {
@@ -41,6 +42,13 @@ public class UserServiceImpl {
 
     @Autowired
     private UserKycDetailsRepository kycRepository;
+
+    @Autowired
+    private KycImageRepository kycImageRepository;
+
+    @Autowired
+    private Cloudinary cloudinary;
+
 
     @Transactional
     public RegistrationVerificationDTO createUserByUser(UserCreateRequestDTO dto) {
@@ -133,7 +141,10 @@ public class UserServiceImpl {
     }
 
     @Transactional
-    public UserKycDetailsEntity createUserByAdmin(UserCreateByAdminRequestDTO dto) {
+    public UserKycDetailsEntity createUserByAdmin(UserCreateByAdminRequestDTO dto,
+                                                  MultipartFile profileImage,
+                                                  MultipartFile drivingLicenseImage,
+                                                  List<MultipartFile> idProofFiles) throws IOException {
 
         UserListEntity entity = new UserListEntity();
         entity.setFirstName(dto.getFirstName());
@@ -167,10 +178,67 @@ public class UserServiceImpl {
         kycDetailsEntity.setOccupation(dto.getOccupation());
         kycDetailsEntity.setCompanyName(dto.getCompanyName());
         kycDetailsEntity.setAlternatePhoneNumber(dto.getAlternatePhoneNumber());
-        UserKycDetailsEntity sav1e = kycRepository.save(kycDetailsEntity);
+        UserKycDetailsEntity userKycDetailsEntity = kycRepository.save(kycDetailsEntity);
 
         System.out.println("User created...");
-        return sav1e;
 
+        List<KycImageEntity> kycImageEntities = new ArrayList<>();
+        // user profile
+        String userProfileImagePath = "Smart-drive-booking-hub/User profile image";
+        String userProfileImageId = "USER_PROFILE_" + userListEntity.getUserId() +"_" + userKycDetailsEntity.getKycId();
+        KycImageEntity userProfileEntity = uploadImage(profileImage, userProfileImagePath, userProfileImageId, userKycDetailsEntity);
+
+        // driving license
+        String drivingLicenseImagePath = "Smart-drive-booking-hub/Driving license";
+        String drivingLicenseImageId = "USER_LICENSE_" + userListEntity.getUserId() +"_" + userKycDetailsEntity.getKycId();
+        KycImageEntity drivingLicenseEntity = uploadImage(drivingLicenseImage, drivingLicenseImagePath, drivingLicenseImageId, userKycDetailsEntity);
+
+        kycImageEntities.add(userProfileEntity);
+        kycImageEntities.add(drivingLicenseEntity);
+
+        //
+        String folder1 = "";
+        String publicId = "";
+        for (MultipartFile file : idProofFiles) {
+            MultipartFile file1 = file;
+            switch (dto.getIdProofType().name()) {
+                case "PAN_CARD":
+                    folder1 = "Smart-drive-booking-hub/Pan card";
+                    publicId = "USER_PANCARD_" + userListEntity.getUserId() +"_" + userKycDetailsEntity.getKycId();
+                    break;
+                case "AADHAAR":
+                    folder1 = "Smart-drive-booking-hub/Aadhar card";
+                    publicId = "USER_AADHAR_" + userListEntity.getUserId() +"_" + userKycDetailsEntity.getKycId();
+                    break;
+                case "PASSPORT":
+                    folder1 = "Smart-drive-booking-hub/Driving license";
+                    publicId = "USER_LICENSE_" + userListEntity.getUserId() +"_" + userKycDetailsEntity.getKycId();
+                    break;
+                default:
+                    throw new IllegalArgumentException("Invalid document type: " + userKycDetailsEntity.getKycId());
+            }
+            KycImageEntity idProofTypeEntity = uploadImage(file1, folder1, publicId, userKycDetailsEntity);
+        }
+
+        kycImageRepository.saveAll(kycImageEntities);
+        return userKycDetailsEntity;
+
+    }
+
+    private KycImageEntity uploadImage(MultipartFile profileImage, String folder, String publicId, UserKycDetailsEntity userKycDetailsEntity) throws IOException {
+        Map<String, Object> options = ObjectUtils.asMap(
+                "folder", folder,
+                "public_id", publicId
+        );
+        String originalFilename = profileImage.getOriginalFilename();
+        Map uploadResult = cloudinary.uploader().upload(profileImage.getBytes(), options);
+        String uploadedUrl = (String) uploadResult.get("secure_url");
+        KycImageEntity image = new KycImageEntity();
+        image.setKyc(userKycDetailsEntity);
+        image.setOriginalFileName(originalFilename);
+        image.setAlternateFileName((String) uploadResult.get("public_id"));
+        image.setImageUrl(uploadedUrl);
+        image.setStatus(true);
+        return image;
     }
 }

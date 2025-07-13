@@ -4,10 +4,12 @@ import mca.finalyearproject.smartDrive.SmartDrive.DTO.*;
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.UserKycDetailsEntity;
 import mca.finalyearproject.smartDrive.SmartDrive.ServiceImpl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
@@ -31,9 +33,16 @@ public class UserController {
         userService.generatePassword(requestDTO);
     }
 
-    @PostMapping("/user-admin")
-    public UserKycDetailsEntity createUserByAdmin(@RequestBody UserCreateByAdminRequestDTO dto) {
-        return userService.createUserByAdmin(dto);
+    @PostMapping(value = "/user-admin", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public UserKycDetailsEntity createUserByAdmin(@ModelAttribute UserCreateByAdminRequestDTO dto,
+                                                  @RequestParam("profileImage") MultipartFile profileImage,
+                                                  @RequestParam(required = false) MultipartFile drivingLicenseImage,
+                                                  @RequestParam(required = false) List<MultipartFile> idProofFiles) throws IOException {
+        System.out.println(dto);
+        System.out.println(dto.getFirstName());
+        System.out.println(dto.getAddressLine1());
+        System.out.println(dto.getAddressLine2());
+        return userService.createUserByAdmin(dto, profileImage, drivingLicenseImage, idProofFiles);
     }
 
 
