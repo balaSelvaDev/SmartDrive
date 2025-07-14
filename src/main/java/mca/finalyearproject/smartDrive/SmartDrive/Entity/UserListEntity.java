@@ -22,14 +22,17 @@ public class UserListEntity {
     @Column(name = "last_name", length = 45)
     private String lastName;
 
+    @Column(name = "is_active")
+    private Integer isActive;
+
     @Column(name = "email", length = 45)
     private String email;
 
     @Column(name = "phone_number", length = 45)
     private String phoneNumber;
 
-    @Column(name = "is_active")
-    private Integer isActive;
+    @Column(name = "full_name")
+    private String full_name;
 
     @Column(name = "created_at")
     @CreationTimestamp
@@ -113,5 +116,13 @@ public class UserListEntity {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getFull_name() {
+        return full_name;
+    }
+
+    public void setFull_name(String full_name) {
+        this.full_name = full_name;
     }
 }

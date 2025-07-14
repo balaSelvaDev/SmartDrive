@@ -58,6 +58,7 @@ public class UserServiceImpl {
         entity.setLastName(dto.getLastName());
         entity.setEmail(dto.getEmail());
         entity.setPhoneNumber(dto.getPhoneNumber());
+        entity.setFull_name(utilityClass.createFullName(dto.getFirstName(), dto.getLastName()));
         entity.setIsActive(1);
 
         UserListEntity userListEntity = userRepository.save(entity);
@@ -151,6 +152,7 @@ public class UserServiceImpl {
         entity.setLastName(dto.getLastName());
         entity.setEmail(dto.getEmail());
         entity.setPhoneNumber(dto.getPhoneNumber());
+        entity.setFull_name(utilityClass.createFullName(dto.getFirstName(), dto.getLastName()));
         entity.setIsActive(1);
 
         UserListEntity userListEntity = userRepository.save(entity);

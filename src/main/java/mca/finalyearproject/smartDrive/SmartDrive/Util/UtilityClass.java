@@ -16,6 +16,8 @@ public class UtilityClass {
         return java.util.UUID.randomUUID().toString();
     }
 
-
+    public String createFullName(String first_name, String last_name) {
+        return first_name + " " + last_name;
+    }
 
 }
