@@ -93,7 +93,7 @@ public class VehicleServiceImpl {
                 .orElseThrow(() -> new RuntimeException("Model not found with ID: " + dto.getModelId()));
         entity.setModel(model);
 
-        String vehicleName = model.getBrand().getBrandName() + " - " + model.getModelName();
+        String vehicleName = model.getBrand().getBrandName() + " " + model.getModelName();
         entity.setVehicleName(vehicleName);
         entity.setDescription(dto.getDescription());
         entity.setRegistrationNo(dto.getRegistrationNo());
@@ -126,6 +126,8 @@ public class VehicleServiceImpl {
         return vehicleRepository.save(entity);
 
     }
+
+
 
 
 
