@@ -142,8 +142,8 @@ public class VehicleServiceImpl {
         BrandIdNameVMIdNameResponseDTO dto = new BrandIdNameVMIdNameResponseDTO();
         dto.setVehicleName(entity.getVehicleName());
         dto.setVehicleId(entity.getVehicleId());
-        dto.setVehicleModelId(entity.getVehicleId());
-        dto.setVehicleModelName(entity.getVehicleName());
+        dto.setVehicleModelId(entity.getModel().getModelId());
+        dto.setVehicleModelName(entity.getModel().getModelName());
         if(entity.getModel().getBrand() != null) {
             dto.setBrandId(entity.getModel().getBrand().getBrandId());
             dto.setBrandName(entity.getModel().getBrand().getBrandName());
