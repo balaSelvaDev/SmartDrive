@@ -33,7 +33,8 @@ public class UserKycDetailsService {
 
         entity.setAddressLine1(dto.getAddressLine1());
         entity.setAddressLine2(dto.getAddressLine2());
-        entity.setCity(dto.getCity());
+        entity.setDistrict(dto.getDistrict());
+        entity.setTaluk(dto.getTaluk());
         entity.setState(dto.getState());
         entity.setPincode(dto.getPincode());
         entity.setCountry(dto.getCountry());

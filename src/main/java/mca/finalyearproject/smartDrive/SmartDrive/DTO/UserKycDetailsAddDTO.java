@@ -14,7 +14,8 @@ public class UserKycDetailsAddDTO {
 
     private String addressLine1;
     private String addressLine2;
-    private String city;
+    private String taluk;
+    private String district;
     private String state;
     private String pincode;
     private String country = "India";
@@ -89,12 +90,20 @@ public class UserKycDetailsAddDTO {
         this.addressLine2 = addressLine2;
     }
 
-    public String getCity() {
-        return city;
+    public String getTaluk() {
+        return taluk;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setTaluk(String taluk) {
+        this.taluk = taluk;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
     }
 
     public String getState() {

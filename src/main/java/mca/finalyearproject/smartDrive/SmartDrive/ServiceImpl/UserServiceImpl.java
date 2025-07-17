@@ -167,7 +167,8 @@ public class UserServiceImpl {
 
         kycDetailsEntity.setAddressLine1(dto.getAddressLine1());
         kycDetailsEntity.setAddressLine2(dto.getAddressLine2());
-        kycDetailsEntity.setCity(dto.getCity());
+        kycDetailsEntity.setDistrict(dto.getDistrict());
+        kycDetailsEntity.setTaluk(dto.getTaluk());
         kycDetailsEntity.setState(dto.getState());
         kycDetailsEntity.setPincode(dto.getPincode());
         kycDetailsEntity.setCountry(dto.getCountry());

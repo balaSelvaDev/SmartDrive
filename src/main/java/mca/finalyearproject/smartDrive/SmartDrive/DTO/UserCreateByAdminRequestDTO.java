@@ -16,7 +16,8 @@ public class UserCreateByAdminRequestDTO {
 
     private String addressLine1;
     private String addressLine2;
-    private String city;
+    private String taluk;
+    private String district;
     private String state;
     private String pincode;
     private String country = "India";
@@ -105,12 +106,20 @@ public class UserCreateByAdminRequestDTO {
         this.addressLine2 = addressLine2;
     }
 
-    public String getCity() {
-        return city;
+    public String getTaluk() {
+        return taluk;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setTaluk(String taluk) {
+        this.taluk = taluk;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
     }
 
     public String getState() {
@@ -213,7 +222,8 @@ public class UserCreateByAdminRequestDTO {
                 ", idProofNumber='" + idProofNumber + '\'' +
                 ", addressLine1='" + addressLine1 + '\'' +
                 ", addressLine2='" + addressLine2 + '\'' +
-                ", city='" + city + '\'' +
+                ", taluk='" + taluk + '\'' +
+                ", district='" + district + '\'' +
                 ", state='" + state + '\'' +
                 ", pincode='" + pincode + '\'' +
                 ", country='" + country + '\'' +

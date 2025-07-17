@@ -35,7 +35,10 @@ public class UserKycDetailsEntity {
     private String addressLine2;
 
     @Column(nullable = false, length = 100)
-    private String city;
+    private String taluk;
+
+    @Column(nullable = false, length = 100)
+    private String district;
 
     @Column(nullable = false, length = 100)
     private String state;
@@ -154,14 +157,6 @@ public class UserKycDetailsEntity {
         this.addressLine2 = addressLine2;
     }
 
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
     public String getState() {
         return state;
     }
@@ -264,5 +259,21 @@ public class UserKycDetailsEntity {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getTaluk() {
+        return taluk;
+    }
+
+    public void setTaluk(String taluk) {
+        this.taluk = taluk;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
     }
 }
