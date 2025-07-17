@@ -140,6 +140,8 @@ public class VehicleServiceImpl {
 
     public BrandIdNameVMIdNameResponseDTO entityToBrandIdNameVMIdNameResponseDTO(VehicleEntity entity) {
         BrandIdNameVMIdNameResponseDTO dto = new BrandIdNameVMIdNameResponseDTO();
+        dto.setVehicleName(entity.getVehicleName());
+        dto.setVehicleId(entity.getVehicleId());
         dto.setVehicleModelId(entity.getVehicleId());
         dto.setVehicleModelName(entity.getVehicleName());
         if(entity.getModel().getBrand() != null) {
@@ -148,9 +150,5 @@ public class VehicleServiceImpl {
         }
         return dto;
     }
-
-
-
-
 
 }

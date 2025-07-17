@@ -6,6 +6,24 @@ public class BrandIdNameVMIdNameResponseDTO {
     private String brandName;
     private Integer vehicleModelId;
     private String vehicleModelName;
+    private String vehicleName;
+    private Integer vehicleId;
+
+    public Integer getVehicleId() {
+        return vehicleId;
+    }
+
+    public void setVehicleId(Integer vehicleId) {
+        this.vehicleId = vehicleId;
+    }
+
+    public String getVehicleName() {
+        return vehicleName;
+    }
+
+    public void setVehicleName(String vehicleName) {
+        this.vehicleName = vehicleName;
+    }
 
     public Integer getBrandId() {
         return brandId;
