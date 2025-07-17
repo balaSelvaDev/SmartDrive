@@ -58,7 +58,7 @@ public class UserServiceImpl {
         entity.setLastName(dto.getLastName());
         entity.setEmail(dto.getEmail());
         entity.setPhoneNumber(dto.getPhoneNumber());
-        entity.setFull_name(utilityClass.createFullName(dto.getFirstName(), dto.getLastName()));
+        entity.setFullName(utilityClass.createFullName(dto.getFirstName(), dto.getLastName()));
         entity.setIsActive(1);
 
         UserListEntity userListEntity = userRepository.save(entity);
@@ -122,7 +122,7 @@ public class UserServiceImpl {
     }
 
     @Transactional
-    public void generatePassword(GeneratePasswordRequestDTO requestDTO) {
+    public boolean generatePassword(GeneratePasswordRequestDTO requestDTO) {
 
         Boolean b = verificationRepository.existsByUserIdAndUuid(requestDTO.getUserId(), requestDTO.getUuid());
         System.out.println("---<1>");
@@ -137,7 +137,9 @@ public class UserServiceImpl {
             loginCredentialRepository.save(loginCredentialEntity);
             System.out.println("---<3>");
             verificationRepository.deleteByIdAndUuid(requestDTO.getUserId(), requestDTO.getUuid());
+            return true;
         }
+        return false;
 
     }
 
@@ -152,7 +154,7 @@ public class UserServiceImpl {
         entity.setLastName(dto.getLastName());
         entity.setEmail(dto.getEmail());
         entity.setPhoneNumber(dto.getPhoneNumber());
-        entity.setFull_name(utilityClass.createFullName(dto.getFirstName(), dto.getLastName()));
+        entity.setFullName(utilityClass.createFullName(dto.getFirstName(), dto.getLastName()));
         entity.setIsActive(1);
 
         UserListEntity userListEntity = userRepository.save(entity);

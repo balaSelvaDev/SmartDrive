@@ -29,8 +29,8 @@ public class UserController {
     }
 
     @PostMapping("/generate-password")
-    public void generatePassword(@RequestBody GeneratePasswordRequestDTO requestDTO) {
-        userService.generatePassword(requestDTO);
+    public boolean generatePassword(@RequestBody GeneratePasswordRequestDTO requestDTO) {
+        return userService.generatePassword(requestDTO);
     }
 
     @PostMapping(value = "/user-admin", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

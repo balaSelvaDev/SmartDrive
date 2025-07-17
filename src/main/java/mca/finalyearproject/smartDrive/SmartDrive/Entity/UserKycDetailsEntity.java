@@ -4,6 +4,7 @@ import mca.finalyearproject.smartDrive.SmartDrive.Enum.IdProofType;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "user_kyc_details")
@@ -74,6 +75,9 @@ public class UserKycDetailsEntity {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "kyc", cascade = CascadeType.ALL)
+    private List<KycImageEntity> kycImage;
 
     @PrePersist
     protected void onCreate() {

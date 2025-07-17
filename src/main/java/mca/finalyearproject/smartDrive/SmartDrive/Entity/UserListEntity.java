@@ -32,7 +32,7 @@ public class UserListEntity {
     private String phoneNumber;
 
     @Column(name = "full_name")
-    private String full_name;
+    private String fullName;
 
     @Column(name = "created_at")
     @CreationTimestamp
@@ -118,11 +118,11 @@ public class UserListEntity {
         this.updatedAt = updatedAt;
     }
 
-    public String getFull_name() {
-        return full_name;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setFull_name(String full_name) {
-        this.full_name = full_name;
+    public void setFullName(String full_name) {
+        this.fullName = full_name;
     }
 }
