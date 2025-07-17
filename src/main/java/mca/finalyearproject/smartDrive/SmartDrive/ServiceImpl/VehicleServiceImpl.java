@@ -1,9 +1,6 @@
 package mca.finalyearproject.smartDrive.SmartDrive.ServiceImpl;
 
-import mca.finalyearproject.smartDrive.SmartDrive.DTO.BrandDTO;
-import mca.finalyearproject.smartDrive.SmartDrive.DTO.VehicleAddRequestDTO;
-import mca.finalyearproject.smartDrive.SmartDrive.DTO.VehicleModelResponseDTO;
-import mca.finalyearproject.smartDrive.SmartDrive.DTO.VehicleResponseDTO;
+import mca.finalyearproject.smartDrive.SmartDrive.DTO.*;
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.BrandEntity;
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.VehicleEntity;
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.VehicleModelEntity;
@@ -125,6 +122,31 @@ public class VehicleServiceImpl {
 
         return vehicleRepository.save(entity);
 
+    }
+
+    public List<BrandIdNameVMIdNameResponseDTO> getBrandIdNameVehicleIdName(String vehicleName, Integer limit) {
+        if (vehicleName == null || vehicleName.trim().isEmpty()) {
+            return vehicleRepository.findAll()
+                    .stream().map(this::entityToBrandIdNameVMIdNameResponseDTO)
+                    .limit(limit)
+                    .collect(Collectors.toList());
+        }
+        return vehicleRepository.findByVehicleNameContainingIgnoreCase(vehicleName)
+                .stream()
+                .limit(limit)
+                .map(this::entityToBrandIdNameVMIdNameResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    public BrandIdNameVMIdNameResponseDTO entityToBrandIdNameVMIdNameResponseDTO(VehicleEntity entity) {
+        BrandIdNameVMIdNameResponseDTO dto = new BrandIdNameVMIdNameResponseDTO();
+        dto.setVehicleModelId(entity.getVehicleId());
+        dto.setVehicleModelName(entity.getVehicleName());
+        if(entity.getModel().getBrand() != null) {
+            dto.setBrandId(entity.getModel().getBrand().getBrandId());
+            dto.setBrandName(entity.getModel().getBrand().getBrandName());
+        }
+        return dto;
     }
 
 

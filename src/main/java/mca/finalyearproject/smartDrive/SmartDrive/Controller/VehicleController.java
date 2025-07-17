@@ -1,6 +1,6 @@
 package mca.finalyearproject.smartDrive.SmartDrive.Controller;
 
-import mca.finalyearproject.smartDrive.SmartDrive.DTO.BrandDTO;
+import mca.finalyearproject.smartDrive.SmartDrive.DTO.BrandIdNameVMIdNameResponseDTO;
 import mca.finalyearproject.smartDrive.SmartDrive.DTO.VehicleAddRequestDTO;
 import mca.finalyearproject.smartDrive.SmartDrive.DTO.VehicleResponseDTO;
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.VehicleEntity;
@@ -33,6 +33,12 @@ public class VehicleController {
     @PostMapping
     public VehicleEntity getVehicleById(@RequestBody VehicleAddRequestDTO dto) {
         return vehicleService.addVehicle(dto);
+    }
+
+    @GetMapping("/search/vehiclename")
+    public ResponseEntity<List<BrandIdNameVMIdNameResponseDTO>> getVehicleById(@RequestParam(required = false, value = "vehicleName") String vehicleName,
+                                                                               @RequestParam(defaultValue = "5") int limit) {
+        return  ResponseEntity.ok(vehicleService.getBrandIdNameVehicleIdName(vehicleName, limit));
     }
 
 }
