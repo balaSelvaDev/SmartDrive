@@ -1,6 +1,7 @@
 package mca.finalyearproject.smartDrive.SmartDrive.Controller;
 
 import mca.finalyearproject.smartDrive.SmartDrive.DTO.BookingAddRequestDTO;
+import mca.finalyearproject.smartDrive.SmartDrive.DTO.UserIdNameDrivingLicenseResponseDTO;
 import mca.finalyearproject.smartDrive.SmartDrive.ServiceImpl.BookingImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,6 +33,12 @@ public class BookingController {
     public ResponseEntity<BookingAddRequestDTO> getBookingById(@PathVariable Integer id) {
         BookingAddRequestDTO dto = booking.getBookingById(id);
         return ResponseEntity.ok(dto);
+    }
+
+    @GetMapping("/search/username")
+    public ResponseEntity<List<UserIdNameDrivingLicenseResponseDTO>> getUserIdNameDL(@RequestParam(required = false, value = "userName") String userName,
+                                                                                     @RequestParam(defaultValue = "5") int limit) {
+        return ResponseEntity.ok(booking.getUserIdNameDL(userName, limit));
     }
 
 }

@@ -79,6 +79,14 @@ public class UserKycDetailsEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "kyc", cascade = CascadeType.ALL)
     private List<KycImageEntity> kycImage;
 
+    public List<KycImageEntity> getKycImage() {
+        return kycImage;
+    }
+
+    public void setKycImage(List<KycImageEntity> kycImage) {
+        this.kycImage = kycImage;
+    }
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();

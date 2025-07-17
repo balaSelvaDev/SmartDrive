@@ -1,7 +1,11 @@
 package mca.finalyearproject.smartDrive.SmartDrive.ServiceImpl;
 
 import mca.finalyearproject.smartDrive.SmartDrive.DTO.BookingAddRequestDTO;
+import mca.finalyearproject.smartDrive.SmartDrive.DTO.BrandIdNameRequestDTO;
+import mca.finalyearproject.smartDrive.SmartDrive.DTO.KyImageResponseDTO;
+import mca.finalyearproject.smartDrive.SmartDrive.DTO.UserIdNameDrivingLicenseResponseDTO;
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.BookingEntity;
+import mca.finalyearproject.smartDrive.SmartDrive.Entity.KycImageEntity;
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.UserListEntity;
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.VehicleEntity;
 import mca.finalyearproject.smartDrive.SmartDrive.Enum.BookingStatus;
@@ -106,6 +110,43 @@ public class BookingImpl {
         dto.setCancelledBy(entity.getCancelledBy());
         dto.setCancellationDate(entity.getCancellationDate());
 
+        return dto;
+    }
+
+    public List<UserIdNameDrivingLicenseResponseDTO> getUserIdNameDL(String userName, int limit) {
+        if (userName == null || userName.trim().isEmpty()) {
+            return userRepository.findAll()
+                    .stream().map(this::entityToUserIdNameDLResponseDTO)
+                    .limit(limit)
+                    .collect(Collectors.toList());
+        }
+        return userRepository.findByFullNameContainingIgnoreCase(userName)
+                .stream()
+                .limit(limit)
+                .map(this::entityToUserIdNameDLResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    public UserIdNameDrivingLicenseResponseDTO entityToUserIdNameDLResponseDTO(UserListEntity entity) {
+        UserIdNameDrivingLicenseResponseDTO dto = new UserIdNameDrivingLicenseResponseDTO();
+        dto.setUserId(entity.getUserId());
+        dto.setUserName(entity.getFullName());
+        if(entity.getUser() != null) {
+            dto.setDrivingLicense(entity.getUser().getDrivingLicenseNumber());
+            if(entity.getUser().getKycImage() != null) {
+                List<KyImageResponseDTO> kytImgDto = entity.getUser().getKycImage().stream().map(this::entityToKyImageResponseDTO).collect(Collectors.toList());
+                dto.setKycImageEntityList(kytImgDto);
+            }
+        }
+        return dto;
+    }
+
+    public KyImageResponseDTO entityToKyImageResponseDTO(KycImageEntity entity) {
+        KyImageResponseDTO dto = new KyImageResponseDTO();
+        dto.setImageUrl(entity.getImageUrl());
+        dto.setAlternateFileName(entity.getAlternateFileName());
+        dto.setOriginalFileName(entity.getOriginalFileName());
+        dto.setStatus(entity.getStatus());
         return dto;
     }
 
