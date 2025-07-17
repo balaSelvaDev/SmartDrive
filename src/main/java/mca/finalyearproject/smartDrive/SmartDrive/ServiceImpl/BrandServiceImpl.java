@@ -1,8 +1,6 @@
 package mca.finalyearproject.smartDrive.SmartDrive.ServiceImpl;
 
-import mca.finalyearproject.smartDrive.SmartDrive.DTO.BrandDTO;
-import mca.finalyearproject.smartDrive.SmartDrive.DTO.BrandIdNameRequestDTO;
-import mca.finalyearproject.smartDrive.SmartDrive.DTO.VehicleModelDTO;
+import mca.finalyearproject.smartDrive.SmartDrive.DTO.*;
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.BrandEntity;
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.VehicleModelEntity;
 import mca.finalyearproject.smartDrive.SmartDrive.Repository.BrandRepository;
@@ -12,14 +10,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -83,7 +77,19 @@ public class BrandServiceImpl
                 .collect(Collectors.toList());
     }
 
-
+    public List<BrandIdNameAndVMIdNameResponseDTO> getBrandIdNameAndVehicleModelIdName(String query, int limit) {
+        if (query == null || query.trim().isEmpty()) {
+            return brandRepository.findAll()
+                    .stream().map(this::entitytToBrandIdNameAndVMIdNameRequestDTO)
+                    .limit(limit)
+                    .collect(Collectors.toList());
+        }
+        return brandRepository.findByBrandNameContainingIgnoreCase(query)
+                .stream()
+                .limit(limit)
+                .map(this::entitytToBrandIdNameAndVMIdNameRequestDTO)
+                .collect(Collectors.toList());
+    }
 
     // ============ Mapping Methods ============
 
@@ -126,6 +132,24 @@ public class BrandServiceImpl
         BrandIdNameRequestDTO dto = new BrandIdNameRequestDTO();
         dto.setBrandId(entity.getBrandId());
         dto.setBrandName(entity.getBrandName());
+        return dto;
+    }
+
+    private BrandIdNameAndVMIdNameResponseDTO entitytToBrandIdNameAndVMIdNameRequestDTO(BrandEntity entity) {
+        BrandIdNameAndVMIdNameResponseDTO dto = new BrandIdNameAndVMIdNameResponseDTO();
+        dto.setBrandId(entity.getBrandId());
+        dto.setBrandName(entity.getBrandName());
+        if(entity.getVehicleModel() != null) {
+            List<VehicleModelIdNameResponseDTO> vmList = entity.getVehicleModel().stream().map(this::entityToVMIdNameResponseDTO).collect(Collectors.toList());
+            dto.setVehicleModelIdNameDTO(vmList);
+        }
+        return dto;
+    }
+
+    private VehicleModelIdNameResponseDTO entityToVMIdNameResponseDTO(VehicleModelEntity entity) {
+        VehicleModelIdNameResponseDTO dto = new VehicleModelIdNameResponseDTO();
+        dto.setVehicleModelId(entity.getModelId());
+        dto.setVehicleModelName(entity.getModelName());
         return dto;
     }
 }

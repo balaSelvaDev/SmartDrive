@@ -1,6 +1,7 @@
 package mca.finalyearproject.smartDrive.SmartDrive.Controller;
 
 import mca.finalyearproject.smartDrive.SmartDrive.DTO.BrandDTO;
+import mca.finalyearproject.smartDrive.SmartDrive.DTO.BrandIdNameAndVMIdNameResponseDTO;
 import mca.finalyearproject.smartDrive.SmartDrive.DTO.BrandIdNameRequestDTO;
 import mca.finalyearproject.smartDrive.SmartDrive.ServiceImpl.BrandServiceImpl;
 import mca.finalyearproject.smartDrive.SmartDrive.Util.PaginationResponse;
@@ -49,5 +50,13 @@ public class BrandController {
                                                     @RequestParam(defaultValue = "5") int limit) {
         return brandService.getBrandName(search, limit);
     }
+
+    @GetMapping("/search/brandname")
+    public List<BrandIdNameAndVMIdNameResponseDTO> getBrandIdNameAndVehicleModelIdName(@RequestParam(required = false, value = "brandname") String brandname,
+                                                                                        @RequestParam(defaultValue = "5") int limit) {
+        return brandService.getBrandIdNameAndVehicleModelIdName(brandname, limit);
+    }
+
+
 
 }
