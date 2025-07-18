@@ -26,7 +26,7 @@ public class VehicleModelServiceImpl {
 
     public PaginationResponse<VehicleModelResponseDTO> getAllVehicleModels(int page, int size) {
         Pageable paging = PageRequest.of(page, size);
-        Page<VehicleModelEntity> vehicleModelList = vehicleModelRepository.findAll(paging);
+        Page<VehicleModelEntity> vehicleModelList = vehicleModelRepository.findAllWithBrand(paging);
         List<VehicleModelResponseDTO> vehicleModelDtoList = vehicleModelList.stream()
                 .map(VehicleModelServiceImpl::entityToDTO)
                 .collect(Collectors.toList());
