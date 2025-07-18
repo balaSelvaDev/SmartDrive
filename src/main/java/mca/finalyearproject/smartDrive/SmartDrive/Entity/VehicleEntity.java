@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "vehicle")
@@ -90,6 +91,10 @@ public class VehicleEntity {
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "vehicleId")
+    private List<VehicleImageEntity> vehicleImageList;
+
 
     public Integer getVehicleId() {
         return vehicleId;

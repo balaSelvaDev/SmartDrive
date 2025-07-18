@@ -38,10 +38,6 @@ public class UserController {
                                                   @RequestParam("profileImage") MultipartFile profileImage,
                                                   @RequestParam(required = false) MultipartFile drivingLicenseImage,
                                                   @RequestParam(required = false) List<MultipartFile> idProofFiles) throws IOException {
-        System.out.println(dto);
-        System.out.println(dto.getFirstName());
-        System.out.println(dto.getAddressLine1());
-        System.out.println(dto.getAddressLine2());
         return userService.createUserByAdmin(dto, profileImage, drivingLicenseImage, idProofFiles);
     }
 
