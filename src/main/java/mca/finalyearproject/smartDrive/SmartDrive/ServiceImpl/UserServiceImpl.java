@@ -6,8 +6,12 @@ import mca.finalyearproject.smartDrive.SmartDrive.DTO.*;
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.*;
 import mca.finalyearproject.smartDrive.SmartDrive.Enum.VerificationStatus;
 import mca.finalyearproject.smartDrive.SmartDrive.Repository.*;
+import mca.finalyearproject.smartDrive.SmartDrive.Util.PaginationResponse;
 import mca.finalyearproject.smartDrive.SmartDrive.Util.UtilityClass;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,6 +22,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl {
@@ -246,4 +251,63 @@ public class UserServiceImpl {
         image.setStatus(true);
         return image;
     }
+
+    public PaginationResponse<UserAndKycResponseDTO> getUserAndKycDetails(int page, int size) {
+        Pageable paging = PageRequest.of(page, size);
+        Page<UserListEntity> userAndKycEntity = userRepository.findAll(paging);
+        List<UserAndKycResponseDTO> userAndKycDTO = userAndKycEntity.stream()
+                .map(this::entityToUserAndKycResponseDTO)
+                .collect(Collectors.toList());
+        PaginationResponse<UserAndKycResponseDTO> response = new PaginationResponse<>(
+                userAndKycDTO,
+                userAndKycEntity.getNumber(),
+                userAndKycEntity.getTotalPages(),
+                userAndKycEntity.getTotalElements()
+        );
+        return response;
+    }
+
+    public UserAndKycResponseDTO entityToUserAndKycResponseDTO(UserListEntity entity) {
+        if (entity == null) return null;
+        UserAndKycResponseDTO userAndKycResponseDTO = new UserAndKycResponseDTO();
+
+        UserDetailsResponseDTO dto = new UserDetailsResponseDTO();
+        dto.setUserId(entity.getUserId());
+        dto.setFirstName(entity.getFirstName());
+        dto.setLastName(entity.getLastName());
+        dto.setIsActive(entity.getIsActive());
+        dto.setEmail(entity.getEmail());
+        dto.setPhoneNumber(entity.getPhoneNumber());
+        dto.setFullName(entity.getFullName());
+        userAndKycResponseDTO.setUserDetailsResponseDTO(dto);
+
+        UserKycDetailsEntity userKycEntity = entity.getUser();
+        if (userKycEntity != null) {
+            UserKycDetailsResponseDTO dto1 = new UserKycDetailsResponseDTO();
+            dto1.setKycId(userKycEntity.getKycId());
+            dto1.setDrivingLicenseNumber(userKycEntity.getDrivingLicenseNumber());
+            dto1.setIdProofType(userKycEntity.getIdProofType());
+            dto1.setIdProofNumber(userKycEntity.getIdProofNumber());
+            dto1.setAddressLine1(userKycEntity.getAddressLine1());
+            dto1.setAddressLine2(userKycEntity.getAddressLine2());
+            dto1.setTaluk(userKycEntity.getTaluk());
+            dto1.setDistrict(userKycEntity.getDistrict());
+            dto1.setState(userKycEntity.getState());
+            dto1.setPincode(userKycEntity.getPincode());
+            dto1.setCountry(userKycEntity.getCountry());
+            dto1.setFatherName(userKycEntity.getFatherName());
+            dto1.setMotherName(userKycEntity.getMotherName());
+            dto1.setNomineeName(userKycEntity.getNomineeName());
+            dto1.setNomineeRelation(userKycEntity.getNomineeRelation());
+            dto1.setNomineePhone(userKycEntity.getNomineePhone());
+            dto1.setOccupation(userKycEntity.getOccupation());
+            dto1.setCompanyName(userKycEntity.getCompanyName());
+            dto1.setAlternatePhoneNumber(userKycEntity.getAlternatePhoneNumber());
+            userAndKycResponseDTO.setUserKycDetailsResponseDTO(dto1);
+        }
+
+        return userAndKycResponseDTO;
+    }
+
+
 }

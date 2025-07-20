@@ -3,8 +3,10 @@ package mca.finalyearproject.smartDrive.SmartDrive.Controller;
 import mca.finalyearproject.smartDrive.SmartDrive.DTO.*;
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.UserKycDetailsEntity;
 import mca.finalyearproject.smartDrive.SmartDrive.ServiceImpl.UserServiceImpl;
+import mca.finalyearproject.smartDrive.SmartDrive.Util.PaginationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -41,7 +43,11 @@ public class UserController {
         return userService.createUserByAdmin(dto, profileImage, drivingLicenseImage, idProofFiles);
     }
 
-
+    @GetMapping
+    public ResponseEntity<PaginationResponse<UserAndKycResponseDTO>> getUserAndKycDetails(@RequestParam(defaultValue = "0") int page,
+                                                                                           @RequestParam(defaultValue = "5") int size) {
+        return ResponseEntity.ok(userService.getUserAndKycDetails(page, size));
+    }
 
 
 }
