@@ -62,6 +62,7 @@ public class VehicleServiceImpl {
 
         VehicleResponseDTO dto = new VehicleResponseDTO();
         dto.setVehicleId(entity.getVehicleId());
+        dto.setVehicleName(entity.getVehicleName());
         dto.setDescription(entity.getDescription());
         dto.setRegistrationNo(entity.getRegistrationNo());
         dto.setPricePerKm(entity.getPricePerKm());
