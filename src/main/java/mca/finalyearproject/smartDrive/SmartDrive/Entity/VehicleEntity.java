@@ -95,6 +95,25 @@ public class VehicleEntity {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "vehicleId")
     private List<VehicleImageEntity> vehicleImageList;
 
+    public List<VehicleImageEntity> getVehicleImageList() {
+        return vehicleImageList;
+    }
+
+    public void setVehicleImageList(List<VehicleImageEntity> vehicleImageList) {
+        this.vehicleImageList = vehicleImageList;
+    }
+
+    public ClientLocationEntity getClientLocation() {
+        return clientLocation;
+    }
+
+    public void setClientLocation(ClientLocationEntity clientLocation) {
+        this.clientLocation = clientLocation;
+    }
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "client_location_id")
+    private ClientLocationEntity clientLocation;
 
     public Integer getVehicleId() {
         return vehicleId;

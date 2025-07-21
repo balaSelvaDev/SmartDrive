@@ -5,6 +5,7 @@ import com.cloudinary.utils.ObjectUtils;
 import mca.finalyearproject.smartDrive.SmartDrive.DTO.*;
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.*;
 import mca.finalyearproject.smartDrive.SmartDrive.Enum.VehicleStatus;
+import mca.finalyearproject.smartDrive.SmartDrive.Repository.ClientLocationRepository;
 import mca.finalyearproject.smartDrive.SmartDrive.Repository.VehicleImageRepository;
 import mca.finalyearproject.smartDrive.SmartDrive.Repository.VehicleModelRepository;
 import mca.finalyearproject.smartDrive.SmartDrive.Repository.VehicleRepository;
@@ -38,6 +39,9 @@ public class VehicleServiceImpl {
 
     @Autowired
     private Cloudinary cloudinary;
+
+    @Autowired
+    private ClientLocationRepository clientLocationRepository;
 
     public PaginationResponse<VehicleResponseDTO> getAllVehicle(int page, int size) {
         Pageable paging = PageRequest.of(page, size);
@@ -130,6 +134,10 @@ public class VehicleServiceImpl {
         entity.setHasGps(dto.getHasGps());
         entity.setHasMusicSystem(dto.getHasMusicSystem());
         entity.setHasReverseCamera(dto.getHasReverseCamera());
+
+        ClientLocationEntity clientLocationEntity = clientLocationRepository.findById(dto.getClientLocationId())
+                .orElseThrow(() -> new RuntimeException("client location not found with ID: " + dto.getClientLocationId()));
+        entity.setClientLocation(clientLocationEntity);
 
         // Default values
         entity.setAvailable(true);

@@ -33,6 +33,15 @@ public class VehicleAddRequestDTO {
     private Boolean hasGps;
     private Boolean hasMusicSystem;
     private Boolean hasReverseCamera;
+    private Integer clientLocationId;
+
+    public Integer getClientLocationId() {
+        return clientLocationId;
+    }
+
+    public void setClientLocationId(Integer clientLocationId) {
+        this.clientLocationId = clientLocationId;
+    }
 
     public Integer getModelId() {
         return modelId;
