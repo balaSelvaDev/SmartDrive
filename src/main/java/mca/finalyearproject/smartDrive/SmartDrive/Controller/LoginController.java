@@ -20,9 +20,12 @@ public class LoginController {
 
     @PostMapping("/verification-code")
     public Boolean checkVerificationCode(@RequestBody LoginVerificationCodeRequestDTO requestDTO) {
-
         return loginService.checkVerificationCode1(requestDTO);
+    }
 
+    @PostMapping("/reset-verification-code")
+    public LoginResponseDTO resetVerificationCode(@RequestBody ResetDetailsResponseDTO requestDTO) {
+        return loginService.resetVerificationCode(requestDTO);
     }
 
 }

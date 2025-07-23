@@ -14,5 +14,4 @@ public interface LoginCredentialRepository  extends JpaRepository<LoginCredentia
             "WHERE u.email = :emailId AND lc.password = :password")
     LoginCredentialEntity findByEmailAndPassword(String emailId, String password);
 
-
 }

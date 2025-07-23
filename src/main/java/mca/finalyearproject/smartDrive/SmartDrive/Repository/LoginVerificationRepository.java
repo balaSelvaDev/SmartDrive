@@ -18,4 +18,5 @@ public interface LoginVerificationRepository  extends JpaRepository<LoginVerific
     @Query("DELETE FROM LoginVerificationEntity rv WHERE rv.code = :code AND rv.uuid = :uuid")
     void deleteCodeAndUuid(String code, String uuid);
 
+    LoginVerificationEntity findByUuid(String uuid);
 }

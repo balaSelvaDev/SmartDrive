@@ -30,6 +30,12 @@ public class UserController {
         return userService.checkVerificationCode(requestDTO);
     }
 
+    @PostMapping("/reset-verification-code")
+    public boolean resetVerificationCode(@RequestParam Integer userId,
+                                                                  @RequestParam String emailId) {
+        return userService.resetVerificationCode(userId, emailId);
+    }
+
     @PostMapping("/generate-password")
     public boolean generatePassword(@RequestBody GeneratePasswordRequestDTO requestDTO) {
         return userService.generatePassword(requestDTO);

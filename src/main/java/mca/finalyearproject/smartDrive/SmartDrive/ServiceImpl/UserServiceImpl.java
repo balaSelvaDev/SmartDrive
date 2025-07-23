@@ -101,10 +101,10 @@ public class UserServiceImpl {
         Boolean b = verificationRepository.existsValidByUuidAndCode(LocalDateTime.now());
         CheckVerificationCodeResponseDTO codeResponseDTO = new CheckVerificationCodeResponseDTO();
         System.out.println("-----> 1 ");
-        if(b) {
+        if (b) {
             System.out.println("-----> 2 ");
             Boolean b1 = verificationRepository.existsByUuidAndCode(verificationDTO.getUuid(), verificationDTO.getCode());
-            if(b1) {
+            if (b1) {
                 System.out.println("-----> 3 ");
                 // verificationRepository.deleteByUuidAndCode(verificationDTO.getUuid(), verificationDTO.getCode());
                 RegistrationVerificationEntity byUuidAndCode = verificationRepository.findByUuidAndCode(verificationDTO.getUuid(), verificationDTO.getCode());
@@ -131,7 +131,7 @@ public class UserServiceImpl {
 
         Boolean b = verificationRepository.existsByUserIdAndUuid(requestDTO.getUserId(), requestDTO.getUuid());
         System.out.println("---<1>");
-        if(b) {
+        if (b) {
             System.out.println("---<2>");
 
             LoginCredentialEntity loginCredentialEntity = new LoginCredentialEntity();
@@ -147,6 +147,42 @@ public class UserServiceImpl {
         return false;
 
     }
+
+    public boolean resetVerificationCode(Integer userId, String emailId) {
+
+        UserListEntity userEntity = userRepository.findByUserIdAndEmail(userId, emailId).orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (userEntity != null) {
+            String verificationCode = utilityClass.createRandomCode();
+            String UUID = utilityClass.createUuidCode();
+
+            RegistrationVerificationEntity verification = new RegistrationVerificationEntity();
+            verification.setUserId(userEntity.getUserId());
+            verification.setUuid(UUID);
+            verification.setCode(Integer.valueOf(verificationCode));
+            verification.setCreatedTime(LocalDateTime.now());
+            LocalDateTime lc = LocalDateTime.now().plusMinutes(10);
+            verification.setVerifyStatus(VerificationStatus.CODE_GENERATED);
+            verification.setExpiryTime(LocalDateTime.now().plusMinutes(10));
+            RegistrationVerificationEntity save = registrationVerificationRepository.save(verification);
+
+            RegistrationVerificationDTO verificationDTO = new RegistrationVerificationDTO();
+            verificationDTO.setCode(save.getCode());
+            verificationDTO.setUuid(save.getUuid());
+            verificationDTO.setUserId(save.getUserId());
+            verificationDTO.setEmailId(userEntity.getEmail());
+
+            try {
+                emailService.sendVerificationEmail(userEntity.getEmail(), verificationCode);
+            } catch (MessagingException e) {
+                throw new RuntimeException(e);
+            }
+            return true;
+        }
+        return false;
+
+    }
+
 
     @Transactional
     public UserKycDetailsEntity createUserByAdmin(UserCreateByAdminRequestDTO dto,
@@ -195,12 +231,12 @@ public class UserServiceImpl {
         List<KycImageEntity> kycImageEntities = new ArrayList<>();
         // user profile
         String userProfileImagePath = "Smart-drive-booking-hub/User profile image";
-        String userProfileImageId = "USER_PROFILE_" + userListEntity.getUserId() +"_" + userKycDetailsEntity.getKycId();
+        String userProfileImageId = "USER_PROFILE_" + userListEntity.getUserId() + "_" + userKycDetailsEntity.getKycId();
         KycImageEntity userProfileEntity = uploadImage(profileImage, userProfileImagePath, userProfileImageId, userKycDetailsEntity);
 
         // driving license
         String drivingLicenseImagePath = "Smart-drive-booking-hub/Driving license";
-        String drivingLicenseImageId = "USER_LICENSE_" + userListEntity.getUserId() +"_" + userKycDetailsEntity.getKycId();
+        String drivingLicenseImageId = "USER_LICENSE_" + userListEntity.getUserId() + "_" + userKycDetailsEntity.getKycId();
         KycImageEntity drivingLicenseEntity = uploadImage(drivingLicenseImage, drivingLicenseImagePath, drivingLicenseImageId, userKycDetailsEntity);
 
         kycImageEntities.add(userProfileEntity);
@@ -214,15 +250,15 @@ public class UserServiceImpl {
             switch (dto.getIdProofType().name()) {
                 case "PAN_CARD":
                     folder1 = "Smart-drive-booking-hub/Pan card";
-                    publicId = "USER_PANCARD_" + userListEntity.getUserId() +"_" + userKycDetailsEntity.getKycId();
+                    publicId = "USER_PANCARD_" + userListEntity.getUserId() + "_" + userKycDetailsEntity.getKycId();
                     break;
                 case "AADHAAR":
                     folder1 = "Smart-drive-booking-hub/Aadhar card";
-                    publicId = "USER_AADHAR_" + userListEntity.getUserId() +"_" + userKycDetailsEntity.getKycId();
+                    publicId = "USER_AADHAR_" + userListEntity.getUserId() + "_" + userKycDetailsEntity.getKycId();
                     break;
                 case "PASSPORT":
                     folder1 = "Smart-drive-booking-hub/Driving license";
-                    publicId = "USER_LICENSE_" + userListEntity.getUserId() +"_" + userKycDetailsEntity.getKycId();
+                    publicId = "USER_LICENSE_" + userListEntity.getUserId() + "_" + userKycDetailsEntity.getKycId();
                     break;
                 default:
                     throw new IllegalArgumentException("Invalid document type: " + userKycDetailsEntity.getKycId());
