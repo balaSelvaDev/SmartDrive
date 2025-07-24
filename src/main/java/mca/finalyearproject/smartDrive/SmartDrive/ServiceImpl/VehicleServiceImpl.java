@@ -93,6 +93,17 @@ public class VehicleServiceImpl {
         dto.setVehicleStatus(entity.getVehicleStatus());
         dto.setAvailable(entity.getAvailable());
 
+        ClientLocationEntity clientLocation = entity.getClientLocation();
+        if (clientLocation != null && clientLocation.getActive()) {
+            dto.setClientLocation(entityToClientLocationResponseDTO(clientLocation));
+        }
+
+        List<VehicleImageEntity> vehicleImageList = entity.getVehicleImageList();
+        if (vehicleImageList != null) {
+            List<VehicleImageResponseDTO> collect = vehicleImageList.stream().filter(list -> list.getStatus() == true).map(this::entityToVehicleImageResponseDTO).collect(Collectors.toList());
+            dto.setVehicleImagesList(collect);
+        }
+
         VehicleModelResponseDTO vehicleModelResponseDTO = VehicleModelServiceImpl.entityToDTO(entity.getModel());
         dto.setVehicleModelResponseDTO(vehicleModelResponseDTO);
         return dto;
@@ -201,11 +212,35 @@ public class VehicleServiceImpl {
         dto.setVehicleId(entity.getVehicleId());
         dto.setVehicleModelId(entity.getModel().getModelId());
         dto.setVehicleModelName(entity.getModel().getModelName());
-        if(entity.getModel().getBrand() != null) {
+        if (entity.getModel().getBrand() != null) {
             dto.setBrandId(entity.getModel().getBrand().getBrandId());
             dto.setBrandName(entity.getModel().getBrand().getBrandName());
         }
         return dto;
     }
+
+    public ClientLocationResponseDTO entityToClientLocationResponseDTO(ClientLocationEntity entity) {
+        ClientLocationResponseDTO dto = new ClientLocationResponseDTO();
+        dto.setActive(entity.getActive());
+        dto.setClientLocationId(entity.getClientLocationId());
+        dto.setPincode(entity.getPincode());
+        dto.setGoogleMapUrl(entity.getGoogleMapUrl());
+        dto.setAddress(entity.getAddress());
+        dto.setLocationName(entity.getLocationName());
+        dto.setDisplayName(entity.getDisplayName());
+        return dto;
+    }
+
+    public VehicleImageResponseDTO entityToVehicleImageResponseDTO(VehicleImageEntity entity) {
+        VehicleImageResponseDTO dto = new VehicleImageResponseDTO();
+        dto.setImageId(entity.getImageId());
+        dto.setImageType(entity.getImageType());
+        dto.setImageUrl(entity.getImageUrl());
+        dto.setOriginalFileName(entity.getOriginalFileName());
+        dto.setAlternateFileName(entity.getAlternateFileName());
+        dto.setStatus(entity.getStatus());
+        return dto;
+    }
+
 
 }

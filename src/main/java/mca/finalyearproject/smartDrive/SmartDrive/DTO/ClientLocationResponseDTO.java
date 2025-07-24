@@ -9,7 +9,16 @@ public class ClientLocationResponseDTO {
     private String locationName;
     private String address;
     private Integer pincode;
+    private String googleMapUrl;
     private Boolean isActive;
+
+    public String getGoogleMapUrl() {
+        return googleMapUrl;
+    }
+
+    public void setGoogleMapUrl(String googleMapUrl) {
+        this.googleMapUrl = googleMapUrl;
+    }
 
     public Integer getClientLocationId() {
         return clientLocationId;

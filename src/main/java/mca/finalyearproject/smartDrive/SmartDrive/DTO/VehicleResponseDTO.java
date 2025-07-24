@@ -6,6 +6,7 @@ import mca.finalyearproject.smartDrive.SmartDrive.Enum.VehicleStatus;
 import mca.finalyearproject.smartDrive.SmartDrive.Enum.VehicleType;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class VehicleResponseDTO {
 
@@ -37,6 +38,24 @@ public class VehicleResponseDTO {
     private Boolean hasReverseCamera;
     private VehicleStatus vehicleStatus;
     private Boolean available;
+    private ClientLocationResponseDTO clientLocation;
+    private List<VehicleImageResponseDTO> vehicleImagesList;
+
+    public List<VehicleImageResponseDTO> getVehicleImagesList() {
+        return vehicleImagesList;
+    }
+
+    public void setVehicleImagesList(List<VehicleImageResponseDTO> vehicleImagesList) {
+        this.vehicleImagesList = vehicleImagesList;
+    }
+
+    public ClientLocationResponseDTO getClientLocation() {
+        return clientLocation;
+    }
+
+    public void setClientLocation(ClientLocationResponseDTO clientLocation) {
+        this.clientLocation = clientLocation;
+    }
 
     public Integer getVehicleId() {
         return vehicleId;

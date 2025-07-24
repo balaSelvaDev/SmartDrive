@@ -25,6 +25,17 @@ public class ClientLocationEntity {
     @Column(name = "pincode", nullable = false)
     private Integer pincode;
 
+    @Column(name = "google_map_url", nullable = false)
+    private String googleMapUrl;
+
+    public String getGoogleMapUrl() {
+        return googleMapUrl;
+    }
+
+    public void setGoogleMapUrl(String googleMapUrl) {
+        this.googleMapUrl = googleMapUrl;
+    }
+
     @Column(name = "is_active", nullable = false)
     private Boolean isActive;
 
