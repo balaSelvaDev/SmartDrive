@@ -4,6 +4,8 @@ import mca.finalyearproject.smartDrive.SmartDrive.Enum.FuelType;
 import mca.finalyearproject.smartDrive.SmartDrive.Enum.OwnerType;
 import mca.finalyearproject.smartDrive.SmartDrive.Enum.VehicleType;
 
+import javax.persistence.Column;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class VehicleAddRequestDTO {
@@ -12,7 +14,9 @@ public class VehicleAddRequestDTO {
     private Integer modelId;
     private String description;
     private String registrationNo;
-    private Double pricePerKm;
+    private BigDecimal pricePerKm;
+    private BigDecimal convenienceFee;
+    private BigDecimal refundableAmt;
     private FuelType fuelType;
     private Integer fuelCapacity;
     private Double mileagePerLitre;
@@ -34,6 +38,22 @@ public class VehicleAddRequestDTO {
     private Boolean hasMusicSystem;
     private Boolean hasReverseCamera;
     private Integer clientLocationId;
+
+    public BigDecimal getConvenienceFee() {
+        return convenienceFee;
+    }
+
+    public void setConvenienceFee(BigDecimal convenienceFee) {
+        this.convenienceFee = convenienceFee;
+    }
+
+    public BigDecimal getRefundableAmt() {
+        return refundableAmt;
+    }
+
+    public void setRefundableAmt(BigDecimal refundableAmt) {
+        this.refundableAmt = refundableAmt;
+    }
 
     public Integer getClientLocationId() {
         return clientLocationId;
@@ -67,11 +87,11 @@ public class VehicleAddRequestDTO {
         this.registrationNo = registrationNo;
     }
 
-    public Double getPricePerKm() {
+    public BigDecimal getPricePerKm() {
         return pricePerKm;
     }
 
-    public void setPricePerKm(Double pricePerKm) {
+    public void setPricePerKm(BigDecimal pricePerKm) {
         this.pricePerKm = pricePerKm;
     }
 

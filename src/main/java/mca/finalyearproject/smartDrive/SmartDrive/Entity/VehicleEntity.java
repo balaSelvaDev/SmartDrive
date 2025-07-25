@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -33,7 +34,13 @@ public class VehicleEntity {
     private String registrationNo;
 
     @Column(name = "price_per_km", nullable = false)
-    private Double pricePerKm;
+    private BigDecimal pricePerKm;
+
+    @Column(name = "convenience_fee", nullable = false)
+    private BigDecimal convenienceFee;
+
+    @Column(name = "refundable_amt", nullable = false)
+    private BigDecimal refundableAmt;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "fuel_type", nullable = false)
@@ -147,11 +154,11 @@ public class VehicleEntity {
         this.registrationNo = registrationNo;
     }
 
-    public Double getPricePerKm() {
+    public BigDecimal getPricePerKm() {
         return pricePerKm;
     }
 
-    public void setPricePerKm(Double pricePerKm) {
+    public void setPricePerKm(BigDecimal pricePerKm) {
         this.pricePerKm = pricePerKm;
     }
 
@@ -353,5 +360,21 @@ public class VehicleEntity {
 
     public void setVehicleName(String vehicleName) {
         this.vehicleName = vehicleName;
+    }
+
+    public BigDecimal getConvenienceFee() {
+        return convenienceFee;
+    }
+
+    public void setConvenienceFee(BigDecimal convenienceFee) {
+        this.convenienceFee = convenienceFee;
+    }
+
+    public BigDecimal getRefundableAmt() {
+        return refundableAmt;
+    }
+
+    public void setRefundableAmt(BigDecimal refundableAmt) {
+        this.refundableAmt = refundableAmt;
     }
 }

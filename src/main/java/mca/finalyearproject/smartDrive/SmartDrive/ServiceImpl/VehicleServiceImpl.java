@@ -70,6 +70,8 @@ public class VehicleServiceImpl {
         dto.setDescription(entity.getDescription());
         dto.setRegistrationNo(entity.getRegistrationNo());
         dto.setPricePerKm(entity.getPricePerKm());
+        dto.setConvenienceFee(entity.getConvenienceFee());
+        dto.setRefundableAmt(entity.getRefundableAmt());
         dto.setFuelType(entity.getFuelType());
         dto.setFuelCapacity(entity.getFuelCapacity());
         dto.setMileagePerLitre(entity.getMileagePerLitre());
@@ -125,6 +127,8 @@ public class VehicleServiceImpl {
         entity.setDescription(dto.getDescription());
         entity.setRegistrationNo(dto.getRegistrationNo());
         entity.setPricePerKm(dto.getPricePerKm());
+        entity.setConvenienceFee(dto.getConvenienceFee());
+        entity.setRefundableAmt(dto.getRefundableAmt());
         entity.setFuelType(dto.getFuelType());
         entity.setFuelCapacity(dto.getFuelCapacity());
         entity.setMileagePerLitre(dto.getMileagePerLitre());
