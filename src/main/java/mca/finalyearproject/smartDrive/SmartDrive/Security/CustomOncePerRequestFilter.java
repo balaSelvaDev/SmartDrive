@@ -25,10 +25,11 @@ public class CustomOncePerRequestFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-//		System.out.println("CustomOncePerRequestFilter::doFilterInternal");
-		String token = request.getHeader(SecurityConstant.HEADER_NAME);
+		System.out.println("CustomOncePerRequestFilter::doFilterInternal");
+		String token = request.getHeader(SecurityConstant.HEADER_NAME.toLowerCase());
+		System.out.println(token);
 		if (token != null && token.startsWith(SecurityConstant.BEARER_NAME)) {
-//			System.out.println("TOKEN:: " + token);
+			System.out.println("TOKEN:: " + token);
 			String extractToken = token.substring(7);
 //			System.out.println(extractToken);
 			if (extractToken != null) {
@@ -45,7 +46,6 @@ public class CustomOncePerRequestFilter extends OncePerRequestFilter {
 			}
 		}
 		doFilter(request, response, filterChain);
-
 	}
 
 }

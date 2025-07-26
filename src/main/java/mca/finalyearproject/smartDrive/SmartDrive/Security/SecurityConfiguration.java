@@ -25,9 +25,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers(SecurityConstant.PUBLIC_URL).permitAll().anyRequest().authenticated()
-                .and().addFilterBefore(customOncePerRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        http
+                .cors() // ✅ Add this line
+                .and()
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests()
+                .antMatchers(SecurityConstant.PUBLIC_URL).permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .addFilterBefore(customOncePerRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override

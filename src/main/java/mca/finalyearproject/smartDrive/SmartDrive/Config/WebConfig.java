@@ -16,6 +16,7 @@ public class WebConfig {
                         .allowedOrigins("http://localhost:4200") // Frontend URL
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
+                        .exposedHeaders("authorization", "JWT-Token")
                         .allowCredentials(true); // If you are using cookies or auth headers
             }
         };
