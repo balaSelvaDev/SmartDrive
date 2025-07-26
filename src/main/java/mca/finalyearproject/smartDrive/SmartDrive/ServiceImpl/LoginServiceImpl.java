@@ -49,7 +49,7 @@ public class LoginServiceImpl {
             verificationEntity.setUuid(UUID);
             verificationEntity.setCreatedTime(LocalDateTime.now());
             verificationEntity.setExpiryTime(LocalDateTime.now().plusMinutes(10));
-            UserListEntity byEmail = userRepository.findByEmail(requestDTO.getEmailId());
+            UserListEntity byEmail = userRepository.findByEmail(requestDTO.getEmailId()).get();
             verificationEntity.setUser(byEmail);
             LoginVerificationEntity save = verificationRepository.save(verificationEntity);
             try {
@@ -81,7 +81,7 @@ public class LoginServiceImpl {
     @Transactional
     public LoginResponseDTO resetVerificationCode(ResetDetailsResponseDTO requestDTO) {
 
-        UserListEntity userEntity = userRepository.findByEmail(requestDTO.getEmailId());
+        UserListEntity userEntity = userRepository.findByEmail(requestDTO.getEmailId()).get();
         LoginVerificationEntity loginVerificationEntity = verificationRepository.findByUuid(requestDTO.getUuid());
         if (userEntity != null & loginVerificationEntity != null) {
             String verificationCode = utilityClass.createRandomCode();

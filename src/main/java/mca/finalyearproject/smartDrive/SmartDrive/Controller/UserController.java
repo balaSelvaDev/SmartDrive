@@ -25,11 +25,13 @@ public class UserController {
         return userService.createUserByUser(userListDtO);
     }
 
+    // as of now, i have planned to not used
     @PostMapping("/verification-code")
     public CheckVerificationCodeResponseDTO checkVerificationCode(@RequestBody VerificationCodeRequestDTO requestDTO) {
         return userService.checkVerificationCode(requestDTO);
     }
 
+    // as of now, i have planned to not used
     @PostMapping("/reset-verification-code")
     public boolean resetVerificationCode(@RequestParam Integer userId,
                                                                   @RequestParam String emailId) {
