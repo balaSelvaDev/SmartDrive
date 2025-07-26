@@ -1,5 +1,8 @@
 package mca.finalyearproject.smartDrive.SmartDrive.DTO;
 
+import javax.persistence.Column;
+import java.math.BigDecimal;
+
 public class BrandIdNameVMIdNameResponseDTO {
 
     private Integer brandId;
@@ -8,6 +11,33 @@ public class BrandIdNameVMIdNameResponseDTO {
     private String vehicleModelName;
     private String vehicleName;
     private Integer vehicleId;
+    private BigDecimal pricePerKm;
+    private BigDecimal convenienceFee;
+    private BigDecimal refundableAmt;
+
+    public BigDecimal getPricePerKm() {
+        return pricePerKm;
+    }
+
+    public void setPricePerKm(BigDecimal pricePerKm) {
+        this.pricePerKm = pricePerKm;
+    }
+
+    public BigDecimal getConvenienceFee() {
+        return convenienceFee;
+    }
+
+    public void setConvenienceFee(BigDecimal convenienceFee) {
+        this.convenienceFee = convenienceFee;
+    }
+
+    public BigDecimal getRefundableAmt() {
+        return refundableAmt;
+    }
+
+    public void setRefundableAmt(BigDecimal refundableAmt) {
+        this.refundableAmt = refundableAmt;
+    }
 
     public Integer getVehicleId() {
         return vehicleId;

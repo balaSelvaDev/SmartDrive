@@ -220,6 +220,9 @@ public class VehicleServiceImpl {
             dto.setBrandId(entity.getModel().getBrand().getBrandId());
             dto.setBrandName(entity.getModel().getBrand().getBrandName());
         }
+        dto.setPricePerKm(entity.getPricePerKm());
+        dto.setConvenienceFee(entity.getConvenienceFee());
+        dto.setRefundableAmt(entity.getRefundableAmt());
         return dto;
     }
 
