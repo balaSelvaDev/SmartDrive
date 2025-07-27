@@ -33,8 +33,8 @@ public class UserController {
 
     // as of now, i have planned to not used
     @PostMapping("/reset-verification-code")
-    public boolean resetVerificationCode(@RequestParam Integer userId,
-                                                                  @RequestParam String emailId) {
+    public RegistrationVerificationDTO resetVerificationCode(@RequestParam Integer userId,
+                                                             @RequestParam String emailId) {
         return userService.resetVerificationCode(userId, emailId);
     }
 
@@ -53,7 +53,7 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<PaginationResponse<UserAndKycResponseDTO>> getUserAndKycDetails(@RequestParam(defaultValue = "0") int page,
-                                                                                           @RequestParam(defaultValue = "5") int size) {
+                                                                                          @RequestParam(defaultValue = "5") int size) {
         return ResponseEntity.ok(userService.getUserAndKycDetails(page, size));
     }
 

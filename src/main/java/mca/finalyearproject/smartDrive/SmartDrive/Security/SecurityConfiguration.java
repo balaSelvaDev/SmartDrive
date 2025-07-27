@@ -34,6 +34,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(SecurityConstant.PUBLIC_URL).permitAll()
                 .anyRequest().authenticated()
+
                 .and()
                 .addFilterBefore(customOncePerRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }

@@ -106,4 +106,24 @@ public class LoginServiceImpl {
 
         return null;
     }
+
+//    public  User loginRegisterByGoogleOAuth2(OAuth2AuthenticationToken auth2AuthenticationToken){
+//
+//        OAuth2User oAuth2User = auth2AuthenticationToken.getPrincipal();
+//        String email = oAuth2User.getAttribute("email");
+//        String name = oAuth2User.getAttribute("name");
+//
+//        log.info("USER Email FROM GOOGLE  IS {}",email );
+//        log.info("USER Name from GOOGLE IS {}",name );
+//
+//        User user = usersRepository.findByEmail(email).orElse(null);
+//        if (user == null) {
+//            user = new User();
+//            user.setName(name);
+//            user.setEmail(email);
+//            user.setAuthProvide(AuthProvider.GOOGLE);
+//            return usersRepository.save(user);
+//        }
+//        return user;
+//    }
 }

@@ -17,6 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Optional;
 
 @RestController
@@ -63,5 +66,16 @@ public class LoginController {
     public LoginResponseDTO resetVerificationCode(@RequestBody ResetDetailsResponseDTO requestDTO) {
         return loginService.resetVerificationCode(requestDTO);
     }
+
+//    @GetMapping("/login/google")
+//    public ResponseEntity<String > loginGoogleAuth(HttpServletResponse response) throws IOException {
+//        response.sendRedirect("/oauth2/authorization/google");
+//        return ResponseEntity.ok("Redirecting ..");
+//    }
+//    @GetMapping("/loginSuccess")
+//    public ResponseEntity<? > handleGoogleSuccess(OAuth2AuthenticationToken oAuth2AuthenticationToken){
+//        User user = userService.loginRegisterByGoogleOAuth2(oAuth2AuthenticationToken);
+//        return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("http://localhost:3000/home")).build();
+//    }
 
 }

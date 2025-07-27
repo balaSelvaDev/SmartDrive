@@ -78,13 +78,13 @@ public class UserServiceImpl {
         verification.setUuid(UUID);
         verification.setCode(Integer.valueOf(verificationCode));
         verification.setCreatedTime(LocalDateTime.now());
-        LocalDateTime lc = LocalDateTime.now().plusMinutes(10);
+//        LocalDateTime lc = LocalDateTime.now().plusMinutes(2);
         verification.setVerifyStatus(VerificationStatus.CODE_GENERATED);
-        verification.setExpiryTime(LocalDateTime.now().plusMinutes(10));
+        verification.setExpiryTime(LocalDateTime.now().plusMinutes(2));
         RegistrationVerificationEntity save = registrationVerificationRepository.save(verification);
 
         RegistrationVerificationDTO verificationDTO = new RegistrationVerificationDTO();
-        verificationDTO.setCode(save.getCode());
+//        verificationDTO.setCode(save.getCode());
         verificationDTO.setUuid(save.getUuid());
         verificationDTO.setUserId(save.getUserId());
         verificationDTO.setEmailId(dto.getEmail());
@@ -120,7 +120,7 @@ public class UserServiceImpl {
 
                 codeResponseDTO.setUuid(UUID);
                 codeResponseDTO.setEmailId(verificationDTO.getEmailId());
-                codeResponseDTO.setUserId(verificationDTO.getCode());
+                codeResponseDTO.setUserId(verificationDTO.getUserId());
 
                 return codeResponseDTO;
             }
@@ -151,10 +151,9 @@ public class UserServiceImpl {
 
     }
 
-    public boolean resetVerificationCode(Integer userId, String emailId) {
-
+    public RegistrationVerificationDTO resetVerificationCode(Integer userId, String emailId) {
         UserListEntity userEntity = userRepository.findByUserIdAndEmail(userId, emailId).orElseThrow(() -> new RuntimeException("User not found"));
-
+        RegistrationVerificationDTO verificationDTO = new RegistrationVerificationDTO();
         if (userEntity != null) {
             String verificationCode = utilityClass.createRandomCode();
             String UUID = utilityClass.createUuidCode();
@@ -164,13 +163,13 @@ public class UserServiceImpl {
             verification.setUuid(UUID);
             verification.setCode(Integer.valueOf(verificationCode));
             verification.setCreatedTime(LocalDateTime.now());
-            LocalDateTime lc = LocalDateTime.now().plusMinutes(10);
+//            LocalDateTime lc = LocalDateTime.now().plusMinutes(10);
             verification.setVerifyStatus(VerificationStatus.CODE_GENERATED);
-            verification.setExpiryTime(LocalDateTime.now().plusMinutes(10));
+            verification.setExpiryTime(LocalDateTime.now().plusMinutes(2));
             RegistrationVerificationEntity save = registrationVerificationRepository.save(verification);
 
-            RegistrationVerificationDTO verificationDTO = new RegistrationVerificationDTO();
-            verificationDTO.setCode(save.getCode());
+
+//            verificationDTO.setCode(save.getCode());
             verificationDTO.setUuid(save.getUuid());
             verificationDTO.setUserId(save.getUserId());
             verificationDTO.setEmailId(userEntity.getEmail());
@@ -180,10 +179,9 @@ public class UserServiceImpl {
             } catch (MessagingException e) {
                 throw new RuntimeException(e);
             }
-            return true;
+            return verificationDTO;
         }
-        return false;
-
+        return verificationDTO;
     }
 
 
