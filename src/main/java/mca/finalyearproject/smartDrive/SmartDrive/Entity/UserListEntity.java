@@ -1,6 +1,7 @@
 package mca.finalyearproject.smartDrive.SmartDrive.Entity;
 
 
+import mca.finalyearproject.smartDrive.SmartDrive.Enum.AuthProvider;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -15,6 +16,9 @@ public class UserListEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Integer userId;
+
+    @Enumerated(EnumType.STRING)
+    private AuthProvider authProvide;
 
     @Column(name = "first_name", length = 45)
     private String firstName;
@@ -124,5 +128,13 @@ public class UserListEntity {
 
     public void setFullName(String full_name) {
         this.fullName = full_name;
+    }
+
+    public AuthProvider getAuthProvide() {
+        return authProvide;
+    }
+
+    public void setAuthProvide(AuthProvider authProvide) {
+        this.authProvide = authProvide;
     }
 }

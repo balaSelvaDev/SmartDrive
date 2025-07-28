@@ -38,6 +38,15 @@ public class VehicleAddRequestDTO {
     private Boolean hasMusicSystem;
     private Boolean hasReverseCamera;
     private Integer clientLocationId;
+    private Boolean isVisibleOnline;
+
+    public Boolean getVisibleOnline() {
+        return isVisibleOnline;
+    }
+
+    public void setVisibleOnline(Boolean visibleOnline) {
+        isVisibleOnline = visibleOnline;
+    }
 
     public BigDecimal getConvenienceFee() {
         return convenienceFee;

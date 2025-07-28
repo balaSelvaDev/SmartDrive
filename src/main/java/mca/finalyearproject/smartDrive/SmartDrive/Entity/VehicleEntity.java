@@ -99,6 +99,8 @@ public class VehicleEntity {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    private Boolean isVisibleOnline;
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "vehicleId")
     private List<VehicleImageEntity> vehicleImageList;
 
@@ -376,5 +378,13 @@ public class VehicleEntity {
 
     public void setRefundableAmt(BigDecimal refundableAmt) {
         this.refundableAmt = refundableAmt;
+    }
+
+    public Boolean getVisibleOnline() {
+        return isVisibleOnline;
+    }
+
+    public void setVisibleOnline(Boolean visibleOnline) {
+        isVisibleOnline = visibleOnline;
     }
 }

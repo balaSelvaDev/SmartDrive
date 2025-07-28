@@ -48,6 +48,7 @@ public class VehicleServiceImpl {
         Page<VehicleEntity> vehicleList = vehicleRepository.findAll(paging);
         List<VehicleResponseDTO> vehicleDtoList = vehicleList.stream()
                 .map(this::entityToDTO)
+                .filter(a -> a.getVisibleOnline() == true)
                 .collect(Collectors.toList());
         PaginationResponse<VehicleResponseDTO> response = new PaginationResponse<>(
                 vehicleDtoList,
@@ -94,6 +95,7 @@ public class VehicleServiceImpl {
         dto.setHasReverseCamera(entity.getHasReverseCamera());
         dto.setVehicleStatus(entity.getVehicleStatus());
         dto.setAvailable(entity.getAvailable());
+        dto.setVisibleOnline(entity.getVisibleOnline());
 
         ClientLocationEntity clientLocation = entity.getClientLocation();
         if (clientLocation != null && clientLocation.getActive()) {
@@ -149,6 +151,7 @@ public class VehicleServiceImpl {
         entity.setHasGps(dto.getHasGps());
         entity.setHasMusicSystem(dto.getHasMusicSystem());
         entity.setHasReverseCamera(dto.getHasReverseCamera());
+        entity.setVisibleOnline(dto.getVisibleOnline());
 
         ClientLocationEntity clientLocationEntity = clientLocationRepository.findById(dto.getClientLocationId())
                 .orElseThrow(() -> new RuntimeException("client location not found with ID: " + dto.getClientLocationId()));

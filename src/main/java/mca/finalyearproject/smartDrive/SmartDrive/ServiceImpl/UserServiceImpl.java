@@ -4,6 +4,7 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import mca.finalyearproject.smartDrive.SmartDrive.DTO.*;
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.*;
+import mca.finalyearproject.smartDrive.SmartDrive.Enum.AuthProvider;
 import mca.finalyearproject.smartDrive.SmartDrive.Enum.VerificationStatus;
 import mca.finalyearproject.smartDrive.SmartDrive.Repository.*;
 import mca.finalyearproject.smartDrive.SmartDrive.Util.PaginationResponse;
@@ -62,6 +63,7 @@ public class UserServiceImpl {
     public RegistrationVerificationDTO createUserByUser(UserCreateRequestDTO dto) {
 
         UserListEntity entity = new UserListEntity();
+        entity.setAuthProvide(AuthProvider.LOCAL);
         entity.setFirstName(dto.getFirstName());
         entity.setLastName(dto.getLastName());
         entity.setEmail(dto.getEmail());
@@ -192,6 +194,7 @@ public class UserServiceImpl {
                                                   List<MultipartFile> idProofFiles) throws IOException {
 
         UserListEntity entity = new UserListEntity();
+        entity.setAuthProvide(AuthProvider.LOCAL);
         entity.setFirstName(dto.getFirstName());
         entity.setLastName(dto.getLastName());
         entity.setEmail(dto.getEmail());

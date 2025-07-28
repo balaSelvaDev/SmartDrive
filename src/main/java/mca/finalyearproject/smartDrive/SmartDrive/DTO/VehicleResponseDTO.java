@@ -41,8 +41,17 @@ public class VehicleResponseDTO {
     private Boolean hasReverseCamera;
     private VehicleStatus vehicleStatus;
     private Boolean available;
+    private Boolean isVisibleOnline;
     private ClientLocationResponseDTO clientLocation;
     private List<VehicleImageResponseDTO> vehicleImagesList;
+
+    public Boolean getVisibleOnline() {
+        return isVisibleOnline;
+    }
+
+    public void setVisibleOnline(Boolean visibleOnline) {
+        isVisibleOnline = visibleOnline;
+    }
 
     public BigDecimal getConvenienceFee() {
         return convenienceFee;
