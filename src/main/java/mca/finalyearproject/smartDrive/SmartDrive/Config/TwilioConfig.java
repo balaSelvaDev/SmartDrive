@@ -20,8 +20,8 @@ public class TwilioConfig {
 
     @PostConstruct
     public void initTwilio() {
-        System.out.println("accountSid: " + accountSid);
-        System.out.println("authToken: " + authToken);
+//        System.out.println("accountSid: " + accountSid);
+//        System.out.println("authToken: " + authToken);
         //Twilio.init(accountSid, authToken);
     }
 

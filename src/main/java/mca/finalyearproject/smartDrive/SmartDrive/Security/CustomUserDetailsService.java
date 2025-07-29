@@ -29,7 +29,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (userListEntity.isPresent() && loginCredentialEntity.isPresent()) {
             return new UserPrincipal(userListEntity.get(), loginCredentialEntity.get());
         }
-        System.out.println("---> 19");
+//        System.out.println("---> 19");
         throw new UsernameNotFoundException("User name not found..");
     }
 

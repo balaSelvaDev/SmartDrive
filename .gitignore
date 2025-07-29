@@ -1,3 +1,6 @@
 
-secrets.properties
+#secrets.properties
+#cloudinary.properties
+mail.properties
+
 
