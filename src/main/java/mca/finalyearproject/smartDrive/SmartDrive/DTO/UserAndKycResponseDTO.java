@@ -1,9 +1,24 @@
 package mca.finalyearproject.smartDrive.SmartDrive.DTO;
 
+import mca.finalyearproject.smartDrive.SmartDrive.Enum.KycImageType;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class UserAndKycResponseDTO {
 
-    private UserDetailsResponseDTO userDetailsResponseDTO;
-    private UserKycDetailsResponseDTO userKycDetailsResponseDTO;
+    private UserDetailsResponseDTO userDetailsResponseDTO = new UserDetailsResponseDTO();
+    private UserKycDetailsResponseDTO userKycDetailsResponseDTO = new UserKycDetailsResponseDTO();
+    private Map<KycImageType, List<UserKycImageResponseDTO>> userKycImageResponseDTO = new HashMap<>();
+
+    public Map<KycImageType, List<UserKycImageResponseDTO>> getUserKycImageResponseDTO() {
+        return userKycImageResponseDTO;
+    }
+
+    public void setUserKycImageResponseDTO(Map<KycImageType, List<UserKycImageResponseDTO>> userKycImageResponseDTO) {
+        this.userKycImageResponseDTO = userKycImageResponseDTO;
+    }
 
     public UserDetailsResponseDTO getUserDetailsResponseDTO() {
         return userDetailsResponseDTO;

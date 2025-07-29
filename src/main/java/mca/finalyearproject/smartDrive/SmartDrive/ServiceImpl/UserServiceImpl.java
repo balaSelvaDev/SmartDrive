@@ -5,6 +5,7 @@ import com.cloudinary.utils.ObjectUtils;
 import mca.finalyearproject.smartDrive.SmartDrive.DTO.*;
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.*;
 import mca.finalyearproject.smartDrive.SmartDrive.Enum.AuthProvider;
+import mca.finalyearproject.smartDrive.SmartDrive.Enum.KycImageType;
 import mca.finalyearproject.smartDrive.SmartDrive.Enum.VerificationStatus;
 import mca.finalyearproject.smartDrive.SmartDrive.Repository.*;
 import mca.finalyearproject.smartDrive.SmartDrive.Util.PaginationResponse;
@@ -24,6 +25,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -188,10 +190,7 @@ public class UserServiceImpl {
 
 
     @Transactional
-    public UserKycDetailsEntity createUserByAdmin(UserCreateByAdminRequestDTO dto,
-                                                  MultipartFile profileImage,
-                                                  MultipartFile drivingLicenseImage,
-                                                  List<MultipartFile> idProofFiles) throws IOException {
+    public UserKycDetailsEntity createUserByAdmin(UserCreateByAdminRequestDTO dto, MultipartFile profileImage, MultipartFile drivingLicenseImage, List<MultipartFile> idProofFiles) throws IOException {
 
         UserListEntity entity = new UserListEntity();
         entity.setAuthProvide(AuthProvider.LOCAL);
@@ -236,12 +235,12 @@ public class UserServiceImpl {
         // user profile
         String userProfileImagePath = "Smart-drive-booking-hub/User profile image";
         String userProfileImageId = "USER_PROFILE_" + userListEntity.getUserId() + "_" + userKycDetailsEntity.getKycId();
-        KycImageEntity userProfileEntity = uploadImage(profileImage, userProfileImagePath, userProfileImageId, userKycDetailsEntity);
+        KycImageEntity userProfileEntity = uploadImage(profileImage, userProfileImagePath, userProfileImageId, userKycDetailsEntity, KycImageType.PROFILE);
 
         // driving license
         String drivingLicenseImagePath = "Smart-drive-booking-hub/Driving license";
         String drivingLicenseImageId = "USER_LICENSE_" + userListEntity.getUserId() + "_" + userKycDetailsEntity.getKycId();
-        KycImageEntity drivingLicenseEntity = uploadImage(drivingLicenseImage, drivingLicenseImagePath, drivingLicenseImageId, userKycDetailsEntity);
+        KycImageEntity drivingLicenseEntity = uploadImage(drivingLicenseImage, drivingLicenseImagePath, drivingLicenseImageId, userKycDetailsEntity, KycImageType.DRIVING_LICENSE);
 
         kycImageEntities.add(userProfileEntity);
         kycImageEntities.add(drivingLicenseEntity);
@@ -249,25 +248,29 @@ public class UserServiceImpl {
         //
         String folder1 = "";
         String publicId = "";
+        KycImageType imageType;
         for (MultipartFile file : idProofFiles) {
             MultipartFile file1 = file;
             switch (dto.getIdProofType().name()) {
                 case "PAN_CARD":
                     folder1 = "Smart-drive-booking-hub/Pan card";
                     publicId = "USER_PANCARD_" + userListEntity.getUserId() + "_" + userKycDetailsEntity.getKycId();
+                    imageType = KycImageType.PAN_CARD;
                     break;
                 case "AADHAAR":
                     folder1 = "Smart-drive-booking-hub/Aadhar card";
                     publicId = "USER_AADHAR_" + userListEntity.getUserId() + "_" + userKycDetailsEntity.getKycId();
+                    imageType = KycImageType.AADHAAR;
                     break;
                 case "PASSPORT":
                     folder1 = "Smart-drive-booking-hub/Driving license";
                     publicId = "USER_LICENSE_" + userListEntity.getUserId() + "_" + userKycDetailsEntity.getKycId();
+                    imageType = KycImageType.PASSPORT;
                     break;
                 default:
                     throw new IllegalArgumentException("Invalid document type: " + userKycDetailsEntity.getKycId());
             }
-            KycImageEntity idProofTypeEntity = uploadImage(file1, folder1, publicId, userKycDetailsEntity);
+            KycImageEntity idProofTypeEntity = uploadImage(file1, folder1, publicId, userKycDetailsEntity, imageType);
         }
 
         kycImageRepository.saveAll(kycImageEntities);
@@ -275,11 +278,8 @@ public class UserServiceImpl {
 
     }
 
-    private KycImageEntity uploadImage(MultipartFile profileImage, String folder, String publicId, UserKycDetailsEntity userKycDetailsEntity) throws IOException {
-        Map<String, Object> options = ObjectUtils.asMap(
-                "folder", folder,
-                "public_id", publicId
-        );
+    private KycImageEntity uploadImage(MultipartFile profileImage, String folder, String publicId, UserKycDetailsEntity userKycDetailsEntity, KycImageType imageType) throws IOException {
+        Map<String, Object> options = ObjectUtils.asMap("folder", folder, "public_id", publicId);
         String originalFilename = profileImage.getOriginalFilename();
         Map uploadResult = cloudinary.uploader().upload(profileImage.getBytes(), options);
         String uploadedUrl = (String) uploadResult.get("secure_url");
@@ -288,6 +288,7 @@ public class UserServiceImpl {
         image.setOriginalFileName(originalFilename);
         image.setAlternateFileName((String) uploadResult.get("public_id"));
         image.setImageUrl(uploadedUrl);
+        image.setImageType(imageType);
         image.setStatus(true);
         return image;
     }
@@ -295,9 +296,7 @@ public class UserServiceImpl {
     public PaginationResponse<UserAndKycResponseDTO> getUserAndKycDetails(int page, int size) {
         Pageable paging = PageRequest.of(page, size);
         Page<UserListEntity> userAndKycEntity = userRepository.findAll(paging);
-        List<UserAndKycResponseDTO> userAndKycDTO = userAndKycEntity.stream()
-                .map(this::entityToUserAndKycResponseDTO)
-                .collect(Collectors.toList());
+        List<UserAndKycResponseDTO> userAndKycDTO = userAndKycEntity.stream().map(this::entityToUserAndKycResponseDTO).collect(Collectors.toList());
         PaginationResponse<UserAndKycResponseDTO> response = new PaginationResponse<>(
                 userAndKycDTO,
                 userAndKycEntity.getNumber(),
@@ -305,6 +304,13 @@ public class UserServiceImpl {
                 userAndKycEntity.getTotalElements()
         );
         return response;
+    }
+
+    public UserAndKycResponseDTO getUserAndKycDetailsById(Integer userId) {
+
+        Optional<UserListEntity> byId = userRepository.findById(userId);
+        return entityToUserAndKycResponseDTO(byId.get());
+
     }
 
     public UserAndKycResponseDTO entityToUserAndKycResponseDTO(UserListEntity entity) {
@@ -344,9 +350,29 @@ public class UserServiceImpl {
             dto1.setCompanyName(userKycEntity.getCompanyName());
             dto1.setAlternatePhoneNumber(userKycEntity.getAlternatePhoneNumber());
             userAndKycResponseDTO.setUserKycDetailsResponseDTO(dto1);
+
+            List<KycImageEntity> kycImage = userKycEntity.getKycImage();
+            if (kycImage != null) {
+                Map<KycImageType, List<UserKycImageResponseDTO>> collect = kycImage
+                        .stream()
+                        .map(this::kycImageEntityToKycImageDTO)
+                        .collect(Collectors.groupingBy(UserKycImageResponseDTO::getImageType));
+                userAndKycResponseDTO.setUserKycImageResponseDTO(collect);
+            }
         }
 
         return userAndKycResponseDTO;
+    }
+
+    public UserKycImageResponseDTO kycImageEntityToKycImageDTO(KycImageEntity entity) {
+        UserKycImageResponseDTO dto = new UserKycImageResponseDTO();
+        dto.setImageUrl(entity.getImageUrl());
+        dto.setOriginalFileName(entity.getOriginalFileName());
+        dto.setAlternateFileName(entity.getAlternateFileName());
+        dto.setImageUrl(entity.getImageUrl());
+        dto.setStatus(entity.getStatus());
+        dto.setImageType(entity.getImageType());
+        return dto;
     }
 
 

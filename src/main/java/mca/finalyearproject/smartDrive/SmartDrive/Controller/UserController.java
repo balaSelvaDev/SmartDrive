@@ -51,11 +51,16 @@ public class UserController {
         return userService.createUserByAdmin(dto, profileImage, drivingLicenseImage, idProofFiles);
     }
 
+    @GetMapping("/individual")
+    public ResponseEntity<UserAndKycResponseDTO> getUserAndKycDetailsById(
+            @RequestParam("userId") Integer userId) {
+        return ResponseEntity.ok(userService.getUserAndKycDetailsById(userId));
+    }
+
     @GetMapping
     public ResponseEntity<PaginationResponse<UserAndKycResponseDTO>> getUserAndKycDetails(@RequestParam(defaultValue = "0") int page,
                                                                                           @RequestParam(defaultValue = "5") int size) {
         return ResponseEntity.ok(userService.getUserAndKycDetails(page, size));
     }
-
 
 }

@@ -1,9 +1,6 @@
 package mca.finalyearproject.smartDrive.SmartDrive.DTO;
 
-import mca.finalyearproject.smartDrive.SmartDrive.Enum.BookingStatus;
-import mca.finalyearproject.smartDrive.SmartDrive.Enum.CancelledBy;
-import mca.finalyearproject.smartDrive.SmartDrive.Enum.PaymentMode;
-import mca.finalyearproject.smartDrive.SmartDrive.Enum.PaymentStatus;
+import mca.finalyearproject.smartDrive.SmartDrive.Enum.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -33,6 +30,34 @@ public class BookingAddRequestDTO {
     private String cancellationReason;
     private CancelledBy cancelledBy;
     private LocalDateTime cancellationDate;
+
+    private LocalDateTime returnDateTime;
+    private BookingStatus bookingStatus;
+    private BookingType bookingType;
+
+    public BookingType getBookingType() {
+        return bookingType;
+    }
+
+    public void setBookingType(BookingType bookingType) {
+        this.bookingType = bookingType;
+    }
+
+    public LocalDateTime getReturnDateTime() {
+        return returnDateTime;
+    }
+
+    public void setReturnDateTime(LocalDateTime returnDateTime) {
+        this.returnDateTime = returnDateTime;
+    }
+
+    public BookingStatus getBookingStatus() {
+        return bookingStatus;
+    }
+
+    public void setBookingStatus(BookingStatus bookingStatus) {
+        this.bookingStatus = bookingStatus;
+    }
 
     public Integer getUserId() {
         return userId;

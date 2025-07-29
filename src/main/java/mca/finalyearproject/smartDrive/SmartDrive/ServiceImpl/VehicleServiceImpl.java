@@ -4,6 +4,7 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import mca.finalyearproject.smartDrive.SmartDrive.DTO.*;
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.*;
+import mca.finalyearproject.smartDrive.SmartDrive.Enum.BookingStatus;
 import mca.finalyearproject.smartDrive.SmartDrive.Enum.VehicleStatus;
 import mca.finalyearproject.smartDrive.SmartDrive.Repository.ClientLocationRepository;
 import mca.finalyearproject.smartDrive.SmartDrive.Repository.VehicleImageRepository;
@@ -67,6 +68,8 @@ public class VehicleServiceImpl {
 
         VehicleResponseDTO dto = new VehicleResponseDTO();
         dto.setVehicleId(entity.getVehicleId());
+        dto.setTransportType(entity.getTransportType());
+        dto.setBookingStatus(entity.getBookingStatus());
         dto.setVehicleName(entity.getVehicleName());
         dto.setDescription(entity.getDescription());
         dto.setRegistrationNo(entity.getRegistrationNo());
@@ -97,6 +100,7 @@ public class VehicleServiceImpl {
         dto.setAvailable(entity.getAvailable());
         dto.setVisibleOnline(entity.getVisibleOnline());
 
+
         ClientLocationEntity clientLocation = entity.getClientLocation();
         if (clientLocation != null && clientLocation.getActive()) {
             dto.setClientLocation(entityToClientLocationResponseDTO(clientLocation));
@@ -125,6 +129,8 @@ public class VehicleServiceImpl {
         entity.setModel(model);
 
         String vehicleName = model.getBrand().getBrandName() + " " + model.getModelName();
+        entity.setBookingStatus(BookingStatus.AVAILABLE);
+        entity.setTransportType(dto.getTransportType());
         entity.setVehicleName(vehicleName);
         entity.setDescription(dto.getDescription());
         entity.setRegistrationNo(dto.getRegistrationNo());

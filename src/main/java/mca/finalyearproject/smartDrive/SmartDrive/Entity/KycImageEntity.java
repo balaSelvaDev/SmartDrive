@@ -1,5 +1,8 @@
 package mca.finalyearproject.smartDrive.SmartDrive.Entity;
 
+import mca.finalyearproject.smartDrive.SmartDrive.Enum.KycImageType;
+import mca.finalyearproject.smartDrive.SmartDrive.Enum.TransportType;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -10,6 +13,10 @@ public class KycImageEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer imageId;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "image_type")
+    private KycImageType imageType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "kyc_id", nullable = false)
@@ -37,6 +44,14 @@ public class KycImageEntity {
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
+    }
+
+    public KycImageType getImageType() {
+        return imageType;
+    }
+
+    public void setImageType(KycImageType imageType) {
+        this.imageType = imageType;
     }
 
     @PreUpdate

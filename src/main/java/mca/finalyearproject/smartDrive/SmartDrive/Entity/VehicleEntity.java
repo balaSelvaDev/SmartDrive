@@ -1,9 +1,6 @@
 package mca.finalyearproject.smartDrive.SmartDrive.Entity;
 
-import mca.finalyearproject.smartDrive.SmartDrive.Enum.FuelType;
-import mca.finalyearproject.smartDrive.SmartDrive.Enum.OwnerType;
-import mca.finalyearproject.smartDrive.SmartDrive.Enum.VehicleStatus;
-import mca.finalyearproject.smartDrive.SmartDrive.Enum.VehicleType;
+import mca.finalyearproject.smartDrive.SmartDrive.Enum.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -19,6 +16,10 @@ public class VehicleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer vehicleId;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "booking_status", nullable = false)
+    private BookingStatus bookingStatus;
 
     @Column(name = "vehicle_name",  nullable = false)
     private String vehicleName;
@@ -123,6 +124,18 @@ public class VehicleEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_location_id")
     private ClientLocationEntity clientLocation;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "transport_type")
+    private TransportType transportType;
+
+    public TransportType getTransportType() {
+        return transportType;
+    }
+
+    public void setTransportType(TransportType transportType) {
+        this.transportType = transportType;
+    }
 
     public Integer getVehicleId() {
         return vehicleId;
@@ -386,5 +399,13 @@ public class VehicleEntity {
 
     public void setVisibleOnline(Boolean visibleOnline) {
         isVisibleOnline = visibleOnline;
+    }
+
+    public BookingStatus getBookingStatus() {
+        return bookingStatus;
+    }
+
+    public void setBookingStatus(BookingStatus bookingStatus) {
+        this.bookingStatus = bookingStatus;
     }
 }

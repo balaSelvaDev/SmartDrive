@@ -1,10 +1,7 @@
 package mca.finalyearproject.smartDrive.SmartDrive.DTO;
 
-import mca.finalyearproject.smartDrive.SmartDrive.Enum.FuelType;
-import mca.finalyearproject.smartDrive.SmartDrive.Enum.OwnerType;
-import mca.finalyearproject.smartDrive.SmartDrive.Enum.VehicleType;
+import mca.finalyearproject.smartDrive.SmartDrive.Enum.*;
 
-import javax.persistence.Column;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -39,6 +36,24 @@ public class VehicleAddRequestDTO {
     private Boolean hasReverseCamera;
     private Integer clientLocationId;
     private Boolean isVisibleOnline;
+    private BookingStatus bookingStatus;
+    private TransportType transportType;
+
+    public BookingStatus getBookingStatus() {
+        return bookingStatus;
+    }
+
+    public void setBookingStatus(BookingStatus bookingStatus) {
+        this.bookingStatus = bookingStatus;
+    }
+
+    public TransportType getTransportType() {
+        return transportType;
+    }
+
+    public void setTransportType(TransportType transportType) {
+        this.transportType = transportType;
+    }
 
     public Boolean getVisibleOnline() {
         return isVisibleOnline;

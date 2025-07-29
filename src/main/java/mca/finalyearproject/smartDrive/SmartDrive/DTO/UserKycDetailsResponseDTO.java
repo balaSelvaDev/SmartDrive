@@ -1,9 +1,8 @@
 package mca.finalyearproject.smartDrive.SmartDrive.DTO;
 
-import mca.finalyearproject.smartDrive.SmartDrive.Entity.UserListEntity;
+
 import mca.finalyearproject.smartDrive.SmartDrive.Enum.IdProofType;
 
-import javax.persistence.*;
 
 public class UserKycDetailsResponseDTO {
 

@@ -1,6 +1,5 @@
 package mca.finalyearproject.smartDrive.SmartDrive.Controller;
 
-import mca.finalyearproject.smartDrive.SmartDrive.DTO.BrandIdNameVMIdNameResponseDTO;
 import mca.finalyearproject.smartDrive.SmartDrive.DTO.VehicleAddRequestDTO;
 import mca.finalyearproject.smartDrive.SmartDrive.DTO.VehicleResponseDTO;
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.VehicleEntity;
@@ -37,7 +36,5 @@ public class VehicleController {
                                         @RequestPart("data") VehicleAddRequestDTO dto) throws IOException {
         return vehicleService.addVehicle(images, dto);
     }
-
-
 
 }

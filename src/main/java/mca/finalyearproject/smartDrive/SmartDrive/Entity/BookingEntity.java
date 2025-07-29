@@ -1,9 +1,6 @@
 package mca.finalyearproject.smartDrive.SmartDrive.Entity;
 
-import mca.finalyearproject.smartDrive.SmartDrive.Enum.BookingStatus;
-import mca.finalyearproject.smartDrive.SmartDrive.Enum.CancelledBy;
-import mca.finalyearproject.smartDrive.SmartDrive.Enum.PaymentMode;
-import mca.finalyearproject.smartDrive.SmartDrive.Enum.PaymentStatus;
+import mca.finalyearproject.smartDrive.SmartDrive.Enum.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -40,9 +37,12 @@ public class BookingEntity {
     @Column(name = "drop_location", length = 255)
     private String dropLocation;
 
+    @Column(name = "return_datetime")
+    private LocalDateTime returnDateTime;
+
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    private BookingStatus status;
+    @Column(name = "booking_status", nullable = false)
+    private BookingStatus bookingStatus;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "payment_mode")
@@ -79,6 +79,26 @@ public class BookingEntity {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt = LocalDateTime.now();
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "booking_type")
+    private BookingType bookingType;
+
+    public LocalDateTime getReturnDateTime() {
+        return returnDateTime;
+    }
+
+    public void setReturnDateTime(LocalDateTime returnDateTime) {
+        this.returnDateTime = returnDateTime;
+    }
+
+    public BookingType getBookingType() {
+        return bookingType;
+    }
+
+    public void setBookingType(BookingType bookingType) {
+        this.bookingType = bookingType;
+    }
 
     public Integer getBookingId() {
         return bookingId;
@@ -144,12 +164,12 @@ public class BookingEntity {
         this.dropLocation = dropLocation;
     }
 
-    public BookingStatus getStatus() {
-        return status;
+    public BookingStatus getBookingstatus() {
+        return bookingStatus;
     }
 
-    public void setStatus(BookingStatus status) {
-        this.status = status;
+    public void setBookingStatus(BookingStatus bookingStatus) {
+        this.bookingStatus = bookingStatus;
     }
 
     public PaymentMode getPaymentMode() {

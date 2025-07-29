@@ -1,7 +1,6 @@
 package mca.finalyearproject.smartDrive.SmartDrive.ServiceImpl;
 
 import mca.finalyearproject.smartDrive.SmartDrive.DTO.BookingAddRequestDTO;
-import mca.finalyearproject.smartDrive.SmartDrive.DTO.BrandIdNameRequestDTO;
 import mca.finalyearproject.smartDrive.SmartDrive.DTO.KyImageResponseDTO;
 import mca.finalyearproject.smartDrive.SmartDrive.DTO.UserIdNameDrivingLicenseResponseDTO;
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.BookingEntity;
@@ -38,7 +37,10 @@ public class BookingImpl {
         entity.setEndDate(dto.getEndDate());
         entity.setPickupLocation(dto.getPickupLocation());
         entity.setDropLocation(dto.getDropLocation());
-        entity.setStatus(BookingStatus.BOOKED);
+        entity.setBookingStatus(BookingStatus.AVAILABLE);
+        entity.setBookingType(dto.getBookingType());
+        entity.setReturnDateTime(dto.getReturnDateTime());
+
         entity.setPaymentMode(dto.getPaymentMode());
         entity.setPaymentStatus(dto.getPaymentStatus());
         entity.setPaymentReference(dto.getPaymentReference());
@@ -98,7 +100,11 @@ public class BookingImpl {
         dto.setEndDate(entity.getEndDate());
         dto.setPickupLocation(entity.getPickupLocation());
         dto.setDropLocation(entity.getDropLocation());
-        dto.setStatus(entity.getStatus());
+        entity.setBookingStatus(BookingStatus.AVAILABLE);
+
+        entity.setBookingType(dto.getBookingType());
+        entity.setReturnDateTime(dto.getReturnDateTime());
+
         dto.setPaymentMode(entity.getPaymentMode());
         dto.setPaymentStatus(entity.getPaymentStatus());
         dto.setPaymentReference(entity.getPaymentReference());

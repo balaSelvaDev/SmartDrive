@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class SmsService {
 
-    @Value("${twilio.phone.number}")
-    private String fromNumber;
+//    @Value("${twilio.phone.number}")
+//    private String fromNumber;
 
     public void sendSms(String toNumber, String message) {
 //        Message.creator(
@@ -24,10 +24,10 @@ public class SmsService {
 //                        toNumber,
 //                        "sms")
 //                .create();
-        Message.creator(
-                        new PhoneNumber(toNumber),
-                        new PhoneNumber(fromNumber),  // Must be your Twilio number
-                        "Your SmartDrive OTP is 842513")
-                .create();
+//        Message.creator(
+//                        new PhoneNumber(toNumber),
+//                        new PhoneNumber(fromNumber),  // Must be your Twilio number
+//                        "Your SmartDrive OTP is 842513")
+//                .create();
     }
 }
