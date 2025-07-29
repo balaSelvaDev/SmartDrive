@@ -1,7 +1,3 @@
-src/main/resources/application.properties
 
-**/cloudinary.properties
+secrets.properties
 
-**/demo.properties
-
-**/mail.properties
