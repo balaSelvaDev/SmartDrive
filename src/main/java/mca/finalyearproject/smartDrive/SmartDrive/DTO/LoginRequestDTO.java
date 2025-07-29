@@ -1,11 +1,21 @@
 package mca.finalyearproject.smartDrive.SmartDrive.DTO;
 
+import mca.finalyearproject.smartDrive.SmartDrive.Enum.AuthProvider;
+
 public class LoginRequestDTO {
 
     private String emailId;
     private String password;
+    private AuthProvider authProvider = AuthProvider.LOCAL;
 
-    // --- Getters and Setters ---
+    public AuthProvider getAuthProvider() {
+        return authProvider;
+    }
+
+    public void setAuthProvider(AuthProvider authProvider) {
+        this.authProvider = authProvider;
+    }
+// --- Getters and Setters ---
 
     public String getEmailId() {
         return emailId;
@@ -23,4 +33,12 @@ public class LoginRequestDTO {
         this.password = password;
     }
 
+    @Override
+    public String toString() {
+        return "LoginRequestDTO{" +
+                "emailId='" + emailId + '\'' +
+                ", password='" + password + '\'' +
+                ", authProvider=" + authProvider +
+                '}';
+    }
 }

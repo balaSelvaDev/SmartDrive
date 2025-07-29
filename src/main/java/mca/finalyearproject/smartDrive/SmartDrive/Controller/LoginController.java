@@ -44,14 +44,21 @@ public class LoginController {
 
     @PostMapping
     public ResponseEntity<UserListEntity> createBrand(@RequestBody LoginRequestDTO requestDTO) {
-        authenticationProvider
-                .authenticate(new UsernamePasswordAuthenticationToken(requestDTO.getEmailId(), requestDTO.getPassword()));
+//        System.out.println(requestDTO);
+//        System.out.println("<<<1>>>");
+        authenticationProvider.authenticate(new UsernamePasswordAuthenticationToken(requestDTO.getEmailId(), requestDTO.getPassword()));
+//        System.out.println("<<<2>>>");
         Optional<UserListEntity> userListEntity = userService.findByEmail(requestDTO.getEmailId());
+//        System.out.println("<<<3>>>");
         Optional<LoginCredentialEntity> loginCredentialEntity = loginCredentialRepository.findByUser(userListEntity.get());
+//        System.out.println("<<<4>>>");
         String genereteJwtToken = jwtProvider.genereteJwtToken(new UserPrincipal(userListEntity.get(), loginCredentialEntity.get()));
+//        System.out.println("<<<5>>>");
         HttpHeaders httpHeaders = new HttpHeaders();
+//        System.out.println("<<<6>>>");
         httpHeaders.add(SecurityConstant.HEADER_NAME, genereteJwtToken);
-        return new ResponseEntity<UserListEntity>(userListEntity.get(), httpHeaders, HttpStatus.OK);
+//        System.out.println("<<<7>>>");
+        return new ResponseEntity<>(userListEntity.get(), httpHeaders, HttpStatus.OK);
         // return loginService.loginCheck(requestDTO);
     }
 
@@ -77,5 +84,20 @@ public class LoginController {
 //        User user = userService.loginRegisterByGoogleOAuth2(oAuth2AuthenticationToken);
 //        return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("http://localhost:3000/home")).build();
 //    }
+
+    @PostMapping("/google/generate-jwt-token")
+    public ResponseEntity<?> generate(@RequestBody LoginRequestDTO requestDTO) {
+//        authenticationProvider
+//                .authenticate(new UsernamePasswordAuthenticationToken(requestDTO.getEmailId(), requestDTO.getPassword()));
+        UserListEntity userListEntity = userService.findByEmail(requestDTO.getEmailId()).orElseThrow(() -> new RuntimeException("UserListEntity not found for user"));
+//        LoginCredentialEntity loginCredentialEntity = loginCredentialRepository.findByUser(userListEntity).orElseThrow(() -> new RuntimeException("LoginCredentialEntity not found for user"));
+        String genereteJwtToken = jwtProvider.genereteJwtToken(new UserPrincipal(userListEntity, null));
+
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(SecurityConstant.HEADER_NAME, genereteJwtToken);
+        return new ResponseEntity<>("Success", httpHeaders, HttpStatus.OK);
+        // return loginService.loginCheck(requestDTO);
+    }
 
 }
