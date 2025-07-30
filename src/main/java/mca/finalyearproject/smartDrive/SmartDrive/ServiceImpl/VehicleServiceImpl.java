@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +44,45 @@ public class VehicleServiceImpl {
 
     @Autowired
     private ClientLocationRepository clientLocationRepository;
+
+    public PaginationResponse<VehicleAvailabilityDTO> getAllVehicleForCustomer(int page, int size,
+                                                                               LocalDateTime userPickupDatetime,
+                                                                               LocalDateTime userDropDatetime,
+                                                                               Boolean isVisibleOnline, String vehicleStatus) {
+        Pageable paging = PageRequest.of(page, size);
+        Page<Object[]> vehicleList =
+                vehicleRepository.findVehiclesWithDetailedAvailability(userPickupDatetime, userDropDatetime, isVisibleOnline, vehicleStatus, paging);
+        List<VehicleAvailabilityDTO> collect = vehicleList.getContent().stream().map(this::entityToAllVehicleForCustomer).collect(Collectors.toList());
+        return new PaginationResponse<>(
+                collect,
+                vehicleList.getNumber(),
+                vehicleList.getTotalPages(),
+                vehicleList.getTotalElements()
+        );
+    }
+
+    public VehicleAvailabilityDTO entityToAllVehicleForCustomer(Object obj[]) {
+
+        VehicleAvailabilityDTO dto = new VehicleAvailabilityDTO();
+        dto.setAvailabilityStatus(String.valueOf(obj[0]));
+        dto.setBookingStatus(String.valueOf(obj[1]));
+        dto.setVehicleId(Integer.parseInt(obj[2].toString()));
+
+        dto.setVehicleName(String.valueOf(obj[3]));
+        dto.setPricePerKm(String.valueOf(obj[5]));
+        dto.setMileagePerLitre(String.valueOf(obj[6]));
+        dto.setVehicleType(String.valueOf(obj[7]));
+        dto.setFuelType(String.valueOf(obj[8]));
+        dto.setSeatingCapacity(Integer.valueOf(obj[9].toString()));
+        
+        List<VehicleImageEntity> vehicleImageList = vehicleImageRepository.findByVehicleId(dto.getVehicleId());
+//        List<VehicleImageEntity> vehicleImageList = entity.getVehicleImageList();
+        if (vehicleImageList != null) {
+            dto.setVehicleImageList(vehicleImageList.stream().map(this::entityToVehicleImageResponseDTO).collect(Collectors.toList()));
+        }
+        return dto;
+
+    }
 
     public PaginationResponse<VehicleResponseDTO> getAllVehicle(int page, int size) {
         Pageable paging = PageRequest.of(page, size);
