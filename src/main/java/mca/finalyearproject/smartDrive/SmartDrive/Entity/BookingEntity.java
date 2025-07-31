@@ -84,6 +84,54 @@ public class BookingEntity {
     @Column(name = "booking_type")
     private BookingType bookingType;
 
+    @Column(name = "distance_km")
+    private String distanceKm;
+
+    @Column(name = "trip_amt", precision = 10, scale = 2)
+    private BigDecimal tripAmt;
+
+    @Column(name = "convenience_amt", precision = 10, scale = 2)
+    private BigDecimal convenienceAmt;
+
+    @Column(name = "refundable_amt", precision = 10, scale = 2)
+    private BigDecimal refundableAmt;
+
+    public BookingStatus getBookingStatus() {
+        return bookingStatus;
+    }
+
+    public String getDistanceKm() {
+        return distanceKm;
+    }
+
+    public void setDistanceKm(String distanceKm) {
+        this.distanceKm = distanceKm;
+    }
+
+    public BigDecimal getTripAmt() {
+        return tripAmt;
+    }
+
+    public void setTripAmt(BigDecimal tripAmt) {
+        this.tripAmt = tripAmt;
+    }
+
+    public BigDecimal getConvenienceAmt() {
+        return convenienceAmt;
+    }
+
+    public void setConvenienceAmt(BigDecimal convenienceAmt) {
+        this.convenienceAmt = convenienceAmt;
+    }
+
+    public BigDecimal getRefundableAmt() {
+        return refundableAmt;
+    }
+
+    public void setRefundableAmt(BigDecimal refundableAmt) {
+        this.refundableAmt = refundableAmt;
+    }
+
     public LocalDateTime getReturnDateTime() {
         return returnDateTime;
     }

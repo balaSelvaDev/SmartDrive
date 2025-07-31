@@ -3,7 +3,7 @@ package mca.finalyearproject.smartDrive.SmartDrive.Security;
 public class SecurityConstant {
 
     public static final String ISSUER = "SmartDrive booking hub";
-    public static final String SECRET_KEY = "$secretKey#";
+    public static final String SECRET_KEY = "9ory95mTjRfaVqogidTT9TAZTz9xtYZA7gfJ6onPAsAT+HHHlTEFOjAfUYPCpWLWx+RcwA2wRfOxDv5BztfYyQ==";
     public static final Integer TOKEN_EXPIRE_TIME = 1 * 60 * 60 * 1000;
     //    public static final String[] PUBLIC_URL = {"/api/user/login", "/api/user/register"};
     public static final String[] PUBLIC_URL = {

@@ -43,7 +43,7 @@ public class LoginController {
     private LoginCredentialRepository loginCredentialRepository;
 
     @PostMapping
-    public ResponseEntity<UserListEntity> createBrand(@RequestBody LoginRequestDTO requestDTO) {
+    public ResponseEntity<LoginCredentialEntity> createBrand(@RequestBody LoginRequestDTO requestDTO) {
 //        System.out.println(requestDTO);
 //        System.out.println("<<<1>>>");
         authenticationProvider.authenticate(new UsernamePasswordAuthenticationToken(requestDTO.getEmailId(), requestDTO.getPassword()));
@@ -52,13 +52,13 @@ public class LoginController {
 //        System.out.println("<<<3>>>");
         Optional<LoginCredentialEntity> loginCredentialEntity = loginCredentialRepository.findByUser(userListEntity.get());
 //        System.out.println("<<<4>>>");
-        String genereteJwtToken = jwtProvider.genereteJwtToken(new UserPrincipal(userListEntity.get(), loginCredentialEntity.get()));
+        String genereteJwtToken = jwtProvider.generateJwtToken(new UserPrincipal(userListEntity.get(), loginCredentialEntity.get()));
 //        System.out.println("<<<5>>>");
         HttpHeaders httpHeaders = new HttpHeaders();
 //        System.out.println("<<<6>>>");
         httpHeaders.add(SecurityConstant.HEADER_NAME, genereteJwtToken);
 //        System.out.println("<<<7>>>");
-        return new ResponseEntity<>(userListEntity.get(), httpHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(loginCredentialEntity.get(), httpHeaders, HttpStatus.OK);
 //         return loginService.loginCheck(requestDTO);
     }
 
@@ -90,8 +90,8 @@ public class LoginController {
 //        authenticationProvider
 //                .authenticate(new UsernamePasswordAuthenticationToken(requestDTO.getEmailId(), requestDTO.getPassword()));
         UserListEntity userListEntity = userService.findByEmail(requestDTO.getEmailId()).orElseThrow(() -> new RuntimeException("UserListEntity not found for user"));
-//        LoginCredentialEntity loginCredentialEntity = loginCredentialRepository.findByUser(userListEntity).orElseThrow(() -> new RuntimeException("LoginCredentialEntity not found for user"));
-        String genereteJwtToken = jwtProvider.genereteJwtToken(new UserPrincipal(userListEntity, null));
+        LoginCredentialEntity loginCredentialEntity = loginCredentialRepository.findByUser(userListEntity).orElseThrow(() -> new RuntimeException("LoginCredentialEntity not found for user"));
+        String genereteJwtToken = jwtProvider.generateJwtToken(new UserPrincipal(userListEntity, loginCredentialEntity));
 
 
         HttpHeaders httpHeaders = new HttpHeaders();

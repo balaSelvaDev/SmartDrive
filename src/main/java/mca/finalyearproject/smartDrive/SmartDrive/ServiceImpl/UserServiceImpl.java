@@ -150,7 +150,7 @@ public class UserServiceImpl {
             loginCredentialEntity.setPassword(bCryptPasswordEncoder.encode(requestDTO.getPassword()));
             loginCredentialEntity.setLastLoginTime(LocalDateTime.now());
             loginCredentialEntity.setEnabled(true);
-            Role role = roleRepository.findById(Long.valueOf(2))
+            Role role = roleRepository.findById(Long.valueOf(1))
                     .orElseThrow(() -> new RuntimeException("Role not found"));
             loginCredentialEntity.setRole(role);
             loginCredentialRepository.save(loginCredentialEntity);

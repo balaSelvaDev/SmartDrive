@@ -22,10 +22,10 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-//        List<GrantedAuthority> authorities = new ArrayList<>();
-//        authorities.add(new SimpleGrantedAuthority(loginCredentialEntity.getRole().getName()));
-//        return authorities;
-        return null;
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(loginCredentialEntity.getRole().getName()));
+        return authorities;
+//        return null;
     }
 
     public Integer getUserId() {
@@ -59,8 +59,8 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-//        return loginCredentialEntity.isEnabled();
-        return false;
+        return loginCredentialEntity.isEnabled();
+//        return false;
     }
 
 }

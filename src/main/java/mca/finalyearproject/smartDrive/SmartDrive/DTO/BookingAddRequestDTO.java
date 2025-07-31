@@ -2,6 +2,7 @@ package mca.finalyearproject.smartDrive.SmartDrive.DTO;
 
 import mca.finalyearproject.smartDrive.SmartDrive.Enum.*;
 
+import javax.persistence.Column;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -25,6 +26,11 @@ public class BookingAddRequestDTO {
 
     private BigDecimal totalAmount;
     private BigDecimal discountAmount;
+
+    private String distanceKm;
+    private BigDecimal tripAmt;
+    private BigDecimal convenienceAmt;
+    private BigDecimal refundableAmt;
     private BigDecimal finalAmount;
 
     private String cancellationReason;
@@ -34,6 +40,38 @@ public class BookingAddRequestDTO {
     private LocalDateTime returnDateTime;
     private BookingStatus bookingStatus;
     private BookingType bookingType;
+
+    public String getDistanceKm() {
+        return distanceKm;
+    }
+
+    public void setDistanceKm(String distanceKm) {
+        this.distanceKm = distanceKm;
+    }
+
+    public BigDecimal getTripAmt() {
+        return tripAmt;
+    }
+
+    public void setTripAmt(BigDecimal tripAmt) {
+        this.tripAmt = tripAmt;
+    }
+
+    public BigDecimal getConvenienceAmt() {
+        return convenienceAmt;
+    }
+
+    public void setConvenienceAmt(BigDecimal convenienceAmt) {
+        this.convenienceAmt = convenienceAmt;
+    }
+
+    public BigDecimal getRefundableAmt() {
+        return refundableAmt;
+    }
+
+    public void setRefundableAmt(BigDecimal refundableAmt) {
+        this.refundableAmt = refundableAmt;
+    }
 
     public BookingType getBookingType() {
         return bookingType;

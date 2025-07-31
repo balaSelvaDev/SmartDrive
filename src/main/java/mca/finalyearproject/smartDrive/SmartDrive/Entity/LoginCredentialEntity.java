@@ -1,5 +1,6 @@
 package mca.finalyearproject.smartDrive.SmartDrive.Entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -18,6 +19,7 @@ public class LoginCredentialEntity {
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private UserListEntity user;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "password", length = 45)
     private String password;
 

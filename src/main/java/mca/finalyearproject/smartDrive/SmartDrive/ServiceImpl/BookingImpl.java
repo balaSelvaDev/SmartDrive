@@ -44,8 +44,14 @@ public class BookingImpl {
         entity.setPaymentMode(dto.getPaymentMode());
         entity.setPaymentStatus(dto.getPaymentStatus());
         entity.setPaymentReference(dto.getPaymentReference());
+
         entity.setTotalAmount(dto.getTotalAmount());
         entity.setDiscountAmount(dto.getDiscountAmount());
+
+        entity.setDistanceKm(dto.getDistanceKm());
+        entity.setTripAmt(dto.getTripAmt());
+        entity.setConvenienceAmt(dto.getConvenienceAmt());
+        entity.setRefundableAmt(dto.getRefundableAmt());
         entity.setFinalAmount(dto.getFinalAmount());
 
         // Optional fields for cancellation
@@ -110,6 +116,11 @@ public class BookingImpl {
         dto.setPaymentReference(entity.getPaymentReference());
         dto.setTotalAmount(entity.getTotalAmount());
         dto.setDiscountAmount(entity.getDiscountAmount());
+
+        dto.setDistanceKm(entity.getDistanceKm());
+        dto.setTripAmt(entity.getTripAmt());
+        dto.setConvenienceAmt(entity.getConvenienceAmt());
+        dto.setRefundableAmt(entity.getRefundableAmt());
         dto.setFinalAmount(entity.getFinalAmount());
 
         dto.setCancellationReason(entity.getCancellationReason());
