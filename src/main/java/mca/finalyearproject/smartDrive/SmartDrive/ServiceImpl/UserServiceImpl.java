@@ -61,6 +61,9 @@ public class UserServiceImpl {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Autowired
+    private RoleRepository roleRepository;
+
     @Transactional
     public RegistrationVerificationDTO createUserByUser(UserCreateRequestDTO dto) {
 
@@ -146,6 +149,10 @@ public class UserServiceImpl {
             loginCredentialEntity.setUser(byEmail);
             loginCredentialEntity.setPassword(bCryptPasswordEncoder.encode(requestDTO.getPassword()));
             loginCredentialEntity.setLastLoginTime(LocalDateTime.now());
+            loginCredentialEntity.setEnabled(true);
+            Role role = roleRepository.findById(Long.valueOf(2))
+                    .orElseThrow(() -> new RuntimeException("Role not found"));
+            loginCredentialEntity.setRole(role);
             loginCredentialRepository.save(loginCredentialEntity);
             System.out.println("---<3>");
             verificationRepository.deleteByIdAndUuid(requestDTO.getUserId(), requestDTO.getUuid());

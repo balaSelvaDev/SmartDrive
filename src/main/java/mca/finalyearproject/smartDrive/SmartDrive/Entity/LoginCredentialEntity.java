@@ -32,8 +32,30 @@ public class LoginCredentialEntity {
     @Column(name = "last_login_time")
     private LocalDateTime lastLoginTime;
 
+    private boolean enabled;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id") // FK column in user table
+    private Role role;
+
     // --- Getters and Setters ---
 
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
     public UserListEntity getUser() {
         return user;

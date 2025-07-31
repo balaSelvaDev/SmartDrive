@@ -2,6 +2,8 @@ package mca.finalyearproject.smartDrive.SmartDrive.Security;
 
 import java.util.Date;
 
+import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.stereotype.Component;
 
 import com.auth0.jwt.JWT;
@@ -23,6 +25,16 @@ public class JWTProvider {
 
         JWTVerifier jwtVerifierMethod = JwtVerifierMethod();
         return jwtVerifierMethod.verify(extractToken).getSubject();
+//        try {
+//            DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(SecurityConstant.SECRET_KEY))
+//                    .build()
+//                    .verify(extractToken);
+//            return decodedJWT.getSubject();
+//        } catch (JWTDecodeException e) {
+////            log.error("Invalid token structure: {}", e.getMessage());
+//            System.out.println("Invalid token structure: {}" + e.getMessage());
+//            return null;
+//        }
 
     }
 

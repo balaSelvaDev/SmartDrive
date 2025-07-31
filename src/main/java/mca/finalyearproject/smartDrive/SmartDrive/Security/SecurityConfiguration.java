@@ -32,7 +32,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
+                // ⬇️ Public URLs
                 .antMatchers(SecurityConstant.PUBLIC_URL).permitAll()
+
+                // ⬇️ Admin-only endpoints
+//                .antMatchers("/api/admin/**").hasRole("ADMIN")
+
+                // ⬇️ User-only endpoints
+//                .antMatchers("/api/user/**").hasRole("USER")
+
+                // ⬇️ Any other request requires authentication
+//                .anyRequest().authenticated()
                 .anyRequest().authenticated()
 
                 .and()

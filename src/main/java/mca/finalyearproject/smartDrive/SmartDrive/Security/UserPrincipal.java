@@ -1,10 +1,13 @@
 package mca.finalyearproject.smartDrive.SmartDrive.Security;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.LoginCredentialEntity;
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.UserListEntity;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public class UserPrincipal implements UserDetails {
@@ -19,6 +22,9 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+//        List<GrantedAuthority> authorities = new ArrayList<>();
+//        authorities.add(new SimpleGrantedAuthority(loginCredentialEntity.getRole().getName()));
+//        return authorities;
         return null;
     }
 
@@ -53,6 +59,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public boolean isEnabled() {
+//        return loginCredentialEntity.isEnabled();
         return false;
     }
 
