@@ -93,6 +93,18 @@
             <version>4.0.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-websocket</artifactId>
+            <version>5.3.25</version> <!-- Compatible with Spring Boot 2.7.8 -->
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-messaging</artifactId>
+            <version>5.3.25</version> <!-- Match spring-websocket version -->
+        </dependency>
+
         <!-- Optional: Spring Cloud Config and Eureka Client -->
         <!--
         <dependency>
@@ -106,17 +118,6 @@
         -->
     </dependencies>
 
-<!--    <dependencyManagement>-->
-<!--        <dependencies>-->
-<!--            <dependency>-->
-<!--                <groupId>org.springframework.cloud</groupId>-->
-<!--                <artifactId>spring-cloud-dependencies</artifactId>-->
-<!--                <version>${spring-cloud.version}</version>-->
-<!--                <type>pom</type>-->
-<!--                <scope>import</scope>-->
-<!--            </dependency>-->
-<!--        </dependencies>-->
-<!--    </dependencyManagement>-->
 
     <build>
         <plugins>

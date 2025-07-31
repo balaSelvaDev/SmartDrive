@@ -6,6 +6,7 @@ import mca.finalyearproject.smartDrive.SmartDrive.DTO.*;
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.*;
 import mca.finalyearproject.smartDrive.SmartDrive.Enum.BookingStatus;
 import mca.finalyearproject.smartDrive.SmartDrive.Enum.VehicleStatus;
+import mca.finalyearproject.smartDrive.SmartDrive.InterfaceProjection.VehicleAvailabilityByVehicleId;
 import mca.finalyearproject.smartDrive.SmartDrive.Repository.ClientLocationRepository;
 import mca.finalyearproject.smartDrive.SmartDrive.Repository.VehicleImageRepository;
 import mca.finalyearproject.smartDrive.SmartDrive.Repository.VehicleModelRepository;
@@ -74,7 +75,7 @@ public class VehicleServiceImpl {
         dto.setVehicleType(String.valueOf(obj[7]));
         dto.setFuelType(String.valueOf(obj[8]));
         dto.setSeatingCapacity(Integer.valueOf(obj[9].toString()));
-        
+
         List<VehicleImageEntity> vehicleImageList = vehicleImageRepository.findByVehicleId(dto.getVehicleId());
 //        List<VehicleImageEntity> vehicleImageList = entity.getVehicleImageList();
         if (vehicleImageList != null) {
@@ -296,6 +297,12 @@ public class VehicleServiceImpl {
         dto.setAlternateFileName(entity.getAlternateFileName());
         dto.setStatus(entity.getStatus());
         return dto;
+    }
+
+    public VehicleAvailabilityByVehicleId getVehicleAvailabilityByVehicleIdAndDateTime(LocalDateTime userPickupDatetime,
+                                                                                       LocalDateTime userDropDatetime,
+                                                                                       Integer vehicleId) {
+        return vehicleRepository.getVehicleAvailabilityByVehicleIdAndDateTime(userPickupDatetime, userDropDatetime, "Active", vehicleId);
     }
 
 

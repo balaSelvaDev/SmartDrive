@@ -1,6 +1,7 @@
 package mca.finalyearproject.smartDrive.SmartDrive.Repository;
 
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.VehicleEntity;
+import mca.finalyearproject.smartDrive.SmartDrive.InterfaceProjection.VehicleAvailabilityByVehicleId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -50,6 +51,28 @@ public interface VehicleRepository extends JpaRepository<VehicleEntity, Integer>
             Boolean isVisibleOnline,
             String vehicleStatus,
             Pageable pageable
+    );
+
+    @Query(value = "" +
+            "SELECT \n" +
+            "    CASE WHEN (\n" +
+            "    (:userPickupDatetime BETWEEN b.start_date AND b.end_date) or \n" +
+            "            (:userDropDatetime BETWEEN b.start_date AND b.end_date) or\n" +
+            "            (:userPickupDatetime <= b.start_date AND :userDropDatetime >= b.end_date)\n" +
+            "\t) THEN 'BOOKED'\n" +
+            "\tELSE 'AVAILABLE'\n" +
+            "    END AS availabilityStatus, v.booking_status as bookingStatus, v.vehicle_id as vehicleId,\n" +
+            "    v.vehicle_name as vehicleName \n" +
+            "FROM vehicle v\n" +
+            "\tleft join booking b  on v.vehicle_id = b.vehicle_id \n" +
+            "where v.vehicle_status = :vehicleStatus and v.vehicle_id = :vehicleId " +
+            "",
+            nativeQuery = true)
+    VehicleAvailabilityByVehicleId getVehicleAvailabilityByVehicleIdAndDateTime(
+            LocalDateTime userPickupDatetime,
+            LocalDateTime userDropDatetime,
+            String vehicleStatus,
+            Integer vehicleId
     );
 
 }
