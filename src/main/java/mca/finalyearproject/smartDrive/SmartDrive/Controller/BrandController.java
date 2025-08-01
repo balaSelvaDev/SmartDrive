@@ -43,7 +43,7 @@ public class BrandController {
         // Send WebSocket notification to admin
         OrderNotification notification = new OrderNotification("New order received", Long.valueOf(brand.getBrandId()));
         messagingTemplate.convertAndSend("/topic/admin-orders", notification);
-        return brandService.createBrand(brandDTO);
+        return brand;
     }
 
     @PutMapping

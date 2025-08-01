@@ -4,6 +4,7 @@ import mca.finalyearproject.smartDrive.SmartDrive.DTO.*;
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.BrandEntity;
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.VehicleModelEntity;
 import mca.finalyearproject.smartDrive.SmartDrive.Repository.BrandRepository;
+import mca.finalyearproject.smartDrive.SmartDrive.Util.GlobalStatusType;
 import mca.finalyearproject.smartDrive.SmartDrive.Util.PaginationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -35,6 +36,9 @@ public class BrandServiceImpl
     public BrandDTO updateBrand(BrandDTO dto) {
         BrandEntity brand = dtoToEntity(dto);
         BrandEntity updated = brandRepository.save(brand);
+        System.out.println(updated.getBrandId());
+        System.out.println(updated.getIsActive());
+        System.out.println(updated.getBrandName());
         return entityToDto(updated);
     }
 
@@ -46,7 +50,7 @@ public class BrandServiceImpl
 
     public PaginationResponse<BrandDTO> getAllBrands(int page, int size) {
         Pageable paging = PageRequest.of(page, size);
-        Page<BrandEntity> brandList = brandRepository.findAll(paging);
+        Page<BrandEntity> brandList = brandRepository.findByIsActiveNot(GlobalStatusType.DELETE, paging);
         List<BrandDTO> brandDtoList = brandList.stream()
                 .map(this::entityToDto)
                 .collect(Collectors.toList());
