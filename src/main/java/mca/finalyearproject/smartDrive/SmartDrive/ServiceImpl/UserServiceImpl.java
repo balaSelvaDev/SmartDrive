@@ -302,7 +302,7 @@ public class UserServiceImpl {
 
     public PaginationResponse<UserAndKycResponseDTO> getUserAndKycDetails(int page, int size) {
         Pageable paging = PageRequest.of(page, size);
-        Page<UserListEntity> userAndKycEntity = userRepository.findAll(paging);
+        Page<UserListEntity> userAndKycEntity = userRepository.findByauthProvideNot(AuthProvider.ADMIN, paging);
         List<UserAndKycResponseDTO> userAndKycDTO = userAndKycEntity.stream().map(this::entityToUserAndKycResponseDTO).collect(Collectors.toList());
         PaginationResponse<UserAndKycResponseDTO> response = new PaginationResponse<>(
                 userAndKycDTO,
@@ -379,6 +379,24 @@ public class UserServiceImpl {
         dto.setImageUrl(entity.getImageUrl());
         dto.setStatus(entity.getStatus());
         dto.setImageType(entity.getImageType());
+        return dto;
+    }
+
+    public UserListResponseDTO getUserListForCustomer(Integer userId) {
+        UserListEntity userList = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        return entityToUserListResponseDTO(userList);
+    }
+
+    public UserListResponseDTO entityToUserListResponseDTO(UserListEntity entity) {
+        UserListResponseDTO dto = new UserListResponseDTO();
+        dto.setUserId(entity.getUserId());
+        dto.setAuthProvide(entity.getAuthProvide());
+        dto.setFirstName(entity.getFirstName());
+        dto.setLastName(entity.getLastName());
+        dto.setEmail(entity.getEmail());
+        dto.setPhoneNumber(entity.getPhoneNumber());
+        dto.setFullName(entity.getFullName());
+        dto.setIsActive(entity.getIsActive());
         return dto;
     }
 

@@ -63,4 +63,9 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserAndKycDetails(page, size));
     }
 
+    @GetMapping("/customer/{userId}")
+    public ResponseEntity<UserListResponseDTO> getUserListForCustomer(@PathVariable Integer userId) {
+        return ResponseEntity.ok(userService.getUserListForCustomer(userId));
+    }
+
 }
