@@ -2,6 +2,7 @@ package mca.finalyearproject.smartDrive.SmartDrive.DTO;
 
 import mca.finalyearproject.smartDrive.SmartDrive.Enum.KycImageType;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,24 @@ public class UserAndKycResponseDTO {
     private UserDetailsResponseDTO userDetailsResponseDTO = new UserDetailsResponseDTO();
     private UserKycDetailsResponseDTO userKycDetailsResponseDTO = new UserKycDetailsResponseDTO();
     private Map<KycImageType, List<UserKycImageResponseDTO>> userKycImageResponseDTO = new HashMap<>();
+    private LocalDateTime lastLoginTime;
+    private String role;
+
+    public LocalDateTime getLastLoginTime() {
+        return lastLoginTime;
+    }
+
+    public void setLastLoginTime(LocalDateTime lastLoginTime) {
+        this.lastLoginTime = lastLoginTime;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     public Map<KycImageType, List<UserKycImageResponseDTO>> getUserKycImageResponseDTO() {
         return userKycImageResponseDTO;

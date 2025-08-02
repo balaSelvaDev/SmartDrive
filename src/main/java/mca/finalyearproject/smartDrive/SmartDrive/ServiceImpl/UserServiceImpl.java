@@ -334,6 +334,12 @@ public class UserServiceImpl {
         dto.setFullName(entity.getFullName());
         userAndKycResponseDTO.setUserDetailsResponseDTO(dto);
 
+        Optional<LoginCredentialEntity> loginCredentialList = loginCredentialRepository.findByUser(entity);
+        if (loginCredentialList.isPresent()) {
+            userAndKycResponseDTO.setLastLoginTime(loginCredentialList.get().getLastLoginTime());
+            userAndKycResponseDTO.setRole(loginCredentialList.get().getRole().getName());
+        }
+
         UserKycDetailsEntity userKycEntity = entity.getUser();
         if (userKycEntity != null) {
             UserKycDetailsResponseDTO dto1 = new UserKycDetailsResponseDTO();
@@ -357,6 +363,7 @@ public class UserServiceImpl {
             dto1.setCompanyName(userKycEntity.getCompanyName());
             dto1.setAlternatePhoneNumber(userKycEntity.getAlternatePhoneNumber());
             userAndKycResponseDTO.setUserKycDetailsResponseDTO(dto1);
+
 
             List<KycImageEntity> kycImage = userKycEntity.getKycImage();
             if (kycImage != null) {
