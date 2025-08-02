@@ -12,9 +12,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,8 +45,11 @@ public class BrandServiceImpl
     }
 
 
+    @Transactional
     public void deleteBrand(Integer brandId) {
-        brandRepository.deleteById(brandId);
+        BrandEntity brandEntity = brandRepository.findById(brandId).orElseThrow(() -> new RuntimeException("Brand not found"));
+        brandEntity.setIsActive(GlobalStatusType.DELETE);
+        brandRepository.save(brandEntity);
     }
 
 

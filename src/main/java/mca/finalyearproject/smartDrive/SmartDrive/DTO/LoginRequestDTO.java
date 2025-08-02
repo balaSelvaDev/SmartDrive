@@ -6,13 +6,13 @@ public class LoginRequestDTO {
 
     private String emailId;
     private String password;
-    private AuthProvider authProvider = AuthProvider.LOCAL;
+    private String authProvider;
 
-    public AuthProvider getAuthProvider() {
+    public String getAuthProvider() {
         return authProvider;
     }
 
-    public void setAuthProvider(AuthProvider authProvider) {
+    public void setAuthProvider(String authProvider) {
         this.authProvider = authProvider;
     }
 // --- Getters and Setters ---
