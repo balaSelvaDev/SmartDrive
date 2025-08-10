@@ -44,9 +44,9 @@ public class BookingEntity {
     @Column(name = "booking_status", nullable = false)
     private BookingStatus bookingStatus;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "payment_mode")
-    private PaymentMode paymentMode;
+//    @Enumerated(EnumType.STRING)
+//    @Column(name = "payment_mode")
+//    private PaymentMode paymentMode;
 
     @Column(name = "payment_reference")
     private String paymentReference;
@@ -220,13 +220,13 @@ public class BookingEntity {
         this.bookingStatus = bookingStatus;
     }
 
-    public PaymentMode getPaymentMode() {
-        return paymentMode;
-    }
+//    public PaymentMode getPaymentMode() {
+//        return paymentMode;
+//    }
 
-    public void setPaymentMode(PaymentMode paymentMode) {
-        this.paymentMode = paymentMode;
-    }
+//    public void setPaymentMode(PaymentMode paymentMode) {
+//        this.paymentMode = paymentMode;
+//    }
 
     public String getPaymentReference() {
         return paymentReference;

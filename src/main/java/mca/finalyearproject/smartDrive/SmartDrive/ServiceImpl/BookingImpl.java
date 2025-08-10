@@ -1,17 +1,20 @@
 package mca.finalyearproject.smartDrive.SmartDrive.ServiceImpl;
 
 import mca.finalyearproject.smartDrive.SmartDrive.DTO.BookingAddRequestDTO;
+import mca.finalyearproject.smartDrive.SmartDrive.DTO.BrandDTO;
 import mca.finalyearproject.smartDrive.SmartDrive.DTO.KyImageResponseDTO;
 import mca.finalyearproject.smartDrive.SmartDrive.DTO.UserIdNameDrivingLicenseResponseDTO;
-import mca.finalyearproject.smartDrive.SmartDrive.Entity.BookingEntity;
-import mca.finalyearproject.smartDrive.SmartDrive.Entity.KycImageEntity;
-import mca.finalyearproject.smartDrive.SmartDrive.Entity.UserListEntity;
-import mca.finalyearproject.smartDrive.SmartDrive.Entity.VehicleEntity;
+import mca.finalyearproject.smartDrive.SmartDrive.Entity.*;
 import mca.finalyearproject.smartDrive.SmartDrive.Enum.BookingStatus;
 import mca.finalyearproject.smartDrive.SmartDrive.Repository.BookingRepository;
 import mca.finalyearproject.smartDrive.SmartDrive.Repository.UserRepository;
 import mca.finalyearproject.smartDrive.SmartDrive.Repository.VehicleRepository;
+import mca.finalyearproject.smartDrive.SmartDrive.Util.GlobalStatusType;
+import mca.finalyearproject.smartDrive.SmartDrive.Util.PaginationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -41,7 +44,7 @@ public class BookingImpl {
         entity.setBookingType(dto.getBookingType());
         entity.setReturnDateTime(dto.getReturnDateTime());
 
-        entity.setPaymentMode(dto.getPaymentMode());
+//        entity.setPaymentMode(dto.getPaymentMode());
         entity.setPaymentStatus(dto.getPaymentStatus());
         entity.setPaymentReference(dto.getPaymentReference());
 
@@ -83,11 +86,19 @@ public class BookingImpl {
     }
 
 
-    public List<BookingAddRequestDTO> getAllBookings() {
-        return bookingRepository.findAll()
-                .stream()
+    public PaginationResponse<BookingAddRequestDTO> getAllBookings(int page, int size) {
+        Pageable paging = PageRequest.of(page, size);
+        Page<BookingEntity> all = bookingRepository.findAll(paging);
+        List<BookingAddRequestDTO> brandDtoList = all.stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
+        PaginationResponse<BookingAddRequestDTO> response = new PaginationResponse<>(
+                brandDtoList,
+                all.getNumber(),
+                all.getTotalPages(),
+                all.getTotalElements()
+        );
+        return response;
     }
 
     public BookingAddRequestDTO getBookingById(Integer id) {
@@ -98,6 +109,8 @@ public class BookingImpl {
 
     private BookingAddRequestDTO mapToDTO(BookingEntity entity) {
         BookingAddRequestDTO dto = new BookingAddRequestDTO();
+
+        dto.setBookingId(entity.getBookingId());
         dto.setBookingReference(entity.getBookingReference());
         dto.setUserId(entity.getUser().getUserId());
         dto.setVehicleId(entity.getVehicle().getVehicleId());
@@ -106,12 +119,12 @@ public class BookingImpl {
         dto.setEndDate(entity.getEndDate());
         dto.setPickupLocation(entity.getPickupLocation());
         dto.setDropLocation(entity.getDropLocation());
-        entity.setBookingStatus(BookingStatus.AVAILABLE);
+        dto.setBookingStatus(entity.getBookingStatus());
 
-        entity.setBookingType(dto.getBookingType());
-        entity.setReturnDateTime(dto.getReturnDateTime());
+        dto.setBookingType(entity.getBookingType());
+        dto.setReturnDateTime(entity.getReturnDateTime());
 
-        dto.setPaymentMode(entity.getPaymentMode());
+//        dto.setPaymentMode(entity.getPaymentMode());
         dto.setPaymentStatus(entity.getPaymentStatus());
         dto.setPaymentReference(entity.getPaymentReference());
         dto.setTotalAmount(entity.getTotalAmount());
@@ -148,9 +161,9 @@ public class BookingImpl {
         UserIdNameDrivingLicenseResponseDTO dto = new UserIdNameDrivingLicenseResponseDTO();
         dto.setUserId(entity.getUserId());
         dto.setUserName(entity.getFullName());
-        if(entity.getUser() != null) {
+        if (entity.getUser() != null) {
             dto.setDrivingLicense(entity.getUser().getDrivingLicenseNumber());
-            if(entity.getUser().getKycImage() != null) {
+            if (entity.getUser().getKycImage() != null) {
                 List<KyImageResponseDTO> kytImgDto = entity.getUser().getKycImage().stream().map(this::entityToKyImageResponseDTO).collect(Collectors.toList());
                 dto.setKycImageEntityList(kytImgDto);
             }
