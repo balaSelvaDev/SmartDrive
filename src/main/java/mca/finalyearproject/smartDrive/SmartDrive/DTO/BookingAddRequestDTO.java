@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 public class BookingAddRequestDTO {
 
+    private Integer bookingId;
     private Integer userId;
     private Integer vehicleId;
 
@@ -40,6 +41,33 @@ public class BookingAddRequestDTO {
     private LocalDateTime returnDateTime;
     private BookingStatus bookingStatus;
     private BookingType bookingType;
+
+    private BigDecimal paidAmt;
+    private BigDecimal pendingAmt;
+
+    public BigDecimal getPaidAmt() {
+        return paidAmt;
+    }
+
+    public void setPaidAmt(BigDecimal paidAmt) {
+        this.paidAmt = paidAmt;
+    }
+
+    public BigDecimal getPendingAmt() {
+        return pendingAmt;
+    }
+
+    public void setPendingAmt(BigDecimal pendingAmt) {
+        this.pendingAmt = pendingAmt;
+    }
+
+    public Integer getBookingId() {
+        return bookingId;
+    }
+
+    public void setBookingId(Integer bookingId) {
+        this.bookingId = bookingId;
+    }
 
     public String getDistanceKm() {
         return distanceKm;

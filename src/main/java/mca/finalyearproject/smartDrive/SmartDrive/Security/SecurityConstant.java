@@ -14,6 +14,7 @@ public class SecurityConstant {
             "/oauth2/authorization/google",
             "/api/booking/**",
             "/api/client-location/**",
+            "/api/booking-amt", "/api/booking-amt/**",
             "/ws/**", "/topic/**"
     };
     public static final String HEADER_NAME = "Authorization";

@@ -96,6 +96,28 @@ public class BookingEntity {
     @Column(name = "refundable_amt", precision = 10, scale = 2)
     private BigDecimal refundableAmt;
 
+    @Column(name = "paid_amount", precision = 10, scale = 2)
+    private BigDecimal paidAmt;
+
+    @Column(name = "pending_amount", precision = 10, scale = 2)
+    private BigDecimal pendingAmt;
+
+    public BigDecimal getPaidAmt() {
+        return paidAmt;
+    }
+
+    public void setPaidAmt(BigDecimal paidAmt) {
+        this.paidAmt = paidAmt;
+    }
+
+    public BigDecimal getPendingAmt() {
+        return pendingAmt;
+    }
+
+    public void setPendingAmt(BigDecimal pendingAmt) {
+        this.pendingAmt = pendingAmt;
+    }
+
     public BookingStatus getBookingStatus() {
         return bookingStatus;
     }

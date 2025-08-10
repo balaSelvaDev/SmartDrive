@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -50,6 +51,8 @@ public class BookingImpl {
 
         entity.setTotalAmount(dto.getTotalAmount());
         entity.setDiscountAmount(dto.getDiscountAmount());
+        entity.setPaidAmt(BigDecimal.ZERO);
+        entity.setPendingAmt(dto.getTotalAmount());
 
         entity.setDistanceKm(dto.getDistanceKm());
         entity.setTripAmt(dto.getTripAmt());
@@ -139,6 +142,9 @@ public class BookingImpl {
         dto.setCancellationReason(entity.getCancellationReason());
         dto.setCancelledBy(entity.getCancelledBy());
         dto.setCancellationDate(entity.getCancellationDate());
+
+        dto.setPaidAmt(entity.getPaidAmt());
+        dto.setPendingAmt(entity.getPendingAmt());
 
         return dto;
     }
