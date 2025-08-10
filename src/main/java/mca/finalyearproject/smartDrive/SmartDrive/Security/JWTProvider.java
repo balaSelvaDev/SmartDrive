@@ -132,4 +132,16 @@ public class JWTProvider {
         return !issuedAt.before(new Date());
     }
 
+    // // // // // // // // // // // // // // // // // // // // // // //
+    public String getUsernameFromToken(String token) {
+        if (token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+        JWTVerifier jwtVerifier = JwtVerifierMethod();
+        DecodedJWT decodedJWT = jwtVerifier.verify(token);
+        return decodedJWT.getSubject(); // "sub"
+    }
+
+
+
 }
