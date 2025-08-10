@@ -40,8 +40,18 @@ public class LoginCredentialEntity {
     @JoinColumn(name = "role_id") // FK column in user table
     private Role role;
 
+    @Column(name = "admin_access")
+    private boolean adminAccess;
+
     // --- Getters and Setters ---
 
+    public boolean getAdminAccess() {
+        return adminAccess;
+    }
+
+    public void setAdminAccess(boolean adminAccess) {
+        this.adminAccess = adminAccess;
+    }
 
     public boolean isEnabled() {
         return enabled;

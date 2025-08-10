@@ -56,7 +56,8 @@ public class LoginController {
             Optional<LoginCredentialEntity> loginCredentialEntity = loginCredentialRepository.findByUser(userListEntity.get());
             Role role = roleRepository.findById(loginCredentialEntity.get().getRole().getId())
                     .orElseThrow(() -> new RuntimeException("Role not found"));
-            if (role.getName().equals(requestDTO.getAuthProvider())) {
+//            if (role.getName().equals(requestDTO.getAuthProvider())) {
+            if (loginCredentialEntity.get().getAdminAccess()) {
                 authenticationProvider.authenticate(new UsernamePasswordAuthenticationToken(requestDTO.getEmailId(), requestDTO.getPassword()));
                 String genereteJwtToken = jwtProvider.generateJwtToken(new UserPrincipal(userListEntity.get(), loginCredentialEntity.get()));
                 HttpHeaders httpHeaders = new HttpHeaders();
