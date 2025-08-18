@@ -19,5 +19,5 @@ public interface UserRepository extends JpaRepository<UserListEntity, Integer> {
 
     Optional<UserListEntity> findByUserIdAndEmail(Integer userId, String emailId);
 
-    Page<UserListEntity> findByauthProvideNot(AuthProvider authProvider, Pageable page);
+    Page<UserListEntity> findByauthProvideNotAndIsActiveNot(AuthProvider authProvider, Pageable page, Integer isActive);
 }

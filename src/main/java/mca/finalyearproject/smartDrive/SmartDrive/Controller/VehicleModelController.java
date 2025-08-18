@@ -40,5 +40,10 @@ public class VehicleModelController {
         return vehicleModelService.updateVehicleModel(vehicleModelId, dto);
     }
 
+    @DeleteMapping("/{vehicleModelId}")
+    public void deleteVehicleModel(@PathVariable("vehicleModelId") Integer brandId) {
+        vehicleModelService.deleteVehicleModel(brandId);
+    }
+
 }
 

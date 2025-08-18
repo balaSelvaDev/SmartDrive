@@ -68,4 +68,9 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserListForCustomer(userId));
     }
 
+    @DeleteMapping("/{userId}")
+    public void deleteUserList(@PathVariable("userId") Integer userId) {
+        userService.deleteUserList(userId);
+    }
+
 }

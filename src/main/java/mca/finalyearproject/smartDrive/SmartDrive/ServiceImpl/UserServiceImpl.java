@@ -8,9 +8,12 @@ import mca.finalyearproject.smartDrive.SmartDrive.Enum.AuthProvider;
 import mca.finalyearproject.smartDrive.SmartDrive.Enum.KycImageType;
 import mca.finalyearproject.smartDrive.SmartDrive.Enum.VerificationStatus;
 import mca.finalyearproject.smartDrive.SmartDrive.Repository.*;
+import mca.finalyearproject.smartDrive.SmartDrive.Util.GlobalStatusType;
 import mca.finalyearproject.smartDrive.SmartDrive.Util.PaginationResponse;
+import mca.finalyearproject.smartDrive.SmartDrive.Util.PasswordUtil;
 import mca.finalyearproject.smartDrive.SmartDrive.Util.UtilityClass;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -63,6 +66,9 @@ public class UserServiceImpl {
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Value("${oauth_password}")
+    private String oauthPassword;
 
     @Transactional
     public RegistrationVerificationDTO createUserByUser(UserCreateRequestDTO dto) {
@@ -210,6 +216,17 @@ public class UserServiceImpl {
 
         UserListEntity userListEntity = userRepository.save(entity);
 
+        Optional<Role> roleEntity = roleRepository.findById(Long.valueOf(1));
+        LoginCredentialEntity loginCredentialEntity = new LoginCredentialEntity();
+        loginCredentialEntity.setUser(entity);
+        loginCredentialEntity.setPassword(PasswordUtil.encode(this.oauthPassword + entity.getEmail()));
+        loginCredentialEntity.setEnabled(true);
+        loginCredentialEntity.setLastLoginTime(LocalDateTime.now());
+        loginCredentialEntity.setRole(roleEntity.get());
+        loginCredentialEntity.setAdminAccess(false);
+
+        loginCredentialRepository.save(loginCredentialEntity);
+
         UserKycDetailsEntity kycDetailsEntity = new UserKycDetailsEntity();
         kycDetailsEntity.setUser(userListEntity);
         kycDetailsEntity.setDrivingLicenseNumber(dto.getDrivingLicenseNumber());
@@ -302,7 +319,7 @@ public class UserServiceImpl {
 
     public PaginationResponse<UserAndKycResponseDTO> getUserAndKycDetails(int page, int size) {
         Pageable paging = PageRequest.of(page, size);
-        Page<UserListEntity> userAndKycEntity = userRepository.findByauthProvideNot(AuthProvider.ADMIN, paging);
+        Page<UserListEntity> userAndKycEntity = userRepository.findByauthProvideNotAndIsActiveNot(AuthProvider.ADMIN, paging, GlobalStatusType.DELETE);
         List<UserAndKycResponseDTO> userAndKycDTO = userAndKycEntity.stream().map(this::entityToUserAndKycResponseDTO).collect(Collectors.toList());
         PaginationResponse<UserAndKycResponseDTO> response = new PaginationResponse<>(
                 userAndKycDTO,
@@ -405,6 +422,13 @@ public class UserServiceImpl {
         dto.setFullName(entity.getFullName());
         dto.setIsActive(entity.getIsActive());
         return dto;
+    }
+
+    @Transactional
+    public void deleteUserList(Integer vehicleModel) {
+        UserListEntity userListEntity = userRepository.findById(vehicleModel).orElseThrow(() -> new RuntimeException("User list not found"));
+        userListEntity.setIsActive(GlobalStatusType.DELETE);
+        userRepository.save(userListEntity);
     }
 
 

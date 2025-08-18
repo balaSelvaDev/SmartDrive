@@ -16,10 +16,10 @@ public interface VehicleModelRepository extends JpaRepository<VehicleModelEntity
 //    @Query("SELECT vm FROM VehicleModelEntity vm LEFT JOIN vm.brand")
 //    Page<VehicleModelEntity> findAllWithBrand(Pageable pageable);
         @Query(
-                value = "SELECT vm FROM VehicleModelEntity vm LEFT JOIN FETCH vm.brand",
-                countQuery = "SELECT count(vm) FROM VehicleModelEntity vm",
+                value = "SELECT vm FROM VehicleModelEntity vm LEFT JOIN FETCH vm.brand where vm.isActive != :isActive ",
+                countQuery = "SELECT count(vm) FROM VehicleModelEntity vm where vm.isActive != :isActive",
                 nativeQuery = false
         )
-        Page<VehicleModelEntity> findAllWithBrand(Pageable pageable);
+        Page<VehicleModelEntity> findAllWithBrand(Pageable pageable, Integer isActive);
 
 }
