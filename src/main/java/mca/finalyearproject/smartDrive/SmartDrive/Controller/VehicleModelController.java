@@ -37,6 +37,7 @@ public class VehicleModelController {
 
     @PutMapping("/{vehicleModelId}")
     public VehicleModelResponseDTO updateVehicleModel(@PathVariable("vehicleModelId") Integer vehicleModelId, @RequestBody VehicleModeUpdateRequestDTO dto) {
+        System.out.println(dto);
         return vehicleModelService.updateVehicleModel(vehicleModelId, dto);
     }
 

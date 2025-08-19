@@ -29,4 +29,13 @@ public class VehicleModeUpdateRequestDTO {
     public void setBrandId(Integer brandId) {
         this.brandId = brandId;
     }
+
+    @Override
+    public String toString() {
+        return "VehicleModeUpdateRequestDTO{" +
+                "modelName='" + modelName + '\'' +
+                ", brandId=" + brandId +
+                ", isActive=" + isActive +
+                '}';
+    }
 }

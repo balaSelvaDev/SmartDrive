@@ -272,29 +272,31 @@ public class UserServiceImpl {
         //
         String folder1 = "";
         String publicId = "";
-        KycImageType imageType;
+        KycImageType imageType;int count = 0;
         for (MultipartFile file : idProofFiles) {
             MultipartFile file1 = file;
+            System.out.println(dto.getIdProofType().name());
             switch (dto.getIdProofType().name()) {
                 case "PAN_CARD":
                     folder1 = "Smart-drive-booking-hub/Pan card";
-                    publicId = "USER_PANCARD_" + userListEntity.getUserId() + "_" + userKycDetailsEntity.getKycId();
+                    publicId = "USER_PANCARD_" + userListEntity.getUserId() + "_" + userKycDetailsEntity.getKycId() + "_" + (count++);
                     imageType = KycImageType.PAN_CARD;
                     break;
                 case "AADHAAR":
                     folder1 = "Smart-drive-booking-hub/Aadhar card";
-                    publicId = "USER_AADHAR_" + userListEntity.getUserId() + "_" + userKycDetailsEntity.getKycId();
+                    publicId = "USER_AADHAR_" + userListEntity.getUserId() + "_" + userKycDetailsEntity.getKycId() + "_" + (count++);;
                     imageType = KycImageType.AADHAAR;
                     break;
                 case "PASSPORT":
                     folder1 = "Smart-drive-booking-hub/Driving license";
-                    publicId = "USER_LICENSE_" + userListEntity.getUserId() + "_" + userKycDetailsEntity.getKycId();
+                    publicId = "USER_LICENSE_" + userListEntity.getUserId() + "_" + userKycDetailsEntity.getKycId() + "_" + (count++);;
                     imageType = KycImageType.PASSPORT;
                     break;
                 default:
                     throw new IllegalArgumentException("Invalid document type: " + userKycDetailsEntity.getKycId());
             }
             KycImageEntity idProofTypeEntity = uploadImage(file1, folder1, publicId, userKycDetailsEntity, imageType);
+            kycImageEntities.add(idProofTypeEntity);
         }
 
         kycImageRepository.saveAll(kycImageEntities);

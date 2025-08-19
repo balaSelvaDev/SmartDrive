@@ -50,6 +50,7 @@ public class VehicleModelServiceImpl {
         return entityToDTO(save);
     }
 
+    @Transactional
     public VehicleModelResponseDTO updateVehicleModel(Integer vehicleModelId, VehicleModeUpdateRequestDTO dto) {
         VehicleModelEntity entity = vehicleModelRepository.findById(vehicleModelId).orElseThrow(() -> new RuntimeException("Not found"));
 
@@ -58,6 +59,7 @@ public class VehicleModelServiceImpl {
         entity.setModelName(dto.getModelName());
         entity.setIsActive(dto.getIsActive());
         entity.setBrand(brandEntity);
+        vehicleModelRepository.save(entity);
 
         return entityToDTO(entity);
     }
