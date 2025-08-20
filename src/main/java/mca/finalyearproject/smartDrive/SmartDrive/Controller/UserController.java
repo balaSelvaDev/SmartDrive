@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -71,6 +72,16 @@ public class UserController {
     @DeleteMapping("/{userId}")
     public void deleteUserList(@PathVariable("userId") Integer userId) {
         userService.deleteUserList(userId);
+    }
+
+    @PostMapping(value = "/user-admin/edit", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public UserKycDetailsEntity editUserByAdmin(@ModelAttribute EditUserCreateByAdminRequestDTO dto,
+                                                @ModelAttribute(name = "imageKeyName") ArrayList<String> imageKeyName,
+                                                @RequestParam(required = false, name = "profileImage") MultipartFile profileImage,
+                                                @RequestParam(required = false) MultipartFile drivingLicenseImage,
+                                                @RequestParam(required = false) List<MultipartFile> idProofFiles) throws IOException {
+        System.out.println("imagekeyname: " + imageKeyName);
+        return userService.editeUserByAdmin(dto, imageKeyName, profileImage, drivingLicenseImage, idProofFiles);
     }
 
 }

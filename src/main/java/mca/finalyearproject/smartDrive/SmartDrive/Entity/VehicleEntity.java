@@ -129,6 +129,17 @@ public class VehicleEntity {
     @Column(name = "transport_type")
     private TransportType transportType;
 
+    @Column(name = "is_active")
+    private Integer isActive;
+
+    public Integer getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Integer isActive) {
+        this.isActive = isActive;
+    }
+
     public TransportType getTransportType() {
         return transportType;
     }

@@ -272,7 +272,9 @@ public class UserServiceImpl {
         //
         String folder1 = "";
         String publicId = "";
-        KycImageType imageType;int count = 0;
+        KycImageType imageType;
+        int count = 0;
+
         for (MultipartFile file : idProofFiles) {
             MultipartFile file1 = file;
             System.out.println(dto.getIdProofType().name());
@@ -284,12 +286,14 @@ public class UserServiceImpl {
                     break;
                 case "AADHAAR":
                     folder1 = "Smart-drive-booking-hub/Aadhar card";
-                    publicId = "USER_AADHAR_" + userListEntity.getUserId() + "_" + userKycDetailsEntity.getKycId() + "_" + (count++);;
+                    publicId = "USER_AADHAR_" + userListEntity.getUserId() + "_" + userKycDetailsEntity.getKycId() + "_" + (count++);
+                    ;
                     imageType = KycImageType.AADHAAR;
                     break;
                 case "PASSPORT":
                     folder1 = "Smart-drive-booking-hub/Driving license";
-                    publicId = "USER_LICENSE_" + userListEntity.getUserId() + "_" + userKycDetailsEntity.getKycId() + "_" + (count++);;
+                    publicId = "USER_LICENSE_" + userListEntity.getUserId() + "_" + userKycDetailsEntity.getKycId() + "_" + (count++);
+                    ;
                     imageType = KycImageType.PASSPORT;
                     break;
                 default:
@@ -305,6 +309,7 @@ public class UserServiceImpl {
     }
 
     private KycImageEntity uploadImage(MultipartFile profileImage, String folder, String publicId, UserKycDetailsEntity userKycDetailsEntity, KycImageType imageType) throws IOException {
+        System.out.println("uploadImage...");
         Map<String, Object> options = ObjectUtils.asMap("folder", folder, "public_id", publicId);
         String originalFilename = profileImage.getOriginalFilename();
         Map uploadResult = cloudinary.uploader().upload(profileImage.getBytes(), options);
@@ -387,7 +392,7 @@ public class UserServiceImpl {
             List<KycImageEntity> kycImage = userKycEntity.getKycImage();
             if (kycImage != null) {
                 Map<KycImageType, List<UserKycImageResponseDTO>> collect = kycImage
-                        .stream()
+                        .stream().filter(list -> list.getStatus() == true)
                         .map(this::kycImageEntityToKycImageDTO)
                         .collect(Collectors.groupingBy(UserKycImageResponseDTO::getImageType));
                 userAndKycResponseDTO.setUserKycImageResponseDTO(collect);
@@ -431,6 +436,137 @@ public class UserServiceImpl {
         UserListEntity userListEntity = userRepository.findById(vehicleModel).orElseThrow(() -> new RuntimeException("User list not found"));
         userListEntity.setIsActive(GlobalStatusType.DELETE);
         userRepository.save(userListEntity);
+    }
+
+    @Transactional
+    public UserKycDetailsEntity editeUserByAdmin(
+            EditUserCreateByAdminRequestDTO dto,
+            List<String> imageKeyName,
+            MultipartFile profileImage,
+            MultipartFile drivingLicenseImage,
+            List<MultipartFile> idProofFiles
+    ) throws IOException {
+
+        System.out.println("entering service method...");
+//        UserListEntity entity = new UserListEntity();
+//        entity.setAuthProvide(AuthProvider.LOCAL);
+//        entity.setFirstName(dto.getFirstName());
+//        entity.setLastName(dto.getLastName());
+//        entity.setEmail(dto.getEmail());
+//        entity.setPhoneNumber(dto.getPhoneNumber());
+//        entity.setFullName(utilityClass.createFullName(dto.getFirstName(), dto.getLastName()));
+//        entity.setIsActive(1);
+
+//        UserListEntity userListEntity = userRepository.save(entity);
+
+//        Optional<Role> roleEntity = roleRepository.findById(Long.valueOf(1));
+//        LoginCredentialEntity loginCredentialEntity = new LoginCredentialEntity();
+//        loginCredentialEntity.setUser(entity);
+//        loginCredentialEntity.setPassword(PasswordUtil.encode(this.oauthPassword + entity.getEmail()));
+//        loginCredentialEntity.setEnabled(true);
+//        loginCredentialEntity.setLastLoginTime(LocalDateTime.now());
+//        loginCredentialEntity.setRole(roleEntity.get());
+//        loginCredentialEntity.setAdminAccess(false);
+
+//        loginCredentialRepository.save(loginCredentialEntity);
+
+        UserListEntity userListEntity = userRepository.findById(dto.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
+        userListEntity.setIsActive(dto.getUserListIsStatus());
+
+        UserKycDetailsEntity userKycDetailsEntity = kycRepository.findById(dto.getKycId()).orElseThrow(() -> new RuntimeException("user kyc details not found"));
+
+//        UserKycDetailsEntity kycDetailsEntity = new UserKycDetailsEntity();
+        userKycDetailsEntity.setUser(userListEntity);
+        userKycDetailsEntity.setDrivingLicenseNumber(dto.getDrivingLicenseNumber());
+        userKycDetailsEntity.setIdProofType(dto.getIdProofType());
+        userKycDetailsEntity.setIdProofNumber(dto.getIdProofNumber());
+
+        userKycDetailsEntity.setAddressLine1(dto.getAddressLine1());
+        userKycDetailsEntity.setAddressLine2(dto.getAddressLine2());
+        userKycDetailsEntity.setDistrict(dto.getDistrict());
+        userKycDetailsEntity.setTaluk(dto.getTaluk());
+        userKycDetailsEntity.setState(dto.getState());
+        userKycDetailsEntity.setPincode(dto.getPincode());
+        userKycDetailsEntity.setCountry(dto.getCountry());
+
+        userKycDetailsEntity.setFatherName(dto.getFatherName());
+        userKycDetailsEntity.setMotherName(dto.getMotherName());
+
+        userKycDetailsEntity.setNomineeName(dto.getNomineeName());
+        userKycDetailsEntity.setNomineeRelation(dto.getNomineeRelation());
+        userKycDetailsEntity.setNomineePhone(dto.getNomineePhone());
+
+        userKycDetailsEntity.setOccupation(dto.getOccupation());
+        userKycDetailsEntity.setCompanyName(dto.getCompanyName());
+        userKycDetailsEntity.setAlternatePhoneNumber(dto.getAlternatePhoneNumber());
+        UserKycDetailsEntity userKycDetailsEntity11 = kycRepository.save(userKycDetailsEntity);
+
+        System.out.println("User created...");
+
+        for (String name : imageKeyName) {
+            System.out.println(name);
+            kycImageRepository.updateUserKycInactiveIsStatusByKycId(userKycDetailsEntity.getKycId(), name);
+        }
+
+        List<KycImageEntity> kycImageEntities = new ArrayList<>();
+        // user profile
+        if (profileImage != null) {
+            String userProfileImagePath = "Smart-drive-booking-hub/User profile image";
+            String userProfileImageId = "USER_PROFILE_" + userListEntity.getUserId() + "_" + userKycDetailsEntity.getKycId();
+            KycImageEntity userProfileEntity = uploadImage(profileImage, userProfileImagePath, userProfileImageId, userKycDetailsEntity, KycImageType.PROFILE);
+            kycImageEntities.add(userProfileEntity);
+        }
+
+        // driving license
+        if (drivingLicenseImage != null) {
+            String drivingLicenseImagePath = "Smart-drive-booking-hub/Driving license";
+            String drivingLicenseImageId = "USER_LICENSE_" + userListEntity.getUserId() + "_" + userKycDetailsEntity.getKycId();
+            KycImageEntity drivingLicenseEntity = uploadImage(drivingLicenseImage, drivingLicenseImagePath, drivingLicenseImageId, userKycDetailsEntity, KycImageType.DRIVING_LICENSE);
+            kycImageEntities.add(drivingLicenseEntity);
+        }
+
+
+        //
+        String folder1 = "";
+        String publicId = "";
+        KycImageType imageType;
+        int count = 0;
+//        System.out.println("LENGTH:: " + idProofFiles.toArray().length);
+        if (idProofFiles != null) {
+            for (MultipartFile file : idProofFiles) {
+                MultipartFile file1 = file;
+                System.out.println("mulitpart name:: " + dto.getIdProofType().name());
+                switch (dto.getIdProofType().name()) {
+                    case "PAN_CARD":
+                        folder1 = "Smart-drive-booking-hub/Pan card";
+                        publicId = "USER_PANCARD_" + userListEntity.getUserId() + "_" + userKycDetailsEntity.getKycId() + "_" + (count++);
+                        imageType = KycImageType.PAN_CARD;
+                        System.out.println("PAN_CARD:: " + dto.getIdProofType().name());
+                        break;
+                    case "AADHAAR":
+                        folder1 = "Smart-drive-booking-hub/Aadhar card";
+                        publicId = "USER_AADHAR_" + userListEntity.getUserId() + "_" + userKycDetailsEntity.getKycId() + "_" + (count++);
+                        imageType = KycImageType.AADHAAR;
+                        System.out.println("AADHAAR:: " + dto.getIdProofType().name());
+                        break;
+                    case "PASSPORT":
+                        folder1 = "Smart-drive-booking-hub/Driving license";
+                        publicId = "USER_LICENSE_" + userListEntity.getUserId() + "_" + userKycDetailsEntity.getKycId() + "_" + (count++);
+                        imageType = KycImageType.PASSPORT;
+                        System.out.println("PASSPORT:: " + dto.getIdProofType().name());
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Invalid document type: " + userKycDetailsEntity.getKycId());
+                }
+                KycImageEntity idProofTypeEntity = uploadImage(file1, folder1, publicId, userKycDetailsEntity, imageType);
+                kycImageEntities.add(idProofTypeEntity);
+            }
+        }
+
+//
+        kycImageRepository.saveAll(kycImageEntities);
+        return null;
+
     }
 
 
