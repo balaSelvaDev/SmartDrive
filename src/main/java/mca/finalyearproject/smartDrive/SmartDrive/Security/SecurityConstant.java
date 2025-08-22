@@ -15,6 +15,7 @@ public class SecurityConstant {
             "/api/booking/**",
             "/api/client-location/**",
             "/api/booking-amt", "/api/booking-amt/**",
+            "/api/dashboard/**",
             "/ws/**", "/topic/**"
     };
     public static final String HEADER_NAME = "Authorization";

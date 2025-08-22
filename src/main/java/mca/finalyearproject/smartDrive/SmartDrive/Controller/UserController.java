@@ -4,12 +4,14 @@ import mca.finalyearproject.smartDrive.SmartDrive.DTO.*;
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.UserKycDetailsEntity;
 import mca.finalyearproject.smartDrive.SmartDrive.ServiceImpl.UserServiceImpl;
 import mca.finalyearproject.smartDrive.SmartDrive.Util.PaginationResponse;
+import mca.finalyearproject.smartDrive.SmartDrive.Util.UtilityClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +23,11 @@ public class UserController {
     @Autowired
     UserServiceImpl userService;
 
+    @Autowired
+    private UtilityClass utilityClass;
+
     @PostMapping
-    public RegistrationVerificationDTO createUserByUser(@RequestBody UserCreateRequestDTO userListDtO) {
+    public RegistrationVerificationDTO createUserByUser(@RequestBody UserCreateRequestDTO userListDtO, HttpServletRequest request) {
         return userService.createUserByUser(userListDtO);
     }
 
@@ -40,8 +45,17 @@ public class UserController {
     }
 
     @PostMapping("/generate-password")
-    public boolean generatePassword(@RequestBody GeneratePasswordRequestDTO requestDTO) {
-        return userService.generatePassword(requestDTO);
+    public boolean generatePassword(@RequestBody GeneratePasswordRequestDTO requestDTO, HttpServletRequest request) {
+        boolean result = userService.generatePassword(requestDTO);
+        if (result) {
+            System.out.println("-------------------------");
+            System.out.println("websocket notification...");
+            String authHeader = request.getHeader("Authorization");
+            utilityClass.sendNotificationToAdmin(authHeader, requestDTO.getUserId());
+            System.out.println("password completion...");
+            System.out.println("-------------------------");
+        }
+        return result;
     }
 
     @PostMapping(value = "/user-admin", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -79,9 +93,16 @@ public class UserController {
                                                 @ModelAttribute(name = "imageKeyName") ArrayList<String> imageKeyName,
                                                 @RequestParam(required = false, name = "profileImage") MultipartFile profileImage,
                                                 @RequestParam(required = false) MultipartFile drivingLicenseImage,
-                                                @RequestParam(required = false) List<MultipartFile> idProofFiles) throws IOException {
-        System.out.println("imagekeyname: " + imageKeyName);
-        return userService.editeUserByAdmin(dto, imageKeyName, profileImage, drivingLicenseImage, idProofFiles);
+                                                @RequestParam(required = false) List<MultipartFile> idProofFiles,
+                                                HttpServletRequest request) throws IOException {
+        UserKycDetailsEntity userKycDetailsEntity = userService.editeUserByAdmin(dto, imageKeyName, profileImage, drivingLicenseImage, idProofFiles);
+        System.out.println("-------------------------");
+        System.out.println("websocket notification...");
+        String authHeader = request.getHeader("Authorization");
+        utilityClass.sendNotificationToAdmin(authHeader, userKycDetailsEntity.getUser().getUserId());
+        System.out.println("edit users......");
+        System.out.println("-------------------------");
+        return userKycDetailsEntity;
     }
 
 }

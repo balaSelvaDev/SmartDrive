@@ -27,13 +27,7 @@ public class BrandController {
     private BrandServiceImpl brandService;
 
     @Autowired
-    private SimpMessagingTemplate messagingTemplate;
-
-    @Autowired
     private UtilityClass utilityClass;
-
-    @Autowired
-    private JWTProvider jwtProvider;
 
     @GetMapping
     public ResponseEntity<PaginationResponse<BrandDTO>> getAllBrands(@RequestParam(defaultValue = "0") int page,
@@ -50,29 +44,8 @@ public class BrandController {
     @PostMapping
     public BrandDTO createBrand(@RequestBody BrandDTO brandDTO, HttpServletRequest request) {
         BrandDTO brand = brandService.createBrand(brandDTO);
-
         String authHeader = request.getHeader("Authorization");
-
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            String token = authHeader.substring(7); // remove "Bearer "
-            // Now you can call your JWT util methods
-//            System.out.println("JWT");
-            String username = jwtProvider.getUsernameFromToken(token);
-//            System.out.println("username: "+username);
-            List<String> roles = jwtProvider.getRolesFromToken(token);
-//            System.out.println("roles: "+roles);
-            Long userId = jwtProvider.getUserIdFromToken(token);
-//            System.out.println("userId: "+userId);
-            if (!"ROLE_ADMIN".equals(utilityClass.getCurrentUserRole())) {
-                String message = "Created by " + username + "(" + userId + ")";
-//                System.out.println(message);
-                OrderNotification notification = new OrderNotification(message, Long.valueOf(brand.getBrandId()));
-                messagingTemplate.convertAndSend("/topic/admin-orders", notification);
-            }
-
-        }
-
-
+        utilityClass.sendNotificationToAdmin(authHeader, brand.getBrandId());
         return brand;
     }
 

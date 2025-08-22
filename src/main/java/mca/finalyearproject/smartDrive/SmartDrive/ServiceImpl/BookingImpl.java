@@ -6,6 +6,8 @@ import mca.finalyearproject.smartDrive.SmartDrive.DTO.KyImageResponseDTO;
 import mca.finalyearproject.smartDrive.SmartDrive.DTO.UserIdNameDrivingLicenseResponseDTO;
 import mca.finalyearproject.smartDrive.SmartDrive.Entity.*;
 import mca.finalyearproject.smartDrive.SmartDrive.Enum.BookingStatus;
+import mca.finalyearproject.smartDrive.SmartDrive.InterfaceProjection.BookingDetailsResponse;
+import mca.finalyearproject.smartDrive.SmartDrive.InterfaceProjection.GetCountsDetails;
 import mca.finalyearproject.smartDrive.SmartDrive.Repository.BookingRepository;
 import mca.finalyearproject.smartDrive.SmartDrive.Repository.UserRepository;
 import mca.finalyearproject.smartDrive.SmartDrive.Repository.VehicleRepository;
@@ -41,7 +43,7 @@ public class BookingImpl {
         entity.setEndDate(dto.getEndDate());
         entity.setPickupLocation(dto.getPickupLocation());
         entity.setDropLocation(dto.getDropLocation());
-        entity.setBookingStatus(BookingStatus.AVAILABLE);
+        entity.setBookingStatus(BookingStatus.PENDING);
         entity.setBookingType(dto.getBookingType());
         entity.setReturnDateTime(dto.getReturnDateTime());
 
@@ -184,6 +186,15 @@ public class BookingImpl {
         dto.setOriginalFileName(entity.getOriginalFileName());
         dto.setStatus(entity.getStatus());
         return dto;
+    }
+
+    // dashboard queries
+    public GetCountsDetails getCountsDetails() {
+        return bookingRepository.getCountsDetails();
+    }
+
+    public List<BookingDetailsResponse> getBookingDetails() {
+        return bookingRepository.getBookingDetails();
     }
 
 }
