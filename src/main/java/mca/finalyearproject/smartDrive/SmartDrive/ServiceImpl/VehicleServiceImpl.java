@@ -50,6 +50,12 @@ public class VehicleServiceImpl {
                                                                                LocalDateTime userPickupDatetime,
                                                                                LocalDateTime userDropDatetime,
                                                                                Boolean isVisibleOnline, String vehicleStatus) {
+        System.out.println("-----------");
+        System.out.println(userPickupDatetime);
+        System.out.println(userDropDatetime);
+        System.out.println(isVisibleOnline);
+        System.out.println(vehicleStatus);
+        System.out.println("-----------");
         Pageable paging = PageRequest.of(page, size);
         Page<Object[]> vehicleList =
                 vehicleRepository.findVehiclesWithDetailedAvailability(userPickupDatetime, userDropDatetime, isVisibleOnline, vehicleStatus, paging);
@@ -75,6 +81,11 @@ public class VehicleServiceImpl {
         dto.setVehicleType(String.valueOf(obj[7]));
         dto.setFuelType(String.valueOf(obj[8]));
         dto.setSeatingCapacity(Integer.valueOf(obj[9].toString()));
+
+        dto.setModelId(Integer.parseInt(obj[10].toString()));
+        dto.setModelName(String.valueOf(obj[11]));
+        dto.setBrandId(Integer.parseInt(obj[12].toString()));
+        dto.setBrandName(String.valueOf(obj[13]));
 
         List<VehicleImageEntity> vehicleImageList = vehicleImageRepository.findByVehicleId(dto.getVehicleId());
 //        List<VehicleImageEntity> vehicleImageList = entity.getVehicleImageList();
