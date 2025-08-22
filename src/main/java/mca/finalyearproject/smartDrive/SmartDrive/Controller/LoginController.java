@@ -74,22 +74,22 @@ public class LoginController {
     }
 
     @PostMapping
-    public ResponseEntity<LoginCredentialEntity> createBrand(@RequestBody LoginRequestDTO requestDTO) {
+    public ResponseEntity<Boolean> createBrand(@RequestBody LoginRequestDTO requestDTO) {
 //        System.out.println(requestDTO);
-//        System.out.println("<<<1>>>");
+        System.out.println("<<<1>>>");
         authenticationProvider.authenticate(new UsernamePasswordAuthenticationToken(requestDTO.getEmailId(), requestDTO.getPassword()));
-//        System.out.println("<<<2>>>");
+        System.out.println("<<<2>>>");
         Optional<UserListEntity> userListEntity = userService.findByEmail(requestDTO.getEmailId());
-//        System.out.println("<<<3>>>");
+        System.out.println("<<<3>>>");
         Optional<LoginCredentialEntity> loginCredentialEntity = loginCredentialRepository.findByUser(userListEntity.get());
-//        System.out.println("<<<4>>>");
+        System.out.println("<<<4>>>");
         String genereteJwtToken = jwtProvider.generateJwtToken(new UserPrincipal(userListEntity.get(), loginCredentialEntity.get()));
-//        System.out.println("<<<5>>>");
+        System.out.println("<<<5>>>");
         HttpHeaders httpHeaders = new HttpHeaders();
-//        System.out.println("<<<6>>>");
+        System.out.println("<<<6>>>");
         httpHeaders.add(SecurityConstant.HEADER_NAME, genereteJwtToken);
-//        System.out.println("<<<7>>>");
-        return new ResponseEntity<>(loginCredentialEntity.get(), httpHeaders, HttpStatus.OK);
+        System.out.println("<<<7>>>");
+        return new ResponseEntity<>(true, httpHeaders, HttpStatus.OK);
 //         return loginService.loginCheck(requestDTO);
     }
 

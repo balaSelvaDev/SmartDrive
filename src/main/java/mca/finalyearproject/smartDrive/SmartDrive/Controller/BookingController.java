@@ -7,11 +7,13 @@ import mca.finalyearproject.smartDrive.SmartDrive.DTO.UserIdNameDrivingLicenseRe
 import mca.finalyearproject.smartDrive.SmartDrive.ServiceImpl.BookingImpl;
 import mca.finalyearproject.smartDrive.SmartDrive.ServiceImpl.VehicleServiceImpl;
 import mca.finalyearproject.smartDrive.SmartDrive.Util.PaginationResponse;
+import mca.finalyearproject.smartDrive.SmartDrive.Util.UtilityClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -24,9 +26,18 @@ public class BookingController {
     @Autowired
     private VehicleServiceImpl vehicleService;
 
+    @Autowired
+    private UtilityClass utilityClass;
+
     @PostMapping
-    public ResponseEntity<BookingAddRequestDTO> createBooking(@RequestBody BookingAddRequestDTO dto) {
+    public ResponseEntity<BookingAddRequestDTO> createBooking(@RequestBody BookingAddRequestDTO dto, HttpServletRequest request) {
         BookingAddRequestDTO saved = booking.createBooking(dto);
+        System.out.println("-------------------------");
+        System.out.println("websocket notification...");
+        String authHeader = request.getHeader("Authorization");
+        utilityClass.sendNotificationToAdmin(authHeader, saved.getBookingId());
+        System.out.println("edit users......");
+        System.out.println("-------------------------");
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
 
